@@ -6,7 +6,7 @@ import {FirebaseDatabaseProvider} from "@react-firebase/database";
 import * as Modal from'react-modal';
 
 
-
+//hihi gwangoo hi
 
 class App extends Component{
   constructor(props){
@@ -32,7 +32,7 @@ class App extends Component{
 
 
   componentDidMount(){
-    
+    return;
   }
 
 

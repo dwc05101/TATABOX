@@ -1,3 +1,6 @@
+
+
+
 .App {
     text-align: center;
 }
@@ -22,8 +25,12 @@ color: rgb(112, 63, 63);
 .box1{
 float: left;
 height: 100vh;
-width: 58.2%;
-background-color: lightgreen ;
+width: 65%;
+margin: 0;
+background-image: url("../images/bg_with_text.png");
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
 }
 
 .box2{
@@ -31,9 +38,9 @@ height: 100vh;
 max-height: 100%;
 max-width: 100%;
 float: left; 
-width: 41.5%;
+width: 35%;
 
-background-color: ivory;
+background-color: rgba(241, 255, 227, 0.692);
 }
 
 .edge{

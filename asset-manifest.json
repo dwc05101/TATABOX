@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.a1e67deb.chunk.css",
-    "main.js": "/static/js/main.86b41c0c.chunk.js",
-    "main.js.map": "/static/js/main.86b41c0c.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/js/2.6bca9e50.chunk.js": "/static/js/2.6bca9e50.chunk.js",
-    "static/js/2.6bca9e50.chunk.js.map": "/static/js/2.6bca9e50.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.2d264d5c8b138c773cdfa9edd337463b.js": "/precache-manifest.2d264d5c8b138c773cdfa9edd337463b.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.a1e67deb.chunk.css.map": "/static/css/main.a1e67deb.chunk.css.map",
-    "static/media/main_component.css": "/static/media/bg_with_text.613e4c15.png",
-    "static/media/logo.svg": "/static/media/logo.5d5d9eef.svg"
+    "main.css": "/TATABOX/static/css/main.0703a124.chunk.css",
+    "main.js": "/TATABOX/static/js/main.6b5b58ea.chunk.js",
+    "main.js.map": "/TATABOX/static/js/main.6b5b58ea.chunk.js.map",
+    "runtime~main.js": "/TATABOX/static/js/runtime~main.58dbc0cd.js",
+    "runtime~main.js.map": "/TATABOX/static/js/runtime~main.58dbc0cd.js.map",
+    "static/js/2.23988cea.chunk.js": "/TATABOX/static/js/2.23988cea.chunk.js",
+    "static/js/2.23988cea.chunk.js.map": "/TATABOX/static/js/2.23988cea.chunk.js.map",
+    "index.html": "/TATABOX/index.html",
+    "precache-manifest.9d4eb54d55f0a32037eb5073167a2f71.js": "/TATABOX/precache-manifest.9d4eb54d55f0a32037eb5073167a2f71.js",
+    "service-worker.js": "/TATABOX/service-worker.js",
+    "static/css/main.0703a124.chunk.css.map": "/TATABOX/static/css/main.0703a124.chunk.css.map",
+    "static/media/main_component.css": "/TATABOX/static/media/bg_with_text.613e4c15.png",
+    "static/media/logo.svg": "/TATABOX/static/media/logo.5d5d9eef.svg"
   }
 }

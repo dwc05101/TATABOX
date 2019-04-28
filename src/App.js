@@ -5,9 +5,7 @@ import firebase from './firebase';
 import {FirebaseDatabaseProvider} from "@react-firebase/database";
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 
-//hi
-//hello
-//test!
+//guseul
 
 
 class App extends Component{

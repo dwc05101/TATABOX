@@ -77,7 +77,10 @@ class Main extends Component{
     render(){
       return (
         <div className="App">
-           <div className = "box1"/>
+           <div className = "box1">
+                <div className = "main-logo" style = {{marginTop: "25%"}}> TATA BOX </div>
+                <div className = "main-explanation" style = {{margin: "10%"}}>The best helper of TA</div>
+           </div>
             <div className = "box2">
                 <h1 style={{marginTop: "20%"}}>Welcome.</h1>
                 <form onSubmit={this.onSubmit} autoComplete="false">

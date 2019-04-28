@@ -1,11 +1,13 @@
 {
   "name": "tatabox",
   "version": "0.1.0",
+  "homepage": "https://tata.box",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@react-firebase/database": "^0.3.10",
     "firebase": "^5.10.0",
+    "gh-pages": "^2.0.1",
     "modal": "^1.2.0",
     "react": "^16.8.6",
     "react-awesome-modal": "^2.0.5",
@@ -18,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,6 +39,7 @@
       "last 1 safari version"
     ]
   },
+  
   "devDependencies": {
     "style-loader": "^0.23.1"
   }

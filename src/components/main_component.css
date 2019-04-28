@@ -27,7 +27,7 @@ float: left;
 height: 100vh;
 width: 65%;
 margin: 0;
-background-image: url("../images/bg_with_text.png");
+background-image: url("../images/bg_blur.jpg");
 background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
@@ -77,6 +77,28 @@ margin-top: 20%;
 .App-link {
 color: #61dafb;
 }
+
+
+.main-logo{
+color: white;
+font-family: 'Alba';
+font-size: 60px;
+}
+
+.main-explanation{
+color: white;
+}
+
+@font-face {
+font-family: 'Raleway', sans-serif;
+src: local('Raleway'), url(../fonts/Raleway/Raleway-Regular.ttf) format('truetype');
+}
+
+@font-face {
+font-family: 'Alba';
+src: local('Alba'), url(../fonts/alba/ALBA____.TTF) format('truetype');
+}
+
 
 @keyframes App-logo-spin {
 from {

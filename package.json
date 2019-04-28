@@ -1,7 +1,7 @@
 {
   "name": "tatabox",
   "version": "0.1.0",
-  "homepage": "https://tata.box",
+  "homepage": "https://dwc05101.github.io/TATABOX",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.3",

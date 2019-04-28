@@ -16,7 +16,7 @@ class App extends Component{
 
   render(){
     return (
-      <Router>
+      <Router basename="/TATABOX">
         
         <Route path="/" exact component={props => <Main/>}></Route>
       </Router> 

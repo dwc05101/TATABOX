@@ -1,46 +1,25 @@
-import {React, Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import logo, { ReactComponent } from './logo.svg';
 import './App.css';
 import firebase from './firebase';
 import {FirebaseDatabaseProvider} from "@react-firebase/database";
-import * as Modal from'react-modal';
+import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 
 
-//hihi gwangoo hi
+import Main from './components/main_component';
+
 
 class App extends Component{
   constructor(props){
     super(props);
   }
 
-  state = {
-    users : [],
-    user_id : "",
-    user_pw : ""
-  };
-
-  onChangeID(e){
-    this.setState({
-      user_id : e.target.value
-    });
-  };
-  onChangePW(e){
-    this.setState({
-      user_pw : e.target.value
-    })
-  }
-
-
-  componentDidMount(){
-    return;
-  }
-
-
   render(){
     return (
-      <div>
-        {this.state.users}
-      </div>
+      <Router>
+        
+        <Route path="/" exact component={props => <Main/>}></Route>
+      </Router> 
     );
   }
 }

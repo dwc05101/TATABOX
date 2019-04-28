@@ -70,79 +70,80 @@ class Main extends Component{
     }
   
     componentDidMount(){
-      return;
+        return;
     }
   
   
     render(){
       return (
-        <div className="App">
-           <div className = "box1">
-                <div className = "main-logo" style = {{marginTop: "25%"}}> TATA BOX </div>
-                <div className = "main-explanation" style = {{margin: "10%"}}>The best helper of TA</div>
-           </div>
-            <div className = "box2">
-                <h1 style={{marginTop: "20%"}}>Welcome.</h1>
-                <form onSubmit={this.onSubmit} autoComplete="false">
-                    <div align="left" style={{marginTop:"20%",marginLeft:"15%",fontWeight:"bold",color:"#808080"}}>
-                        <label>
-                            Email
-                        </label>
-                    </div>
-                    <br/>
-                    <div>
+        <body>
+            <div className="App">
+                <div className = "box1">
+                    <div className = "main-logo"> TATA BOX </div>
+                    <div className = "main-explanation">The best helper of TA</div>
+                </div>
+                <div className = "box2">
+                    <h1 style={{marginTop: "20%"}}>Welcome.</h1>
+                    <form onSubmit={this.onSubmit} autoComplete="false">
+                        <div align="left" style={{marginTop:"20%",marginLeft:"15%",fontWeight:"bold",color:"#808080"}}>
+                            <label>
+                                Email
+                            </label>
+                        </div>
+                        <br/>
+                        <div>
+                            <TextField
+                            id="user_id"
+                            value={this.state.user_id}
+                            onChange={this.onChangeID}
+                            margin="normal"
+                            style={{width:"70%"}}
+                            />
+                        </div>
+                        <br/>
+                        <br/>
+                        <div align="left" style={{marginLeft:"15%",fontWeight:"bold",color:"#808080"}}>
+                            <label>
+                                Password
+                            </label>
+                        </div>
+                        <br/>
                         <TextField
-                        id="user_id"
-                        value={this.state.user_id}
-                        onChange={this.onChangeID}
+                        id="user_pw"
+                        value={this.state.user_pw}
+                        type="password"
+                        onChange={this.onChangePW}
                         margin="normal"
                         style={{width:"70%"}}
                         />
-                    </div>
-                    <br/>
-                    <br/>
-                    <div align="left" style={{marginLeft:"15%",fontWeight:"bold",color:"#808080"}}>
-                        <label>
-                            Password
-                        </label>
-                    </div>
-                    <br/>
-                    <TextField
-                    id="user_pw"
-                    value={this.state.user_pw}
-                    type="password"
-                    onChange={this.onChangePW}
-                    margin="normal"
-                    style={{width:"70%"}}
-                    />
-                    <br/>
-                    <Button variant="contained" color="primary" onClick={this.onSubmit} style={{
-                        marginTop:"10%",width:"40%",borderRadius: 35,
-                        backgroundColor: "#4C9900",
-                        padding: "18px 36px",
-                        fontSize: "18px"}}>
-                        Sign In
-                    </Button>
-                    <div style={{color:"#0000FF",textDecorationLine: 'underline', marginTop:"8%"}}>
-                        <text onClick={this.openUp}>Sign Up</text>
-                    </div>
-                    <div style={{color:"#0000FF",textDecorationLine: 'underline', marginTop:"2%"}}>
-                        <text onClick={this.openFind}>Forgot Password?</text>
-                    </div>
-                </form>
-                <Modal visible={this.state.up_modal} width="500" height="350" effect="fadeInUp" onClickAway={()=> this.closeUp()}
-                        style={{padding: "10"}}
-                >
-                    This is Up modal.
-                </Modal>
-                <Modal visible={this.state.find_modal} width="500" height="350" effect="fadeInUp" onClickAway={()=> this.closeFind()}
-                        style={{padding: "10"}}
-                >
-                    This is Find modal.
-                </Modal>
+                        <br/>
+                        <Button variant="contained" color="primary" onClick={this.onSubmit} style={{
+                            marginTop:"10%",width:"40%",borderRadius: 35,
+                            backgroundColor: "#4C9900",
+                            padding: "18px 36px",
+                            fontSize: "18px"}}>
+                            Sign In
+                        </Button>
+                        <div style={{color:"#0000FF",textDecorationLine: 'underline', marginTop:"8%"}}>
+                            <text onClick={this.openUp}>Sign Up</text>
+                        </div>
+                        <div style={{color:"#0000FF",textDecorationLine: 'underline', marginTop:"2%"}}>
+                            <text onClick={this.openFind}>Forgot Password?</text>
+                        </div>
+                    </form>
+                    <Modal visible={this.state.up_modal} width="500" height="350" effect="fadeInUp" onClickAway={()=> this.closeUp()}
+                            style={{padding: "10"}}
+                    >
+                        This is Up modal.
+                    </Modal>
+                    <Modal visible={this.state.find_modal} width="500" height="350" effect="fadeInUp" onClickAway={()=> this.closeFind()}
+                            style={{padding: "10"}}
+                    >
+                        This is Find modal.
+                    </Modal>
+                </div>
             </div>
-        </div>
-  
+        </body>
       );
     }
   }

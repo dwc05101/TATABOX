@@ -6,6 +6,7 @@ import {FirebaseDatabaseProvider} from "@react-firebase/database";
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import Main from "./components/main_component";
 import MakeClass from "./components/make_class_component";
+import Step from './components/step1_component';
 
 //guseul
 
@@ -19,7 +20,8 @@ class App extends Component{
     return (
       <Router>
         <Route path="/" exact component={props => <Main/>}></Route>
-        <Route path="/make" exact component={props => <MakeClass/>}></Route>
+        <Route path="/make" component={props => <MakeClass/>}></Route>
+        <Route path="/test" component={props => <Step/>}></Route>
       </Router> 
     );
   }

@@ -184,17 +184,12 @@ class MakeClass extends Component {
 
         return (
             <section>
-                <h1>React-Modal Examples</h1>
-                <input type="button" value="Open" onClick={() => this.openModal()} />
-                <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                    <OutLinedTextFields/>
-                </Modal>
                 <div id = 'full'>
                     <div id = 'headbar'>
                         <h1 id = 'logo'>TATABOX</h1>
                         <div id = 'menu'>
-
                             <Button
+                                id = 'menu_button'
                                 buttonRef={node => {
                                 this.anchorEl = node;
                                 }}
@@ -202,7 +197,6 @@ class MakeClass extends Component {
                                 aria-haspopup="true"
                                 onClick={this.handleToggle}
                             >
-                                Toggle Menu Grow
                             </Button>
 
                             <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
@@ -235,7 +229,10 @@ class MakeClass extends Component {
                         <p id = 'clicktext2'>
                             Click here to create new class.
                         </p>
-                        <img id = 'plus' src = {require('./add.png')}></img>
+                        <img id = 'plus' src = {require('../images/add.png')} onClick={() => this.openModal()}></img>
+                        <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
+                            <OutLinedTextFields/>
+                        </Modal>
                     </div>
                 </div>
             </section>

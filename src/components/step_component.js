@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './step1_component.css';
+import './step_component.css';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MakeClass from './make_class_component';
@@ -23,6 +23,7 @@ class Step extends Component{
       this.onChangeBD = this.onChangeBD.bind(this);
       this.onChangeRoom = this.onChangeRoom.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
+      this.moveStep = this.moveStep.bind(this);
     
     }
   
@@ -55,17 +56,16 @@ class Step extends Component{
           classroom : e.target.value
         });
       };
-  
+    moveStep(){
+      this.setState({
+        step : (this.state.step + 1)%2
+      });
+    }
+
     onSubmit(e){
         //submit
-        this.setState({
-            step : 1
-        });
     }
-    onFinish(e){
-        //step2 finish
-        //closeModal();
-    }
+
   
     componentDidMount(){
       return;
@@ -77,7 +77,7 @@ class Step extends Component{
         step1 = <div className="App">
                     <div className ="step1"><h4>STEP1</h4></div>
                     <div className ="step2"><h4>STEP2</h4></div>
-                    <div className ="box1">
+                    <div className ="infobox">
                         <h2>Infomation about Course</h2>
                         <form onSubmit={this.onSubmit}>
                             <div align="left" style={{marginLeft:"15%",fontWeight:"bold"}} >
@@ -146,10 +146,10 @@ class Step extends Component{
                                 />
                             </div>
                             <br/>
-                            <Button variant="contained" color="secondary" onClick={this.onSubmit}>
+                            <Button variant="contained" color="secondary" >
                                 Cancel
                             </Button>
-                            <Button variant="contained" color="primary" onClick={this.onSubmit}>
+                            <Button variant="contained" color="primary" onClick={this.moveStep}>
                                 Next
                             </Button>
                             <div>
@@ -157,20 +157,25 @@ class Step extends Component{
                             </div>
                         </form>
                     </div>
+                    <div className="seatbox">Seat layout</div>
                 </div>
     let step2;
     step2=<div className="App">
             <div className ="step1" style={{backgroundColor:"pink"}}><h4>STEP1</h4></div>
             <div className ="step2" style={{backgroundColor:"rgb(255, 82, 111)"}}><h4>STEP2</h4></div>
-            <div className ="box1">
+            <div className ="infobox">
                 <h2>Invite other TAs</h2>
                 <Button variant="contained" >
                                 Invite
                             </Button>
                 <br/>
-                <Button variant="contained" color="primary" onClick={this.onFinish}>
+                <Button variant="contained" color="secondary" onClick={this.moveStep}>
+                                Back
+                            </Button>
+                <Button variant="contained" color="primary" onClick={this.onSubmit}>
                                 Finish
                             </Button>
+                
             </div>
         </div>
     if (this.state.step==0) return (<div>{step1}</div>);

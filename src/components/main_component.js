@@ -131,12 +131,12 @@ class Main extends Component{
                             <text onClick={this.openFind}>Forgot Password?</text>
                         </div>
                     </form>
-                    <Modal visible={this.state.up_modal} width="500" height="350" effect="fadeInUp" onClickAway={()=> this.closeUp()}
+                    <Modal visible={this.state.up_modal} width="500" height="700" effect="fadeInUp" onClickAway={()=> this.closeUp()}
                             style={{padding: "10"}}
                     >
                         This is Up modal.
                     </Modal>
-                    <Modal visible={this.state.find_modal} width="500" height="350" effect="fadeInUp" onClickAway={()=> this.closeFind()}
+                    <Modal visible={this.state.find_modal} width="500" height="700" effect="fadeInUp" onClickAway={()=> this.closeFind()}
                             style={{padding: "10"}}
                     >
                         This is Find modal.

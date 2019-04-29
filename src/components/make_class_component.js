@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 
 
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import OutLinedTextFields from './OutLinedTextFields';
 
 const styles = theme => ({
     container: {
@@ -68,7 +69,8 @@ class MakeClass extends Component {
  
     openModal() {
         this.setState({
-            visible : true
+            visible : true,
+            overflow : "visible"
         });
     }
  
@@ -159,10 +161,7 @@ class MakeClass extends Component {
         return (
             <section>
                 <h1>React-Modal Examples</h1>
-                <input type="button" value="Open" onClick={() => this.openModal()} />
-                <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                    {step1}
-                </Modal>
+                <OutLinedTextFields/>
             </section>
         );
     }

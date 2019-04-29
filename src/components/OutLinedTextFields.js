@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import Modal from 'react-awesome-modal';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   container: {
@@ -46,24 +48,56 @@ const currencies = [
 ];
 
 class OutlinedTextFields extends React.Component {
-  state = {
-    code: '',
-    name: '',
-    prof: '',
-    bd: '',
-    room: ''
-  };
 
+  constructor(props){
+    super(props);
+    this.state = {
+      code: '',
+      name: '',
+      prof: '',
+      bd: '',
+      room: '',
+      visible: false
+    };
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
   };
 
+  makeList(){
+    return(currencies.map(option => {
+      return(
+      <MenuItem key={option.value} value={option.value} style={{zindex:"100"}}>
+        {option.label}
+      </MenuItem>
+      )
+    }))
+  }
+
+  openModal(){
+    this.setState({
+      visible: true
+    })
+  }
+
+  closeModal(){
+    this.setState({
+      visible: false
+    })
+  }
   render() {
     const { classes } = this.props;
 
     return (
+      <div>
+        <Button variant="contained" color="primary" onClick={this.openModal}>Open Modal</Button>
+      <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="outlined-code"
@@ -106,15 +140,12 @@ class OutlinedTextFields extends React.Component {
               className: classes.menu,
             },
           }}
+          style={{zindex:'2'}}
           helperText="Please select Building"
           margin="normal"
           variant="outlined"
         >
-          {currencies.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
+          {this.makeList()}
         </TextField>
 
         <TextField
@@ -130,12 +161,12 @@ class OutlinedTextFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
-
-
-        
-        
-        
+        <Button variant="contained" color="secondary" onClick={() => this.closeModal()}>
+          Back
+        </Button>
       </form>
+      </Modal>
+      </div>
     );
   }
 }

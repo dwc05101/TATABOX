@@ -8,11 +8,19 @@
     text-align: center;
 }
 
+#logo{
+
+    margin-top : 7px;
+    color: white;
+    font-family: 'Alba';
+    font-size: 40px;
+    }
+
 #headbar{
     float: left;
     height: 90px;
     width: 100%;
-    background-color: lightgreen;
+    background-color: #7eab54;
 }
 
 #logo{
@@ -30,19 +38,19 @@
     width:80px;
     float:right;
     padding: 5px;
+    background-image: url("../images/menu.png");
 }
+
 
 #clicktext1{
     padding: 0px;
     margin-top:20%;
     margin-bottom: 0px;
-    border: 1px solid black;
 }
 #clicktext2{
     padding:0px;
     margin-top: 0px;
     margin-bottom: 0px;
-    border: 1px solid black;
 }
 #makeclass{
     height: 100%-90px;
@@ -51,7 +59,7 @@
     font-size: calc(10px + 2vmin);
 }
 #plus{
-    min-height: 40px;
-    min-width: 40px;
-    border: 1px solid black;
+    margin-top: 40px;
+    height: 100px;
+    width: 100px;
 }

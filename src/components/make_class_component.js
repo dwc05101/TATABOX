@@ -17,6 +17,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import OutLinedTextFields from './OutLinedTextFields';
 
 const styles = theme => ({
     container: {
@@ -35,7 +36,7 @@ const styles = theme => ({
     },
   });
   
-  const currencies = [
+  const buildings = [
     {
       value: 'N1',
       label: 'N1 (김병호 김삼열 IT융합빌딩)',
@@ -68,7 +69,7 @@ class MakeClass extends Component {
             name: '',
             prof: '',
             bd: '',
-            room: ''
+            room: '',
             username: "Gwangjo Gong",
             open: false
         }
@@ -79,6 +80,16 @@ class MakeClass extends Component {
             visible : true
         });
     }
+
+    mapBuildings(){
+      return buildings.map(option => {
+        return(
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        )
+      })
+    }
  
     closeModal() {
         this.setState({
@@ -86,20 +97,20 @@ class MakeClass extends Component {
         });
     }
     handleChange = name => event => {
-        this.setState({
-          [name]: event.target.value,
-        });
+      this.setState({
+        [name]: event.target.value,
+      });
+    }
     handleToggle = () => {
-        this.setState(state => ({ open: !state.open }));
-      };
-    
-      handleClose = event => {
-        if (this.anchorEl.contains(event.target)) {
-          return;
-        }
-    
-        this.setState({ open: false });
-      };
+      this.setState(state => ({ open: !state.open }));
+    };
+  
+    handleClose = event => {
+    if (this.anchorEl.contains(event.target)) {
+      return;
+    }
+      this.setState({ open: false });
+    };
  
     render() {
         const { classes } = this.props;
@@ -151,11 +162,9 @@ class MakeClass extends Component {
           margin="normal"
           variant="outlined"
         >
-          {currencies.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
+          <MenuItem key="ahhh" value="jutkatta">
+            yeahhhhhh
+          </MenuItem>
         </TextField>
 
         <TextField
@@ -178,7 +187,7 @@ class MakeClass extends Component {
                 <h1>React-Modal Examples</h1>
                 <input type="button" value="Open" onClick={() => this.openModal()} />
                 <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                    {step1}
+                    <OutLinedTextFields/>
                 </Modal>
                 <div id = 'full'>
                     <div id = 'headbar'>
@@ -229,17 +238,6 @@ class MakeClass extends Component {
                         <image id = 'plus'>
                             +
                         </image>
-                        <div>
-                        <h1>React-Modal Examples</h1>
-                        <input type="button" value="Open" onClick={() => this.openModal()} />
-                        <Modal visible={this.state.visible} width="400" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                            <div>
-                                <h1>Title</h1>
-                                <p>Some Contents</p>
-                                <a href="javascript:void(0);" onClick={() => this.closeModal()}>Close</a>
-                            </div>
-                        </Modal>
-                        </div>
                     </div>
                 </div>
             </section>

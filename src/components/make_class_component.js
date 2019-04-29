@@ -10,6 +10,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { withStyles } from '@material-ui/core/styles';
+
  
 export default class MakeClass extends Component {
     constructor(props) {
@@ -94,9 +95,7 @@ export default class MakeClass extends Component {
                         <p id = 'clicktext2'>
                             Click here to create new class.
                         </p>
-                        <image id = 'plus'>
-                            +
-                        </image>
+                        <img id = 'plus' src = {require('./add.png')}></img>
                         <div>
                         <h1>React-Modal Examples</h1>
                         <input type="button" value="Open" onClick={() => this.openModal()} />

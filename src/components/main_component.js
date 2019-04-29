@@ -66,7 +66,7 @@ class Main extends Component{
     }
   
     onSubmit(e){
-        
+        window.location.pathname = "/make";
     }
   
     componentDidMount(){

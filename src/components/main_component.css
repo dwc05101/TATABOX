@@ -1,3 +1,9 @@
+body {
+margin: 0;
+padding: 0;
+font-family: 'Raleway', sans-serif;
+}
+
 .App {
     text-align: center;
 }
@@ -22,8 +28,27 @@ color: rgb(112, 63, 63);
 .box1{
 float: left;
 height: 100vh;
-width: 58.2%;
-background-color: lightgreen ;
+width: 65%;
+margin: 0;
+background-image: url("../images/bg_blur.jpg");
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.main-logo{
+color: white;
+font-family: 'Alba';
+font-size: 60px;
+}
+    
+.main-explanation{
+color: white;
+font-size: 28px;
+position: relative;
 }
 
 .box2{
@@ -31,9 +56,9 @@ height: 100vh;
 max-height: 100%;
 max-width: 100%;
 float: left; 
-width: 41.5%;
+width: 35%;
 
-background-color: ivory;
+background-color: rgba(241, 255, 227, 0.692);
 }
 
 .edge{
@@ -70,6 +95,17 @@ margin-top: 20%;
 .App-link {
 color: #61dafb;
 }
+
+@font-face {
+font-family: 'Raleway', sans-serif;
+src: local('Raleway'), url(../fonts/Raleway/Raleway-Regular.ttf) format('truetype');
+}
+
+@font-face {
+font-family: 'Alba';
+src: local('Alba'), url(../fonts/alba/ALBA____.TTF) format('truetype');
+}
+
 
 @keyframes App-logo-spin {
 from {

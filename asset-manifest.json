@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/TATABOX/static/css/main.220bb11d.chunk.css",
-    "main.js": "/TATABOX/static/js/main.6ba0e0de.chunk.js",
-    "main.js.map": "/TATABOX/static/js/main.6ba0e0de.chunk.js.map",
+    "main.css": "/TATABOX/static/css/main.8db023cf.chunk.css",
+    "main.js": "/TATABOX/static/js/main.f2d89f3d.chunk.js",
+    "main.js.map": "/TATABOX/static/js/main.f2d89f3d.chunk.js.map",
     "runtime~main.js": "/TATABOX/static/js/runtime~main.58dbc0cd.js",
     "runtime~main.js.map": "/TATABOX/static/js/runtime~main.58dbc0cd.js.map",
-    "static/js/2.23988cea.chunk.js": "/TATABOX/static/js/2.23988cea.chunk.js",
-    "static/js/2.23988cea.chunk.js.map": "/TATABOX/static/js/2.23988cea.chunk.js.map",
+    "static/js/2.09cff0bf.chunk.js": "/TATABOX/static/js/2.09cff0bf.chunk.js",
+    "static/js/2.09cff0bf.chunk.js.map": "/TATABOX/static/js/2.09cff0bf.chunk.js.map",
     "index.html": "/TATABOX/index.html",
-    "precache-manifest.e6f52ed22aee0805f45b4f44d80b23e3.js": "/TATABOX/precache-manifest.e6f52ed22aee0805f45b4f44d80b23e3.js",
+    "precache-manifest.aa60c2511e3314ebf1cd981ca8131866.js": "/TATABOX/precache-manifest.aa60c2511e3314ebf1cd981ca8131866.js",
     "service-worker.js": "/TATABOX/service-worker.js",
-    "static/css/main.220bb11d.chunk.css.map": "/TATABOX/static/css/main.220bb11d.chunk.css.map",
+    "static/css/main.8db023cf.chunk.css.map": "/TATABOX/static/css/main.8db023cf.chunk.css.map",
     "static/media/main_component.css": "/TATABOX/static/media/bg_blur.1ce5d8b7.jpg",
     "static/media/logo.svg": "/TATABOX/static/media/logo.5d5d9eef.svg"
   }

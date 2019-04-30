@@ -77,7 +77,8 @@ class MakeClass extends Component {
  
     openModal() {
         this.setState({
-            visible : true
+            visible : true,
+            overflow : "visible"
         });
     }
 

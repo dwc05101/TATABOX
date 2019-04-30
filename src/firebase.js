@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import 'firebase/auth';
 
 const config = {
     apiKey: "AIzaSyCW-o6RlUxUwl27MDGLX9DoJStq6dzUhyc",
@@ -9,6 +10,32 @@ const config = {
     messagingSenderId: "666619023503"
 };
 
-firebase.initializeApp(config);
+class Firebase{
+    constructor() {
+        firebase.initializeApp(config);
+        this.auth = firebase.auth;
+    }
 
-export default firebase;
+    // **** AUTH API ****
+    createUser = (id, password) => {
+        this.auth.createUserWithEmailAndPassword(id,password).catch(function(error){
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("error Code : "+errorCode+", msg : "+errorMessage);
+        })
+    }
+
+    signIn = (id,password) => {
+        this.auth.signInWithEmailAndPassword(id,password).catch(function(error){
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("error Code : "+errorCode+", msg : "+errorMessage);
+        })
+    }
+
+    signOut = () => this.auth.signOut();
+
+}
+
+
+export default Firebase;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './make_class_component.css';
 import Modal from 'react-awesome-modal';
 import Step from './step_component';
 import Main from './main_component';
@@ -9,7 +10,11 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuList from '@material-ui/core/MenuList';
 
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import OutLinedTextFields from './OutLinedTextFields';
@@ -31,7 +36,7 @@ const styles = theme => ({
     },
   });
   
-  const currencies = [
+  const buildings = [
     {
       value: 'N1',
       label: 'N1 (김병호 김삼열 IT융합빌딩)',
@@ -55,6 +60,7 @@ const styles = theme => ({
   ];
 
 class MakeClass extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -63,7 +69,9 @@ class MakeClass extends Component {
             name: '',
             prof: '',
             bd: '',
-            room: ''
+            room: '',
+            username: "Gwangjo Gong",
+            open: false
         }
     }
  
@@ -73,18 +81,37 @@ class MakeClass extends Component {
             overflow : "visible"
         });
     }
+
+    mapBuildings(){
+      return buildings.map(option => {
+        return(
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        )
+      })
+    }
  
     closeModal() {
         this.setState({
             visible : false
         });
     }
-    
     handleChange = name => event => {
-        this.setState({
-          [name]: event.target.value,
-        });
-      };
+      this.setState({
+        [name]: event.target.value,
+      });
+    }
+    handleToggle = () => {
+      this.setState(state => ({ open: !state.open }));
+    };
+  
+    handleClose = event => {
+    if (this.anchorEl.contains(event.target)) {
+      return;
+    }
+      this.setState({ open: false });
+    };
  
     render() {
         const { classes } = this.props;
@@ -136,11 +163,9 @@ class MakeClass extends Component {
           margin="normal"
           variant="outlined"
         >
-          {currencies.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
+          <MenuItem key="ahhh" value="jutkatta">
+            yeahhhhhh
+          </MenuItem>
         </TextField>
 
         <TextField
@@ -160,8 +185,57 @@ class MakeClass extends Component {
 
         return (
             <section>
-                <h1>React-Modal Examples</h1>
-                <OutLinedTextFields/>
+                <div id = 'full'>
+                    <div id = 'headbar'>
+                        <h1 id = 'logo'>TATABOX</h1>
+                        <div id = 'menu'>
+                            <Button
+                                id = 'menu_button'
+                                buttonRef={node => {
+                                this.anchorEl = node;
+                                }}
+                                aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleToggle}
+                            >
+                            </Button>
+
+                            <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+                                {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    id="menu-list-grow"
+                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                >
+                                    <Paper>
+                                    <ClickAwayListener onClickAway={this.handleClose}>
+                                        <MenuList>
+                                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                                )}
+                            </Popper>
+                        </div>
+                        <h3 id = 'userid'>{this.state.username}</h3>
+                    </div>
+                    
+                    <div id = 'makeclass'>
+                        <p id = 'clicktext1'>
+                            You don't have any class yet.
+                        </p>
+                        <p id = 'clicktext2'>
+                            Click here to create new class.
+                        </p>
+                        <img id = 'plus' src = {require('../images/add.png')} onClick={() => this.openModal()}></img>
+                        <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
+                            <OutLinedTextFields/>
+                        </Modal>
+                    </div>
+                </div>
             </section>
         );
     }
@@ -170,4 +244,4 @@ MakeClass.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-  export default withStyles(styles)(MakeClass);
+export default withStyles(styles)(MakeClass);

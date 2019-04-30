@@ -1,0 +1,65 @@
+#full{
+    padding :0 ;
+    margin:0;
+    border: 1px solid black;
+    min-height:100vh ;
+    max-width: 100%;
+    max-height:100%;
+    text-align: center;
+}
+
+#logo{
+
+    margin-top : 7px;
+    color: white;
+    font-family: 'Alba';
+    font-size: 40px;
+    }
+
+#headbar{
+    float: left;
+    height: 90px;
+    width: 100%;
+    background-color: #7eab54;
+}
+
+#logo{
+    float: left;
+    padding: 10px;
+}
+
+#userid{
+    float: right;
+    padding: 10px;
+}
+
+#menu{
+    height: 90px;
+    width:80px;
+    float:right;
+    padding: 5px;
+    background-image: url("../images/menu.png");
+}
+
+
+#clicktext1{
+    padding: 0px;
+    margin-top:20%;
+    margin-bottom: 0px;
+}
+#clicktext2{
+    padding:0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+#makeclass{
+    height: 100%-90px;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
+#plus{
+    margin-top: 40px;
+    height: 100px;
+    width: 100px;
+}

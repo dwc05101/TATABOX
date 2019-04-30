@@ -18,16 +18,28 @@ class Main extends Component{
         user_id : "",
         user_pw : "",
         up_modal : false,
-        find_modal : false
+        find_modal : false,
+        sign_up_id : "",
+        sign_up_pw : "",
+        sign_up_name : "",
+        sign_up_school : "",
+        sign_up_dept : ""
       }
 
-      this.onChangeID = this.onChangeID.bind(this);
-      this.onChangePW = this.onChangePW.bind(this);
+      
+      this.handleChange = this.handleChange.bind(this);
       this.openUp = this.openUp.bind(this);
       this.closeUp = this.closeUp.bind(this);
       this.openFind = this.openFind.bind(this);
       this.closeFind = this.closeFind.bind(this);
     }
+
+
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+      };
 
     openUp(){
         this.setState({
@@ -53,18 +65,6 @@ class Main extends Component{
         })
     }
 
-
-    onChangeID(e){
-      this.setState({
-        user_id : e.target.value
-      });
-    };
-
-    onChangePW(e){
-      this.setState({
-        user_pw : e.target.value
-      })
-    }
   
     onSubmit(e){
         window.location.pathname = "/make";
@@ -97,7 +97,7 @@ class Main extends Component{
                             <TextField
                             id="user_id"
                             value={this.state.user_id}
-                            onChange={this.onChangeID}
+                            onChange={this.handleChange("user_id")}
                             margin="normal"
                             style={{width:"70%"}}
                             />
@@ -114,7 +114,7 @@ class Main extends Component{
                         id="user_pw"
                         value={this.state.user_pw}
                         type="password"
-                        onChange={this.onChangePW}
+                        onChange={this.handleChange("user_pw")}
                         margin="normal"
                         style={{width:"70%"}}
                         />
@@ -154,13 +154,14 @@ class Main extends Component{
                                 <div className = "id">
                                     <div className = "id-text" align="left" style={{marginLeft: "10%", fontSize: "24px", fontWeight:"bold",color:"#808080"}}>
                                         <label style = {{verticalAlign: "middle"}}>
-                                            ID
+                                            Email
                                         </label>
                                     </div>
                                     <div className = "id-input" >
                                         <TextField
                                         id="user_id"
-                                        value={this.state.user_id}
+                                        value={this.state.sign_up_id}
+                                        onChange={this.handleChange("sign_up_id")}
                                         margin="normal"
                                         style={{width:"80%"}}
                                         />
@@ -175,7 +176,8 @@ class Main extends Component{
                                     <div className = "pw-input">
                                         <TextField
                                         id="user_pw"
-                                        value={this.state.user_pw}
+                                        value={this.state.sign_up_pw}
+                                        onChange={this.handleChange("sign_up_pw")}
                                         margin="normal"
                                         style={{width:"80%"}}
                                         />
@@ -193,7 +195,8 @@ class Main extends Component{
                                     <div className = "name-input">
                                         <TextField
                                         id="user_name"
-                                        value={this.state.user_name}
+                                        value={this.state.sign_up_name}
+                                        onChange={this.handleChange("sign_up_name")}
                                         margin="normal"
                                         style={{marginLeft: "2.5%", width:"80%"}}
                                         />
@@ -208,7 +211,8 @@ class Main extends Component{
                                     <div className = "school-input">
                                         <TextField
                                         id="user_school"
-                                        value={this.state.user_school}
+                                        value={this.state.sign_up_school}
+                                        onChange={this.handleChange("sign_up_school")}
                                         margin="normal"
                                         style={{marginRight: "10%", width:"90%"}}
                                         />
@@ -224,7 +228,8 @@ class Main extends Component{
                             <div className = "dept-input">
                                 <TextField
                                 id="user_dept"
-                                value={this.state.user_dept}
+                                value={this.state.sign_up_dept}
+                                onChange={this.handleChange("sign_up_dept")}
                                 margin="normal"
                                 style={{width:"90%"}}
                                 />

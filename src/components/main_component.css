@@ -1,11 +1,11 @@
 body {
 margin: 0;
 padding: 0;
-font-family: 'Raleway', sans-serif;
+font-family: 'Raleway-Bold';
 }
 
 .App {
-    text-align: center;
+text-align: center;
 }
 
 .App-logo {
@@ -57,7 +57,6 @@ max-height: 100%;
 max-width: 100%;
 float: left; 
 width: 35%;
-
 background-color: rgba(241, 255, 227, 0.692);
 }
 
@@ -96,16 +95,160 @@ margin-top: 20%;
 color: #61dafb;
 }
 
+/*sign up modal*/
+
+/*
+basic structure
+------------------
+title(height:10%)
+pic-id-pw(height:35%)
+name-school(height:17.5%)
+dept(height:17.5%)
+signup button(height:20%)
+------------------
+structures of elements with input
+parent
+parent-text(height:50%)
+parent-input(height:50%)
+*/
+.signup-modal {
+max-width: 100%;
+max-height: 100%;
+overflow: auto;
+}
+
+/*title part*/
+.title-box {
+height: 10%;
+font-size: 30px;
+display: -webkit-flexbox;
+display: -ms-flexbox;
+display: -webkit-flex;
+display: flex;
+-webkit-flex-align: center;
+-ms-flex-align: center;
+-webkit-align-items: center;
+align-items: center;
+justify-content: center;
+}
+
+/*picture, id, password part*/
+.pic-id-pw {
+height: 40%;
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+
+.pic {
+width: 36%;
+padding-left: 8%;
+}
+.pic-select {
+width: 100%;
+height: 80%;
+}
+.picture-container {
+padding-top: 3.6%;
+}
+img {
+width: 90%;
+height: 90%;
+}
+.pic-instruction {
+width: 100%;
+height: 20%;
+font-size: 14px;
+line-height: 140%;
+}
+
+.id-pw {
+width: 64%;
+}
+.id {
+height: 50%;
+}
+.id-text {
+height: 50%;
+}
+.id-input {
+height: 50%;
+}
+.pw {
+height: 50%;
+}
+.pw-text {
+height: 50%;
+}
+.pw-input {
+height: 50%;
+}
+
+/*name, school part*/
+.name-school {
+height: 17.5%;
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+.name {
+width: 50%;
+}
+.name-text {
+height: 50%;
+}
+.name-input {
+height: 50%;
+}
+.school {
+width: 50%;
+}
+.school-text {
+height: 50%;
+}
+.school-input {
+height: 50%;
+}
+
+/*dept part*/
+.dept {
+height: 17.5%;
+
+}
+.dept-text {
+height: 50%;
+}
+.dept-input {
+height: 50%;
+}
+
+/*signup button part*/
+.signup-button-container {
+height: 15%;
+align-items: center;
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+
 @font-face {
 font-family: 'Raleway', sans-serif;
+font-style: normal;
+font-weight: normal;
 src: local('Raleway'), url(../fonts/Raleway/Raleway-Regular.ttf) format('truetype');
+}
+
+@font-face {
+font-family: 'Raleway';
+font-style: normal;
+font-weight: bold;
+src: local('Raleway-Bold'), local('Raleway Bold') url(../fonts/Raleway/Raleway-Black.ttf) format('truetype');
 }
 
 @font-face {
 font-family: 'Alba';
 src: local('Alba'), url(../fonts/alba/ALBA____.TTF) format('truetype');
 }
-
 
 @keyframes App-logo-spin {
 from {

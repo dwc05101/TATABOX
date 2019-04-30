@@ -241,6 +241,7 @@ class Main extends Component{
                         </div>
                     </Modal>
                     <Modal visible={this.state.find_modal} width="600" height="600" effect="fadeInUp" onClickAway={()=> this.closeFind()}
+
                             style={{padding: "10"}}
                     >
                         This is Find modal.

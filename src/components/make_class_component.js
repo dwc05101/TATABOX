@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import './make_class_component.css';
 import Modal from 'react-awesome-modal';
-import Step from './step_component';
-import Main from './main_component';
 import Button from '@material-ui/core/Button';
-import Outline from './OutLinedTextFields'
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -16,7 +12,6 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
-import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import OutLinedTextFields from './OutLinedTextFields';
 
 const styles = theme => ({
@@ -71,6 +66,7 @@ class MakeClass extends Component {
             bd: '',
             room: '',
             username: "Gwangjo Gong",
+            user_img: '../images/user_img.png',
             open: false
         }
     }
@@ -184,7 +180,7 @@ class MakeClass extends Component {
 
         return (
             <section>
-                <div id = 'full'>
+                <body id = 'full'>
                     <div id = 'headbar'>
                         <h1 id = 'logo'>TATABOX</h1>
                         <div id = 'menu'>
@@ -197,8 +193,12 @@ class MakeClass extends Component {
                                 aria-haspopup="true"
                                 onClick={this.handleToggle}
                             >
+                            <img
+                              id = "menu-img"
+                              src = {require('../images/menu.png')}
+                              >
+                            </img>
                             </Button>
-
                             <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
                                 {({ TransitionProps, placement }) => (
                                 <Grow
@@ -220,6 +220,10 @@ class MakeClass extends Component {
                             </Popper>
                         </div>
                         <h3 id = 'userid'>{this.state.username}</h3>
+                        <div id = 'img_cropper'>
+                          <img id = 'user_img' src = {require('../images/user_img.png')} >
+                          </img>
+                        </div>
                     </div>
                     
                     <div id = 'makeclass'>
@@ -234,7 +238,7 @@ class MakeClass extends Component {
                             <OutLinedTextFields/>
                         </Modal>
                     </div>
-                </div>
+                </body>
             </section>
         );
     }

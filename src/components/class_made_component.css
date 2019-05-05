@@ -1,0 +1,163 @@
+#full2{
+    float: left;
+    padding :0 ;
+    margin:0;
+    min-height: 100vh;
+    min-width: 100%;
+    text-align: center;
+}
+
+#headbar2{
+    float: left;
+    height: 90px;
+    width: 100%;
+    background-color: #7eab54;
+    max-height: 100%;
+}
+
+#logo2{
+    float: left;
+    height: 100%;
+    margin :0px;
+    padding-left: 15px;
+    padding-top: 10px;
+    color: white;
+    font-family: 'Alba';
+    font-size: 40px;
+    }
+
+
+
+#img_cropper2{
+    float:right;
+    width: 60px;
+    height: 60px;
+    margin-top: 12px;
+    margin-right: 5px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid rgb(57, 58, 57);
+}
+
+#user_img2{
+
+    height: 60px;
+    width: 60px;
+}
+
+#userid2{
+    float: right;
+    padding: 10px;
+}
+
+#menu2{
+    height: 100%;
+    width: height;
+    float:right;
+}
+
+#menu-img2{
+    margin-top: 5px;
+    height: 65px;
+    width:65px;
+}
+
+/* height: 90% of screen */
+#makeclass2{
+    float: left;
+    min-height: 80vh; 
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(15px + 2vmin);
+    text-align: left;
+}
+#plus2{
+    position: fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    left:40px;
+    border-radius:50px;
+    text-align:center;
+}
+
+#notify{
+    float:left;
+    min-height: 80vh;
+    width: 39%;
+    font-size: calc(15px + 2vmin);
+    text-align: left;
+
+}
+
+.titleT{
+    margin-left: 30px;
+    margin-top :20px;
+    margin-bottom: 20px;
+    height: 40px;
+    color: rgb(94, 94, 94);
+}
+
+.class_container{
+    width: auto;
+    height: 13vh;
+    margin-left:10px;
+    margin-right:10px;
+    padding:0px;
+    border-radius: 30px;
+    border : 2px solid rgb(57, 58, 57);
+}
+
+.Class_code{
+    width: 100%;
+    margin: 10px;
+    margin-bottom: 0px;
+    float: left;
+    font-size:0.8em;
+
+}
+.Class_name{
+    margin-left: 10px;
+    margin-top:5px;
+    margin-bottom:0px;
+    float: left;
+    font-size:1.2em;
+
+}
+.roomNprof{
+    float: right;
+    margin:0px;
+    margin-right: 15px;
+    margin-top: 5px;
+    padding:0px;
+    width: 30%;
+    color: rgb(129, 129, 129)
+}
+.Class_room{
+    margin-top:0px;
+    margin-bottom: 0px;
+    float: right;
+    width: 100%;
+    text-align: right;
+    font-weight: 200;
+    font-size:0.8em;
+}
+.Class_prof{
+    float: right;
+    margin: 0px;
+    padding:0px;
+    font-weight: 200;
+    font-size:0.5em;
+}
+
+.info_container{
+    width: auto;
+    height: calc(90vh - 102px);
+    margin-left:10px;
+    margin-right:10px;
+    padding:0px;
+    border-radius: 30px;
+    border : 2px solid rgb(57, 58, 57);
+}

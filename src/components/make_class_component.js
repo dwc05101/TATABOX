@@ -11,6 +11,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
+
 import OutLinedTextFields from './OutLinedTextFields';
   
 class MakeClass extends Component {
@@ -26,6 +27,7 @@ class MakeClass extends Component {
             bd: '',
             room: '',
             username: "Gwangjo Gong",
+            user_img: '../images/user_img.png',
             open: false
         }
     }
@@ -63,7 +65,7 @@ class MakeClass extends Component {
 
         return (
             <section>
-                <div id = 'full'>
+                <body id = 'full'>
                     <div id = 'headbar'>
                         <h1 id = 'logo'>TATABOX</h1>
                         <div id = 'menu'>
@@ -76,8 +78,12 @@ class MakeClass extends Component {
                                 aria-haspopup="true"
                                 onClick={this.handleToggle}
                             >
+                            <img
+                              id = "menu-img"
+                              src = {require('../images/menu.png')}
+                              >
+                            </img>
                             </Button>
-
                             <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
                                 {({ TransitionProps, placement }) => (
                                 <Grow
@@ -99,6 +105,10 @@ class MakeClass extends Component {
                             </Popper>
                         </div>
                         <h3 id = 'userid'>{this.state.username}</h3>
+                        <div id = 'img_cropper'>
+                          <img id = 'user_img' src = {require('../images/user_img.png')} >
+                          </img>
+                        </div>
                     </div>
                     <body>
                     <div id = 'makeclass'>
@@ -113,8 +123,8 @@ class MakeClass extends Component {
                             <OutLinedTextFields closeModal={this.closeModal}/>
                         </Modal>
                     </div>
-                    </body>
                 </div>
+                </body>
             </section>
         );
     }

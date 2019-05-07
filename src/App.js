@@ -8,8 +8,10 @@ import Main from "./components/main_component";
 import MakeClass from "./components/make_class_component";
 import Step from './components/step_component';
 import Outline from './components/OutLinedTextFields'
+import Management from './components/student_manage_component';
+import ClassMade from './components/class_made_component'
 
-//guseul
+
 
 
 class App extends Component{
@@ -24,7 +26,9 @@ class App extends Component{
         <Route path="/" exact component={props => <Main/>}></Route>
         <Route path="/make" component={props => <MakeClass/>}></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
-
+        <Route path="/management" component = {props=><Management/>}></Route>
+        <Route path="/made" component={props => <ClassMade/>}></Route>
+      
       </Router> 
     );
   }

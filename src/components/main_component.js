@@ -25,7 +25,6 @@ class Main extends Component{
         sign_up_school : "",
         sign_up_dept : ""
       }
-
       
       this.handleChange = this.handleChange.bind(this);
       this.openUp = this.openUp.bind(this);

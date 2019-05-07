@@ -10,9 +10,7 @@ import Step from './components/step_component';
 import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
 import ClassMade from './components/class_made_component'
-
-
-
+import AttendanceCheck from './components/attendance_check';
 
 class App extends Component{
   constructor(props){
@@ -28,6 +26,7 @@ class App extends Component{
         <Route path="/test" component={props => <Outline/>}></Route>
         <Route path="/management" component = {props=><Management/>}></Route>
         <Route path="/made" component={props => <ClassMade/>}></Route>
+        <Route path="/check" component={props => <AttendanceCheck/>}></Route>
       
       </Router> 
     );

@@ -9,6 +9,8 @@ import MakeClass from "./components/make_class_component";
 import Step from './components/step_component';
 import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
+import ClassMade from './components/class_made_component'
+
 
 
 
@@ -25,6 +27,8 @@ class App extends Component{
         <Route path="/make" component={props => <MakeClass/>}></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
         <Route path="/management" component = {props=><Management/>}></Route>
+        <Route path="/made" component={props => <ClassMade/>}></Route>
+      
       </Router> 
     );
   }

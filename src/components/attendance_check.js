@@ -250,7 +250,7 @@ class AttendanceCheck extends Component{
                     >
                   </img>
                   </Button>
-                  <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+                  <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
                       {({ TransitionProps, placement }) => (
                       <Grow
                           {...TransitionProps}

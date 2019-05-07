@@ -16,7 +16,7 @@
     "react-modal": "^3.8.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
-    "react-tabs": "^3.0.0"
+    "react-tabs": "^3.0.0",
     "react-select": "^2.4.3",
     "react-z-index": "^3.0.0",
     "typeface-roboto": "0.0.54"

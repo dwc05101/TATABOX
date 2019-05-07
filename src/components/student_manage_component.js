@@ -6,6 +6,11 @@ import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 import students from '../data/student_pairs';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Popper from '@material-ui/core/Popper';
+import MenuList from '@material-ui/core/MenuList';
 
 var ReactGridLayout = require('react-grid-layout');
 const data = students;
@@ -18,7 +23,9 @@ class Management extends Component{
     constructor(props){
         super(props)
         this.state={
-            gg_check: false,
+            username: "Gwangjo Gong",
+            user_img: '../images/user_img.png',
+            open: false
         }
         pos_count = 0;
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -241,12 +248,64 @@ class Management extends Component{
         );
     }
 
+    handleToggle = () => {
+        this.setState(state => ({ open: !state.open }));
+    }
+
+    handleClose = event => {
+    if (this.anchorEl.contains(event.target)) {
+        return;
+    }
+        this.setState({ open: false });
+    }
+
     render(){
         return(
             <div id = 'full'>
                 <div id = 'headbar'>
-                    <h1 id = 'logo'>TATABOX</h1>
+                    <h1 id = 'logo'style={{marginTop:"5px"}}>TATABOX</h1>
                     <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>CS374 : Introduction to HCI</h2>
+                    <div id = 'menu'>
+                        <Button
+                            className="center"
+                            id = 'menu_button'
+                            buttonRef={node => {
+                            this.anchorEl = node;
+                            }}
+                            aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleToggle}
+                        >
+                        <img
+                            id = "menu-img"
+                            src = {require('../images/menu.png')}
+                            >
+                        </img>
+                        </Button>
+                        <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+                            {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                id="menu-list-grow"
+                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                            >
+                                <Paper>
+                                <ClickAwayListener onClickAway={this.handleClose}>
+                                    <MenuList>
+                                    <MenuItem onClick={this.handleClose}>Export</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Grade Report</MenuItem>
+                                    </MenuList>
+                                </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                            )}
+                        </Popper>
+                    </div>
+                        <h3 id = 'userid'>{this.state.username}</h3>
+                    <div id = 'img_cropper'>
+                        <img id = 'user_img' src = {require('../images/user_img.png')} >
+                        </img>
+                    </div>
                 </div>
                 <div id = 'body' style={{display:"flex", alignItems:"center"}}>
                     <h1 style={{marginLeft:"1.5%"}}>Student Management</h1>

@@ -110,7 +110,6 @@ class MakeClass extends Component {
                           </img>
                         </div>
                     </div>
-                    <body>
                     <div id = 'makeclass'>
                         <p id = 'clicktext1'>
                             You don't have any class yet.
@@ -123,7 +122,6 @@ class MakeClass extends Component {
                             <OutLinedTextFields closeModal={this.closeModal}/>
                         </Modal>
                     </div>
-                </div>
                 </body>
             </section>
         );

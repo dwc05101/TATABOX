@@ -6,6 +6,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
+import Select from 'react-select';
+import MakeClass from './make_class_component.js'
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   container: {
@@ -23,6 +26,13 @@ const styles = theme => ({
     width: 200,
   },
 });
+
+const customStyles = {
+  container: (provided, state) => ({
+    ...provided,
+    fontFamily: ["Montserrat", "sans-serif"].join(",")
+  }),
+};
 
 const currencies = [
   {
@@ -47,6 +57,7 @@ const currencies = [
   },
 ];
 
+
 const initialState = {
       code: '',
       name: '',
@@ -57,48 +68,43 @@ const initialState = {
       step:0
 };
 
+
+
 class OutlinedTextFields extends React.Component {
 
   constructor(props){
     super(props);
     this.state = initialState;
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.moveStep = this.moveStep.bind(this);
+    this.buildingchange = this.buildingchange.bind(this);
+    this.cancel = this.cancel.bind(this);
   }
   
+  state = {
+    bd : '',
+    room:'',
+    selectedOption: null,
+  }
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
   };
 
-  makeList(){
-    return(currencies.map(option => {
-      return(
-      <MenuItem key={option.value} value={option.value} style={{zindex:"100"}}>
-        {option.label}
-      </MenuItem>
-      )
-    }))
+  cancel(){
+    window.location.pathname = "/make";
+    this.setState(initialState);
   }
 
-  openModal(){
-    this.setState({
-      visible: true
-    })
-  }
-
-  closeModal(){
-    this.setState({
-      visible: false
-    })
+  buildingchange = (selectedOption) => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
   }
 
   onSubmit(){
-    this.closeModal();
     //send class info to DB
+    window.location.pathname = "/make";
     this.moveStep();
     this.setState(initialState);
   }
@@ -111,10 +117,13 @@ class OutlinedTextFields extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { selectedOption } = this.state;
     let step;
     if (this.state.step==0) {
       step =
         <div>
+          <div className ="step1" style={{backgroundColor:"rgb(255, 82, 111)"}}><p>STEP1</p></div>
+      <div className ="step2" style={{backgroundColor:"pink"}}><p>STEP2</p></div>
         <div className = "infobox">
         <form className={classes.container} noValidate autoComplete="off">
           <div>
@@ -146,27 +155,13 @@ class OutlinedTextFields extends React.Component {
             margin="normal"
             variant="outlined"
           />
-
-          <TextField
-            id="outlined-select-building"
-            select
-            label="Building"
-            className={classes.textField}
-            value={this.state.bd}
-            onChange={this.handleChange('bd')}
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            style={{zindex:'2'}}
-            helperText="Please select Building"
-            margin="normal"
-            variant="outlined"
-          >
-            {this.makeList()}
-          </TextField>
-
+            <Select
+                placeholder="Building"
+                styles={customStyles}
+                value={selectedOption}
+                onChange={this.buildingchange}
+                options={currencies}
+              />
           <TextField
             id="outlined-number"
             label="Class Room"
@@ -180,19 +175,26 @@ class OutlinedTextFields extends React.Component {
             margin="normal"
             variant="outlined"
           />
-          <Button variant="contained" color="secondary" onClick={() => this.closeModal()}>
+
+          <div>
+          <Button variant="contained" color="secondary" onClick={this.cancel}>
             Cancel
           </Button>
+
           <Button variant="contained" color="primary" onClick={this.moveStep}>
             Next
-          </Button></div><br/>
-        </form></div><div className = "seatbox">Seat BOX</div></div>
+          </Button>
+          </div>
+          </div><br/>
+        </form></div><div className = "seatbox"><img id = 'seat' src = {require('../images/seat.png')}></img></div></div>
     }else{
-      step = <div className="App">
-      <div className ="step1" style={{backgroundColor:"pink"}}><h4>STEP1</h4></div>
-      <div className ="step2" style={{backgroundColor:"rgb(255, 82, 111)"}}><h4>STEP2</h4></div>
-      <div className ="infobox">
-          <h2>Invite other TAs</h2>
+      step = <div>
+      <div className ="step1" style={{backgroundColor:"pink"}}><p>STEP1</p></div>
+      <div className ="step2" style={{backgroundColor:"rgb(255, 82, 111)"}}><p>STEP2</p></div>
+      <div className = "infobox">
+          <Typography component="h2" variant="h5" gutterBottom>
+          Invite other TAs
+          </Typography>
           <Button variant="contained" >
                           Invite
                       </Button>
@@ -200,7 +202,7 @@ class OutlinedTextFields extends React.Component {
           <Button variant="contained" color="secondary" onClick={this.moveStep}>
                           Back
                       </Button>
-          <Button variant="contained" color="primary" onClick={() => this.onSubmit()}>
+          <Button variant="contained" color='primary' onClick={this.onSubmit}>
                           Finish
                       </Button>
           
@@ -209,8 +211,7 @@ class OutlinedTextFields extends React.Component {
     }
     
     return (<div>
-      <Button variant="contained" color="primary" onClick={this.openModal}>Open Modal</Button>
-      <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">{step} </Modal>
+      {step}
         </div>);
   }
 }

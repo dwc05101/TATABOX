@@ -24,7 +24,7 @@ const styles = theme => ({
       marginRight: theme.spacing.unit,
     },
     dense: {
-      marginTop: 16,
+      marginTop: 160,
     },
     menu: {
       width: 200,
@@ -180,12 +180,12 @@ class ClassMade extends Component {
 
         return (
             <section>
-                <body id = 'full2'>
-                    <div id = 'headbar2'>
-                        <h1 id = 'logo2'>TATABOX</h1>
-                        <div id = 'menu2'>
+                <body id = 'full'>
+                    <div id = 'headbar'>
+                        <h1 id = 'logo'>TATABOX</h1>
+                        <div id = 'menu'>
                             <Button
-                                id = 'menu_button2'
+                                id = 'menu_button'
                                 buttonRef={node => {
                                 this.anchorEl = node;
                                 }}
@@ -194,12 +194,12 @@ class ClassMade extends Component {
                                 onClick={this.handleToggle}
                             >
                             <img
-                              id = "menu-img2"
+                              id = "menu-img"
                               src = {require('../images/menu.png')}
                               >
                             </img>
                             </Button>
-                            <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+                            <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
                                 {({ TransitionProps, placement }) => (
                                 <Grow
                                     {...TransitionProps}
@@ -219,9 +219,9 @@ class ClassMade extends Component {
                                 )}
                             </Popper>
                         </div>
-                        <h3 id = 'userid2'>{this.state.username}</h3>
-                        <div id = 'img_cropper2'>
-                          <img id = 'user_img2' src = {require('../images/user_img.png')} >
+                        <h3 id = 'userid'>{this.state.username}</h3>
+                        <div id = 'img_cropper'>
+                          <img id = 'user_img' src = {require('../images/user_img.png')} >
                           </img>
                         </div>
                     </div>

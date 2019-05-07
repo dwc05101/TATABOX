@@ -13,6 +13,15 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
 import OutLinedTextFields from './OutLinedTextFields';
+
+const styles = theme => ({
+    root: {
+      width: 500,
+    },
+    typography: {
+      padding: theme.spacing.unit * 2,
+    },
+  });
   
 class MakeClass extends Component {
 
@@ -28,9 +37,16 @@ class MakeClass extends Component {
             room: '',
             username: "Gwangjo Gong",
             user_img: '../images/user_img.png',
-            open: false
         }
     }
+
+    state = {
+        anchorEl: null,
+        open: false,
+        placement: null,
+    }
+
+    
  
     openModal() {
         this.setState({
@@ -38,20 +54,25 @@ class MakeClass extends Component {
             overflow : "visible"
         });
     }
- 
+
     closeModal() {
         this.setState({
             visible : false
         });
     }
-    handleChange = name => event => {
-      this.setState({
-        [name]: event.target.value,
-      });
-    }
+
     handleToggle = () => {
       this.setState(state => ({ open: !state.open }));
     };
+
+    handleClick = placement => event => {
+        const { currentTarget } = event;
+        this.setState(state => ({
+          anchorEl: currentTarget,
+          open: state.placement !== placement || !state.open,
+          placement,
+        }));
+      };
   
     handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
@@ -59,9 +80,11 @@ class MakeClass extends Component {
     }
       this.setState({ open: false });
     };
+
  
     render() {
         const { classes } = this.props;
+        const { anchorEl, open, placement } = this.state;
 
         return (
             <section>
@@ -76,7 +99,7 @@ class MakeClass extends Component {
                                 }}
                                 aria-owns={this.state.open ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
-                                onClick={this.handleToggle}
+                                onClick={this.handleClick('left')}
                             >
                             <img
                               id = "menu-img"
@@ -84,7 +107,7 @@ class MakeClass extends Component {
                               >
                             </img>
                             </Button>
-                            <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+                            <Popper id= "menuitems" open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
                                 {({ TransitionProps, placement }) => (
                                 <Grow
                                     {...TransitionProps}
@@ -95,7 +118,7 @@ class MakeClass extends Component {
                                     <ClickAwayListener onClickAway={this.handleClose}>
                                         <MenuList>
                                         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>My Accountrewqrrqewrqwxw</MenuItem>
                                         <MenuItem onClick={this.handleClose}>Logout</MenuItem>
                                         </MenuList>
                                     </ClickAwayListener>

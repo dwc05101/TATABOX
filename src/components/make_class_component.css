@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway';
+}
+
 #full{
     float: left;
     padding :0 ;
@@ -12,7 +18,7 @@
 
 #logo{
     float: left;
-    height: 100%;
+    height: 10vh;
     margin :0px;
     padding-top: 10px;
     padding-left: 15px;
@@ -29,6 +35,76 @@
     position: relative;
 }
 
+#img_cropper{
+    float:right;
+    width: 60px;
+    height: 60px;
+    margin-top: 12px;
+    margin-right: 5px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid rgb(57, 58, 57);
+}
+
+#user_img{
+
+    height: 60px;
+    width: 60px;
+}
+
+#userid{
+    float: right;
+    padding: 10px;
+    margin-top: 20px;
+    
+}
+
+#menu{
+    height: 100%;
+    width: height;
+    margin-top: 5px;
+    margin-right: 20px;
+    float:right;
+}
+
+#menu-img{
+    margin-top: 5px;
+    height: 60px;
+    width:60px;
+}
+
+
+/*----------------------*/
+
+#makeclass{
+    float: left;
+    width: 100%;
+    height: calc(100vh - 90px);
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
+
+#clicktext1{
+    padding: 0px;
+    padding-top:20%;
+    margin-bottom: 0px;
+}
+#clicktext2{
+    padding:0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#plus{
+    margin-top: 40px;
+    height: 100px;
+    width: 100px;
+}
+
+
+/*
 #body{
     width:100%;
     height: fit-content;
@@ -63,66 +139,4 @@
     align-items: center;
     border-collapse: collapse;
 }
-
-#fortest{
-    border: 1px solid black;
-}
-
-
-#img_cropper{
-    float:right;
-    width: 60px;
-    height: 60px;
-    margin-top: 12px;
-    margin-right: 5px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 50%;
-    border: 2px solid rgb(57, 58, 57);
-}
-
-#user_img{
-
-    height: 60px;
-    width: 60px;
-}
-
-#userid{
-    float: right;
-    padding: 10px;
-}
-
-#menu{
-    height: 100%;
-    width: height;
-    float:right;
-}
-
-#menu-img{
-    margin-top: 5px;
-    height: 60px;
-    width:60px;
-}
-
-
-#clicktext1{
-    padding: 0px;
-    margin-top:20%;
-    margin-bottom: 0px;
-}
-#clicktext2{
-    padding:0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-#makeclass{
-    height: 100%-90px;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-}
-#plus{
-    margin-top: 40px;
-    height: 100px;
-    width: 100px;
-}
+*/

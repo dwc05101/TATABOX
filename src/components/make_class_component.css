@@ -1,7 +1,6 @@
 #full{
     padding :0 ;
     margin:0;
-    border: 1px solid black;
     min-height:100vh ;
     max-width: 100%;
     max-height:100%;
@@ -21,6 +20,46 @@
     height: 90px;
     width: 100%;
     background-color: #7eab54;
+    position: relative;
+}
+
+#body{
+    width:100%;
+    height: fit-content;
+    position: absolute;
+    top: 11%;
+    left: 0;
+    right:0;
+}
+
+#body2{
+    width:100%;
+    height: fit-content;
+    position: absolute;
+    top: 21%;
+    left:0;
+    right:0;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+}
+
+.box{
+    height: 60px;
+    width : 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-collapse: collapse;
+}
+
+#fortest{
+    border: 1px solid black;
 }
 
 #logo{

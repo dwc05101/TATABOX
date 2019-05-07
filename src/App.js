@@ -9,9 +9,7 @@ import MakeClass from "./components/make_class_component";
 import Step from './components/step_component';
 import Outline from './components/OutLinedTextFields'
 import ClassMade from './components/class_made_component'
-
-//guseul
-
+import AttendanceCheck from './components/attendance_check';
 
 class App extends Component{
   constructor(props){
@@ -26,6 +24,7 @@ class App extends Component{
         <Route path="/make" component={props => <MakeClass/>}></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
         <Route path="/made" component={props => <ClassMade/>}></Route>
+        <Route path="/check" component={props => <AttendanceCheck/>}></Route>
 
       </Router> 
     );

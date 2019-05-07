@@ -31,28 +31,28 @@ const styles = theme => ({
     },
   });
   
-  const buildings = [
-    {
-      value: 'N1',
-      label: 'N1 (김병호 김삼열 IT융합빌딩)',
-    },
-    {
-      value: 'N4',
-      label: 'N4 (인문사회과학동)',
-    },
-    {
-      value: 'E11',
-      label: 'E11 (창의학습관)',
-    },
-    {
-      value: 'E2-2',
-      label: 'E2-2 (산업경영학동)',
-    },
-    {
-      value: 'E6-5',
-      label: 'E6-5 (궁리실험관)',
-    },
-  ];
+const buildings = [
+  {
+    value: 'N1',
+    label: 'N1 (김병호 김삼열 IT융합빌딩)',
+  },
+  {
+    value: 'N4',
+    label: 'N4 (인문사회과학동)',
+  },
+  {
+    value: 'E11',
+    label: 'E11 (창의학습관)',
+  },
+  {
+    value: 'E2-2',
+    label: 'E2-2 (산업경영학동)',
+  },
+  {
+    value: 'E6-5',
+    label: 'E6-5 (궁리실험관)',
+  },
+];
 
 class ClassMade extends Component {
 

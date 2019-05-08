@@ -37,13 +37,8 @@ class MakeClass extends Component {
             room: '',
             username: "Gwangjo Gong",
             user_img: '../images/user_img.png',
+            open: false,
         }
-    }
-
-    state = {
-        anchorEl: null,
-        open: false,
-        placement: null,
     }
 
     
@@ -61,18 +56,16 @@ class MakeClass extends Component {
         });
     }
 
-    handleToggle = () => {
-      this.setState(state => ({ open: !state.open }));
-    };
-
-    handleClick = placement => event => {
-        const { currentTarget } = event;
-        this.setState(state => ({
-          anchorEl: currentTarget,
-          open: state.placement !== placement || !state.open,
-          placement,
-        }));
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+      }
+      handleToggle = () => {
+        this.setState(state => ({ open: !state.open }));
       };
+    
+
   
     handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
@@ -84,7 +77,6 @@ class MakeClass extends Component {
  
     render() {
         const { classes } = this.props;
-        const { anchorEl, open, placement } = this.state;
 
         return (
             <section>
@@ -99,7 +91,7 @@ class MakeClass extends Component {
                                 }}
                                 aria-owns={this.state.open ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
-                                onClick={this.handleClick('left')}
+                                onClick={this.handleToggle}
                             >
                             <img
                               id = "menu-img"

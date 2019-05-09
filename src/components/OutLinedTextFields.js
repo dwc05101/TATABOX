@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Select from 'react-select';
 import MakeClass from './make_class_component.js'
 import Typography from '@material-ui/core/Typography';
+import './step_component.css';
 
 const styles = theme => ({
   container: {
@@ -79,12 +80,17 @@ class OutlinedTextFields extends React.Component {
     this.moveStep = this.moveStep.bind(this);
     this.buildingchange = this.buildingchange.bind(this);
     this.cancel = this.cancel.bind(this);
+    this.roomchange = this.roomchange.bind(this);
   }
   
   state = {
+    code: '',
+    name: '',
+    prof: '',
     bd : '',
     room:'',
     selectedOption: null,
+    isVisible: false,
   }
   handleChange = name => event => {
     this.setState({
@@ -97,6 +103,21 @@ class OutlinedTextFields extends React.Component {
     this.setState(initialState);
   }
 
+  roomchange = event => {
+    if (this.state.selectedOption!=null) {
+      this.setState({
+        room: event.target.value,
+        isVisible : true,
+      })
+      console.log(`room change bd selected`);
+    }else {
+      this.setState({
+        room: event.target.value,
+      })
+      console.log(`room change bd not selected`);
+    }
+  }
+
   buildingchange = (selectedOption) => {
     this.setState({ selectedOption });
     console.log(`Option selected:`, selectedOption);
@@ -104,7 +125,7 @@ class OutlinedTextFields extends React.Component {
 
   onSubmit(){
     //send class info to DB
-    window.location.pathname = "/make";
+    window.location.pathname = "/made";
     this.moveStep();
     this.setState(initialState);
   }
@@ -122,75 +143,84 @@ class OutlinedTextFields extends React.Component {
     if (this.state.step==0) {
       step =
         <div>
-          <div className ="step1" style={{backgroundColor:"rgb(255, 82, 111)"}}><p>STEP1</p></div>
-      <div className ="step2" style={{backgroundColor:"pink"}}><p>STEP2</p></div>
-        <div className = "infobox">
-        <form className={classes.container} noValidate autoComplete="off">
-          <div>
-          <TextField
-            id="outlined-code"
-            label="Course Code"
-            className={classes.textField}
-            value={this.state.code}
-            onChange={this.handleChange('code')}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            id="outlined-name"
-            label="Course Name"
-            className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
-            margin="normal"
-            variant="outlined"
-          />
+          <img id="step" src = {require('../images/step1.png')} style={{width:'100%'}}/>
+          <div id = "fullbox">
+            <div id = "infobox">
+              <form className={classes.container} noValidate autoComplete="off">
+                <div>
+                <TextField
+                  id="outlined-code"
+                  label="Course Code"
+                  className={classes.textField}
+                  value={this.state.code}
+                  onChange={this.handleChange('code')}
+                  margin="normal"
+                  variant="outlined"
+                />
+                <TextField
+                  id="outlined-name"
+                  label="Course Name"
+                  className={classes.textField}
+                  value={this.state.name}
+                  onChange={this.handleChange('name')}
+                  margin="normal"
+                  variant="outlined"
+                />
 
-          <TextField
-            id="outlined-prof"
-            label="Professor"
-            className={classes.textField}
-            value={this.state.prof}
-            onChange={this.handleChange('prof')}
-            margin="normal"
-            variant="outlined"
-          />
-            <Select
-                placeholder="Building"
-                styles={customStyles}
-                value={selectedOption}
-                onChange={this.buildingchange}
-                options={currencies}
-              />
-          <TextField
-            id="outlined-number"
-            label="Class Room"
-            value={this.state.room}
-            onChange={this.handleChange('room')}
-            type="number"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-            variant="outlined"
-          />
-
-          <div>
-          <Button variant="contained" color="secondary" onClick={this.cancel}>
-            Cancel
-          </Button>
-
-          <Button variant="contained" color="primary" onClick={this.moveStep}>
-            Next
-          </Button>
+                <TextField
+                  id="outlined-prof"
+                  label="Professor"
+                  className={classes.textField}
+                  value={this.state.prof}
+                  onChange={this.handleChange('prof')}
+                  margin="normal"
+                  variant="outlined"
+                />
+                  <Select
+                      placeholder="Building"
+                      styles={customStyles}
+                      value={selectedOption}
+                      onChange={this.buildingchange}
+                      options={currencies}
+                    />
+                <TextField
+                  id="outlined-number"
+                  label="Class Room"
+                  value={this.state.room}
+                  onChange={this.roomchange}
+                  type="number"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  margin="normal"
+                  variant="outlined"
+                />
+                </div>
+              </form>
+            </div>
+            <div id = "seatbox">
+              <div id="seatlay" style={{width: "50vh", height: "50vh"}}>
+                Preview for Seat
+                <div>{ this.state.isVisible ? (
+                  <img id = 'seat' src = {require('../images/seat.png')}/>
+                ) : null }
+                </div>
+              </div>
+              <div id="buttondiv" style={{width: "50vh", height: "10vh"}}>
+                <Button variant="contained" color="secondary" onClick={this.cancel}>
+                  Cancel
+                </Button>
+                <Button variant="contained" color="primary" onClick={this.moveStep}>
+                  Next
+                </Button>
+              </div>
+            </div>
           </div>
-          </div><br/>
-        </form></div><div className = "seatbox"><img id = 'seat' src = {require('../images/seat.png')}></img></div></div>
+      </div>
     }else{
       step = <div>
-      <div className ="step1" style={{backgroundColor:"pink"}}><p>STEP1</p></div>
-      <div className ="step2" style={{backgroundColor:"rgb(255, 82, 111)"}}><p>STEP2</p></div>
+      <img id="step" src = {require('../images/step2.png')} style={{width:'100%'}}/>
       <div className = "infobox">
           <Typography component="h2" variant="h5" gutterBottom>
           Invite other TAs

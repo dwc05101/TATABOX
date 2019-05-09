@@ -130,7 +130,6 @@ class NavTabs extends React.Component {
     const loading = this.state.loading;
     const reportedStudents = this.state.reported;
     const absentStudents = this.state.absent;
-    console.log(loading);
     return (
       <NoSsr>
         <div className = {classes.root}>
@@ -148,7 +147,6 @@ class NavTabs extends React.Component {
 
   }
 }
-
 
 NavTabs.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -217,73 +215,56 @@ class AttendanceCheck extends Component{
       <section>
         <body id = 'full2'>
             <div id = 'headbar2'>
-              <div className = 'logo-container'>
-                <div id = 'logo-title'>
-                  TATABOX
-                </div>
-              </div>
+              <h1 id = 'logo'>TATABOX</h1>
               
-              <div className = 'img-id-button-container'>
-                <div id = 'spacing-block'></div>
-
-                <div id = 'id-container'>
-                  {this.state.username}
-                </div>
-
-                <div id = 'img-container'>
-                  <img id = 'user_img2' src = {require('../images/user_img.png')}></img>
-                </div>
-
-                <div id = 'button-container'>
-                  <Button
-                      id = 'menu_button2'
-                      buttonRef={node => {
-                      this.anchorEl = node;
-                      }}
-                      aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                      aria-haspopup="true"
-                      onClick={this.handleToggle}
+              <div id = 'button-container'>
+                <Button
+                    id = 'menu_button2'
+                    buttonRef={node => {
+                    this.anchorEl = node;
+                    }}
+                    aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleToggle}
+                >
+                <img
+                  id = "menu-img2"
+                  src = {require('../images/menu.png')}
                   >
-                  <img
-                    id = "menu-img2"
-                    src = {require('../images/menu.png')}
+                </img>
+                </Button>
+                <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
+                    {({ TransitionProps, placement }) => (
+                    <Grow
+                        {...TransitionProps}
+                        id="menu-list-grow"
+                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                     >
-                  </img>
-                  </Button>
-                  <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                      {({ TransitionProps, placement }) => (
-                      <Grow
-                          {...TransitionProps}
-                          id="menu-list-grow"
-                          style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                      >
-                          <Paper>
-                          <ClickAwayListener onClickAway={this.handleClose}>
-                              <MenuList>
-                              <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                              <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                              </MenuList>
-                          </ClickAwayListener>
-                          </Paper>
-                      </Grow>
-                      )}
-                  </Popper>
-                </div>
+                        <Paper>
+                        <ClickAwayListener onClickAway={this.handleClose}>
+                            <MenuList>
+                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                            </MenuList>
+                        </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                    )}
+                </Popper>
+              </div>
+
+              <h3 id = 'user_id2'>{this.state.username}</h3>
+
+              <div id = 'img-container'>
+                <img id = 'user_img2' src = {require('../images/user_img.png')}></img>
               </div>
               
             </div>
             <div id = "content">
-              <div id = "status-layout">
-                <div id = "status">
-                  <div id = "current_status">
-                    check start
-                  </div>
-
-                  <div id = "timer">
-                    <Timer />
-                  </div>
-
+              <div id = "timer-layout">
+                <div id = "timer">
+                  <Timer />
                 </div>
                 <div id = "layout">
                 </div>

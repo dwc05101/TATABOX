@@ -77,6 +77,10 @@ class ClassMade extends Component {
         });
     }
 
+    gotoCheck(e){
+      window.location.pathname = "/check";
+    }
+
     mapBuildings(){
       return buildings.map(option => {
         return(
@@ -228,7 +232,7 @@ class ClassMade extends Component {
                     
                     <div id = 'makeclass2'>
                         <h4 class= 'titleT'>Today's class</h4>
-                        <div class = 'class_container'>
+                        <div class = 'class_container' onClick = {this.gotoCheck}>
                             <h4 class = 'Class_code'>CS374</h4>
                             <h4 class = 'Class_name'>Introduction to HCI</h4>
                             <div class = 'roomNprof'>

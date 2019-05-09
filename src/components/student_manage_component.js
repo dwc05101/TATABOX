@@ -307,10 +307,18 @@ class Management extends Component{
                         </img>
                     </div>
                 </div>
-                <div id = 'body' style={{display:"flex", alignItems:"center"}}>
-                    <h1 style={{marginLeft:"1.5%"}}>Student Management</h1>
-                    <Button variant="contained" color="secondary" style={{marginLeft:"65%"}}>Delete</Button>
-                    <Button variant="contained" color="primary" style={{marginLeft:"2%"}}>Send Invitation</Button>
+                <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
+                    <h1 style={{marginLeft:"1.5%",whiteSpace:"nowrap"}}>Student Management</h1>
+                    <Grid container spacing={24}>
+                        <Grid item xs={3}></Grid>
+                        <Grid item xs={3}></Grid>
+                        <Grid item xs={3}>
+                            <Button variant="contained" color="secondary" style={{marginLeft:"65%"}}>Delete</Button>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button variant="contained" color="primary" style={{marginLeft:"2%"}}>Send Invitation</Button>
+                        </Grid>                
+                    </Grid>
                 </div>
                 <div id = 'body2'>
                     <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>

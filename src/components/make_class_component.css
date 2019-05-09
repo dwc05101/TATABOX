@@ -14,6 +14,7 @@
     min-height:100vh;
     min-width: 910px;
     text-align: center;
+    overflow-y: hidden;
 }
 
 #logo{
@@ -102,23 +103,21 @@
 }
 
 
-/*
+
 #body{
     width:100%;
-    height: fit-content;
-    position: absolute;
-    top: 11%;
-    left: 0;
-    right:0;
+    height: 5vh;
+    padding-bottom: 1vh;
+    padding-top : 1vh;
+    position: relative;
 }
 
 #body2{
     width:100%;
-    height: fit-content;
-    position: absolute;
-    top: 21%;
-    left:0;
-    right:0;
+    height: calc(88vh - 90px);
+    position: relative;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
 }
 
 .center{
@@ -137,4 +136,3 @@
     align-items: center;
     border-collapse: collapse;
 }
-*/

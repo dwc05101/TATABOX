@@ -45,7 +45,6 @@ weekday[6]="Sat";
 
 function Status(props) {
     let today = new Date();
-    console.log(today);
     let time = today.getFullYear() + "-" + addZero((today.getMonth()+1)) + "-" + addZero(today.getDate()) + "(" + weekday[today.getDay()] + ")";
     let date;
     if (today.getHours() > 12) {

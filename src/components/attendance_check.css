@@ -71,6 +71,10 @@
     width:60px;
 }
 
+#menu-list-grow{
+
+}
+
 #content{
     width: 100%;
     height: 90vh;
@@ -92,12 +96,16 @@
 
 #layout{
     height: 75vh;
-    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid black;
 }
 
 #report-tab{
     width: 44%;
     height: 100%;
+    z-index: -100;
     border: 1px solid black;
 }
 

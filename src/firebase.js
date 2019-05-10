@@ -16,6 +16,7 @@ class Firebase{
             firebase.initializeApp({});
         }
         this.auth = firebase.auth;
+        console.log(firebase);
     }
 
     // **** AUTH API ****

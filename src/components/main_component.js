@@ -40,30 +40,30 @@ class Main extends Component{
         });
       };
 
-    handleSignup = s=>{
-        if(s.sign_up_id != ""){
+    handleSignup = e =>{
+        if(this.state.sign_up_id == ""){
             alert("invaild id!");
             return;
         }
-        if(s.sign_up_pw != ""){
+        if(this.state.sign_up_pw == ""){
             alert("invaild pw!");
             return;
         }
-        if(s.sign_up_name != ""){
+        if(this.state.sign_up_name == ""){
             alert("invaild name!");
             return;
         }
-        if(s.sign_up_school != ""){
+        if(this.state.sign_up_school == ""){
             alert("invaild school!");
             return;
         }
-        if(s.sign_up_dept != ""){
+        if(this.state.sign_up_dept == ""){
             alert("invaild dept!");
             return;
         }
 
 
-        Firebase.createUser(s.sign_up_id,s.sign_up_pw);
+        Firebase.createUser(this.state.sign_up_id,this.state.sign_up_pw);
         window.location.pathname = "/make";
 
     };
@@ -266,7 +266,7 @@ class Main extends Component{
                             <Button className = "signup-button" 
                                     variant="contained" 
                                     color="primary" 
-                                    onClick={this.handleSignup(this.state)} 
+                                    onClick={this.handleSignup} 
                                     style={{
                                         width:"25%",borderRadius: 10,
                                         backgroundColor: "#4C9900",

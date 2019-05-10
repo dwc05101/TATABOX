@@ -212,6 +212,7 @@ class OutlinedTextFields extends React.Component {
                       onChange={this.buildingchange}
                       options={currencies}
                     />
+
                 
                 </div>
                 <div style={{width: "100%"}}>

@@ -79,66 +79,64 @@ class MakeClass extends Component {
         const { classes } = this.props;
 
         return (
-            <section>
-                <body id = 'full'>
-                    <div id = 'headbar'>
-                        <h1 id = 'logo'>TATABOX</h1>
-                        <div id = 'menu'>
-                            <Button
-                                id = 'menu_button'
-                                buttonRef={node => {
-                                this.anchorEl = node;
-                                }}
-                                aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                                aria-haspopup="true"
-                                onClick={this.handleToggle}
+            <body id = 'full'>
+                <div id = 'headbar'>
+                    <h1 id = 'logo'>TATABOX</h1>
+                    <div id = 'menu'>
+                        <Button
+                            id = 'menu_button'
+                            buttonRef={node => {
+                            this.anchorEl = node;
+                            }}
+                            aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleToggle}
+                        >
+                        <img
+                            id = "menu-img"
+                            src = {require('../images/menu.png')}
                             >
-                            <img
-                              id = "menu-img"
-                              src = {require('../images/menu.png')}
-                              >
-                            </img>
-                            </Button>
-                            <Popper id= "menuitems" open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                                {({ TransitionProps, placement }) => (
-                                <Grow
-                                    {...TransitionProps}
-                                    id="menu-list-grow"
-                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                >
-                                    <Paper>
-                                    <ClickAwayListener onClickAway={this.handleClose}>
-                                        <MenuList>
-                                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>My Accountrewqrrqewrqwxw</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                    </Paper>
-                                </Grow>
-                                )}
-                            </Popper>
-                        </div>
-                        <h3 id = 'userid'>{this.state.username}</h3>
-                        <div id = 'img_cropper'>
-                          <img id = 'user_img' src = {require('../images/user_img.png')} >
-                          </img>
-                        </div>
+                        </img>
+                        </Button>
+                        <Popper id= "menuitems" open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
+                            {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                id="menu-list-grow"
+                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                            >
+                                <Paper>
+                                <ClickAwayListener onClickAway={this.handleClose}>
+                                    <MenuList>
+                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>My Accountrewqrrqewrqwxw</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                    </MenuList>
+                                </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                            )}
+                        </Popper>
                     </div>
-                    <div id = 'makeclass'>
-                        <p id = 'clicktext1'>
-                            You don't have any class yet.
-                        </p>
-                        <p id = 'clicktext2'>
-                            Click here to create new class.
-                        </p>
-                        <img id = 'plus' src = {require('../images/add.png')} onClick={() => this.openModal()}></img>
-                        <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                            <OutLinedTextFields closeModal={this.closeModal}/>
-                        </Modal>
+                    <h3 id = 'userid'>{this.state.username}</h3>
+                    <div id = 'img_cropper'>
+                        <img id = 'user_img' src = {require('../images/user_img.png')} >
+                        </img>
                     </div>
-                </body>
-            </section>
+                </div>
+                <div id = 'makeclass'>
+                    <p id = 'clicktext1'>
+                        You don't have any class yet.
+                    </p>
+                    <p id = 'clicktext2'>
+                        Click here to create new class.
+                    </p>
+                    <img id = 'plus' src = {require('../images/add.png')} onClick={() => this.openModal()}></img>
+                    <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
+                        <OutLinedTextFields closeModal={this.closeModal}/>
+                    </Modal>
+                </div>
+            </body>
         );
     }
 }

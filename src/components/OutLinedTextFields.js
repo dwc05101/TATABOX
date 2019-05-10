@@ -65,13 +65,16 @@ const currencies = [
 
 
 const initialState = {
-      code: '',
-      name: '',
-      prof: '',
-      bd: '',
-      room: '',
-      visible: false,
-      step:0
+  code: '',
+  name: '',
+  prof: '',
+  bd : '',
+  room:'',
+  step:0,
+  selectedOption: null,
+  isVisible: false,
+  preview: 0, 
+  error:false,
 };
 
 
@@ -86,6 +89,7 @@ class OutlinedTextFields extends React.Component {
     this.buildingchange = this.buildingchange.bind(this);
     this.cancel = this.cancel.bind(this);
     this.roomchange = this.roomchange.bind(this);
+    this.errorhandle = this.errorhandle.bind(this);
   }
   
   state = {
@@ -94,14 +98,17 @@ class OutlinedTextFields extends React.Component {
     prof: '',
     bd : '',
     room:'',
+    step:0,
     selectedOption: null,
     isVisible: false,
     preview: 0, 
+    error:false,
   }
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
+    this.isFull();
   };
 
   cancel(){
@@ -131,6 +138,7 @@ class OutlinedTextFields extends React.Component {
       })
       console.log(`room change bd not selected`);
     }
+    this.isFull();
   }
 
   buildingchange = (selectedOption) => {
@@ -141,7 +149,7 @@ class OutlinedTextFields extends React.Component {
     }else{
       this.setState({ selectedOption , bd: selectedOption.value, preview : 0 });
     }
-    
+    this.isFull();
     console.log(`Option selected:`, selectedOption);
   }
 
@@ -151,14 +159,49 @@ class OutlinedTextFields extends React.Component {
     this.moveStep();
     this.setState(initialState);
   }
+  isFull(){
+    console.log(`touch isFull`);
+    if(this.state.code!='' && this.state.name!='' && this.state.prof!='' && this.state.bd!='' && this.state.room!=''){
+      this.setState({error : false});
+      console.log(`success isFull`);
+
+    }
+  }
 
   moveStep(){
-    this.setState({
-      step : (this.state.step + 1)%2
-    });
+    if(this.state.step==0){
+      this.errorhandle();
+      if(!this.state.error){
+        this.setState({step : 1,});
+      }
+      else{
+        this.setState({step : 0});
+      }
+    }else{
+      this.setState({step : 0,});
+    }
+    console.log(`move step/error:`, this.state.error);
+  }
+  errorhandle(){
+    if(this.state.code==''){
+      this.state.error=true;
+    }
+    if(this.state.name==''){
+      this.state.error=true;
+    }
+    if(this.state.prof==''){
+      this.state.error=true;
+    }
+    if(this.state.bd==''){
+      this.state.error=true;
+    }
+    if(this.state.room==''){
+      this.state.error=true;
+    }
   }
 
   render() {
+    console.log(`enter render/error:`, this.state.error);
     const { classes } = this.props;
     const { selectedOption } = this.state;
     let prev;
@@ -178,7 +221,7 @@ class OutlinedTextFields extends React.Component {
                 <div style={{width: "100%"}}>
                 <TextField
                   id="outlined-code"
-                  label="Course Code"
+                  label="CourseCode"
                   className={classes.textField}
                   value={this.state.code}
                   onChange={this.handleChange('code')}
@@ -186,8 +229,9 @@ class OutlinedTextFields extends React.Component {
                   variant="outlined"
                 />
                 <TextField
+                  required
                   id="outlined-name"
-                  label="Course Name"
+                  label="CourseName"
                   className={classes.textField}
                   value={this.state.name}
                   onChange={this.handleChange('name')}
@@ -218,7 +262,7 @@ class OutlinedTextFields extends React.Component {
                 <div style={{width: "100%"}}>
                 <TextField
                   id="outlined-number"
-                  label="Class Room"
+                  label="Classroom"
                   value={this.state.room}
                   onChange={this.roomchange}
                   type="number"
@@ -228,7 +272,11 @@ class OutlinedTextFields extends React.Component {
                   }}
                   margin="normal"
                   variant="outlined"
-                /></div>
+                />
+                { this.state.error ? (
+                  <p style={{color:'red', fontSize:'20px'}}>You have to enter all information !</p>
+                ) : null }
+                </div>
                 
               </form>
             </div>

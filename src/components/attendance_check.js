@@ -269,7 +269,6 @@ class AttendanceCheck extends Component{
                 <div id = "layout">
                 </div>
               </div>
-
               <div id = "report-tab">
                 <NavTabs/>
               </div>

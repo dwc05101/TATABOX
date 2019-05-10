@@ -266,6 +266,7 @@ class AttendanceCheck extends Component{
                   <Timer />
                 </div>
                 <div id = "layout">
+                  <img id = 'layout_img' src = {require('../images/seat.png')}></img>
                 </div>
               </div>
               <div id = "report-tab">

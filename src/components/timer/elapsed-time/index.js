@@ -10,8 +10,8 @@ function elapsedTime(events) {
     }
 
     let tempTime = Math.floor(elapsed/1000);
-    let seconds = ('0' + tempTime).slice(-2);
     let minutes = Math.floor(tempTime/60);
+    let seconds = ('0' + (tempTime - 60*minutes)).slice(-2);
     
     return minutes+":"+seconds
 }

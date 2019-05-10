@@ -44,15 +44,15 @@ weekday[5]="Fri";
 weekday[6]="Sat";
 
 function Status(props) {
-    let today = new Date();
+    const today = props.currentTime
+    
     let time = today.getFullYear() + "-" + addZero((today.getMonth()+1)) + "-" + addZero(today.getDate()) + "(" + weekday[today.getDay()] + ")";
     let date;
     if (today.getHours() > 12) {
-        date = "PM" + addZero(today.getHours() - 12) + ":" + addZero(today.getMinutes())
+        date = "PM" + addZero(today.getHours() - 12) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds())
     } else {
-        date = "AM" + addZero(today.getHours()) + ":" + addZero(today.getMinutes())
+        date = "AM" + addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds())
     }
-    // console.log(new Date());
 
     const label = props.timingEvents.length
 

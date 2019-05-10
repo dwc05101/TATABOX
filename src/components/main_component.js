@@ -63,7 +63,7 @@ class Main extends Component{
         }
 
 
-        Firebase.createUser(this.state.sign_up_id,this.state.sign_up_pw);
+        this.prpos.Firebase.createUser(this.state.sign_up_id,this.state.sign_up_pw);
         window.location.pathname = "/make";
 
     };

@@ -20,7 +20,7 @@ class Firebase{
     }
 
     // **** AUTH API ****
-    static createUser = (id, password) => {
+    createUser = (id, password) => {
         firebase.auth.createUserWithEmailAndPassword(id,password).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;

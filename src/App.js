@@ -21,10 +21,10 @@ class App extends Component{
   }
 
   render(){
-    let FB = new Firebase();
+    var fb = new Firebase();
     return (
       <Router basename="/TATABOX">
-        <Route path="/" exact component={props => <Main/>}  Firebase = {FB}></Route>
+        <Route path="/" exact component={props => <Main/>}  Firebase = {fb}></Route>
         <Route path="/make" component={props => <MakeClass/>}></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
         <Route path="/management" component = {props=><Management students={students}/>}></Route>

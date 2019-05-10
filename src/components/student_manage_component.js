@@ -18,6 +18,7 @@ import '../../node_modules/react-resizable/css/styles.css';
 var ReactGridLayout = require('react-grid-layout');
 
 var layout = [];
+var checkedList;
 var pos_count;
 
 class Management extends Component{
@@ -31,9 +32,11 @@ class Management extends Component{
             modal_visible: false
         }
 
+        this.handleDelete = this.handleDelete.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-
+        
+        checkedList = [];
         pos_count = 0;
     }
 
@@ -74,6 +77,8 @@ class Management extends Component{
         })
     }
 
+
+
     handleToggle = () => {
         this.setState(state => ({ open: !state.open }));
     }
@@ -93,6 +98,39 @@ class Management extends Component{
     }
     handleback(){
         window.location.pathname="./check";
+    }
+
+    handleDelete(){
+        var std_list = this.state.students;
+
+        for(var j = 0; j<checkedList.length; j++){
+            for(var i = 0; i<std_list.length; i++){
+                if(checkedList[j]===std_list[i].name){
+                    std_list.splice(i,1);
+                    continue;
+                }
+            }
+        }
+
+        checkedList=[];
+        this.setState({
+            students: std_list
+        });
+    }
+
+    checkBoxClick(e){
+        if(e.target.type==="checkbox"){
+            console.log(e.target.checked);
+            if(e.target.checked){
+                checkedList.push(e.target.name);
+            }else{
+                for(var i = 0; i<checkedList.length; i++){
+                    if(checkedList[i]===e.target.name){
+                        checkedList.splice(i,1);
+                    }
+                }
+            }
+        }
     }
 
     render(){
@@ -157,25 +195,33 @@ class Management extends Component{
                             <img style={{width:"auto", height:"40px",paddingTop:"2%"}} src = {require("../images/color_explanation.png")}/>
                         </Grid>
                         <Grid item style={{marginTop:"1%"}} xs={3}>
-                            <Button variant="contained" color="secondary" style={{marginLeft:"65%"}}>Delete</Button>
+                            <Button variant="contained" color="secondary" style={{marginLeft:"65%"}}
+                            onClick={()=>{
+                                if(window.confirm("Are you sure to delete checked students? This action is not reversible.")){
+                                    this.handleDelete();
+                                }
+                            }}
+                        >Delete</Button>
                         </Grid>
                         <Grid item style={{marginTop:"1%"}} xs={3}>
                             <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.openModal}>Send Invitation</Button>
                         </Grid>                
                     </Grid>
                 </div>
-                <div id = 'body2'>
+                <div id = 'body2' onClick={this.checkBoxClick}>
                     <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
                         {this.makeStudentList()}
                     </ReactGridLayout>
                 </div>
-                <Modal 
+                <Modal
                     visible={this.state.modal_visible} 
                     width="600" 
-                    height="600" 
+                    height="300" 
                     effect="fadeInUp" 
                     onClickAway={this.closeModal}>
-                    HEY!!!
+                    <p style={{marginTop:"10vh",fontSize:'25px'}}><b>Send Invitation Link to Students</b></p><br/>
+                    <p>Invitation link : <u style={{color:'#0040a8'}}>https://tatabox.com/happyta</u></p><br/>
+                    <Button variant="contained" color="primary" onClick={this.closeModal} >Send</Button>
                 </Modal>
             </div>
         );

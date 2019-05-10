@@ -12,7 +12,6 @@ class StudentItem extends Component{
             student : props.student,
             checked : false
         }
-
         this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
@@ -25,12 +24,26 @@ class StudentItem extends Component{
         })
     }
 
+    setProfile(){
+        if(this.state.student.imgpath==="gwangoo.png"){
+            return(
+                <img style={{}} src = {require("../images/gwangoo.png")}></img>
+            )
+        }
+        if(this.state.student.imgpath==="seokhyun.png"){
+            return(
+                <img src = {require("../images/seokhyun.png")}></img>
+            )
+        }
+    }
+
     render(){
         return(
             <Paper className="center">
                 <Grid container className="center" spacing = {24}>
                     <Grid item xs={1}>
                         <input
+                            style={{zoom:"2"}}
                             name={this.state.student.name}
                             type="checkbox"
                             checked={this.state.checked}
@@ -38,8 +51,8 @@ class StudentItem extends Component{
                     </Grid>
                     <Grid item xs={11}>
                         <Grid container className="center" spacing={24}>
-                            <Grid item xs={1}>
-                                Place for picture
+                            <Grid item xs={1} style={{padding:"0px"}}>
+                                {this.setProfile()}
                             </Grid>
                             <Grid item xs={1}>
                                 <Grid container spacing = {24} style={{height:"100%"}}>

@@ -72,8 +72,13 @@
     float:right;
 }
 
+#menu_button{
+    height: 100%;
+    width: 100%;
+
+}
+
 #menu-img{
-    margin-top: 5px;
     height: 60px;
     width:60px;
 }

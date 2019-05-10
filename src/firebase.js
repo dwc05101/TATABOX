@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import 'firebase/auth';
+require( 'firebase/auth');
 
 const config = {
     apiKey: "AIzaSyCW-o6RlUxUwl27MDGLX9DoJStq6dzUhyc",
@@ -12,17 +12,20 @@ const config = {
 
 class Firebase{
     constructor() {
-        firebase.initializeApp(config);
+        if (!firebase.apps.length) {
+            firebase.initializeApp({});
+        }
         this.auth = firebase.auth;
     }
 
     // **** AUTH API ****
-    createUser = (id, password) => {
-        this.auth.createUserWithEmailAndPassword(id,password).catch(function(error){
+    static createUser = (id, password) => {
+        firebase.auth.createUserWithEmailAndPassword(id,password).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log("error Code : "+errorCode+", msg : "+errorMessage);
         })
+        alert("sign_up complete");
     }
 
     signIn = (id,password) => {

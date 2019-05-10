@@ -212,7 +212,6 @@ class AttendanceCheck extends Component{
 
   render() {
     return(
-      <section>
         <body id = 'full2'>
             <div id = 'headbar2'>
               <h1 id = 'logo'>TATABOX</h1>
@@ -267,6 +266,7 @@ class AttendanceCheck extends Component{
                   <Timer />
                 </div>
                 <div id = "layout">
+                  <img id = 'layout_img' src = {require('../images/seat.png')}></img>
                 </div>
               </div>
               <div id = "report-tab">
@@ -274,7 +274,6 @@ class AttendanceCheck extends Component{
               </div>
             </div>
         </body>
-      </section>
     )
   }
 }

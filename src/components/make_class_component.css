@@ -7,14 +7,14 @@
 
 #full{
     float: left;
-    padding :0 ;
+    padding :0;
     margin:0;
     width: 100%;
     max-height:100%;
     min-height:100vh;
     min-width: 910px;
     text-align: center;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 #logo{
@@ -57,11 +57,18 @@
     float: right;
     padding: 10px;
     margin-top: 20px;
+    color : white;
+}
+
+#backtoclass{
+    color: white;
+    float: right;
+    padding: 10px;
+    margin-top: 20px;
 }
 
 #menu{
     height: 100%;
-    width: height;
     float:right;
 }
 
@@ -117,7 +124,7 @@
 
 #body2{
     width:100%;
-    height: calc(88vh - 90px);
+    height: calc(90vh - 90px);
     position: relative;
     scroll-behavior: smooth;
     overflow-y: scroll;

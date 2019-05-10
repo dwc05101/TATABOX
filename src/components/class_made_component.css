@@ -62,13 +62,15 @@
 #menu{
     height: 100%;
     width: height;
-    margin-top: 5px;
-    margin-right: 20px;
     float:right;
 }
 
+#menu_button{
+    height: 100%;
+    width: 100%;
+}
+
 #menu-img{
-    margin-top: 5px;
     height: 60px;
     width:60px;
 }
@@ -118,6 +120,7 @@
 .class_container{
     width: auto;
     height: 13vh;
+    min-height: 100px;
     margin-left:10px;
     margin-right:10px;
     padding:0px;

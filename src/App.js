@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import logo, { ReactComponent } from './logo.svg';
 import './App.css';
-import firebase from './firebase';
 import {FirebaseDatabaseProvider} from "@react-firebase/database";
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import Main from "./components/main_component";
@@ -11,6 +10,7 @@ import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
 import ClassMade from './components/class_made_component'
 import AttendanceCheck from './components/attendance_check';
+import Firebase from './firebase';
 
 class App extends Component{
   constructor(props){
@@ -18,16 +18,15 @@ class App extends Component{
   }
 
   render(){
+    let FB = new Firebase();
     return (
       <Router basename="/TATABOX">
-        
-        <Route path="/" exact component={props => <Main/>}></Route>
+        <Route path="/" exact component={props => <Main/>}  Firebase = {FB}></Route>
         <Route path="/make" component={props => <MakeClass/>}></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
         <Route path="/management" component = {props=><Management/>}></Route>
         <Route path="/made" component={props => <ClassMade/>}></Route>
         <Route path="/check" component={props => <AttendanceCheck/>}></Route>
-      
       </Router> 
     );
   }

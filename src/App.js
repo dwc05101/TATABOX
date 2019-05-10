@@ -11,6 +11,9 @@ import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
 import ClassMade from './components/class_made_component'
 import AttendanceCheck from './components/attendance_check';
+import GradeReport from "./components/grade_report_component";
+
+import students from "./data/student_pairs";
 
 class App extends Component{
   constructor(props){
@@ -24,9 +27,10 @@ class App extends Component{
         <Route path="/" exact component={props => <Main/>}></Route>
         <Route path="/make" component={props => <MakeClass/>}></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
-        <Route path="/management" component = {props=><Management/>}></Route>
+        <Route path="/management" component = {props=><Management students={students}/>}></Route>
         <Route path="/made" component={props => <ClassMade/>}></Route>
         <Route path="/check" component={props => <AttendanceCheck/>}></Route>
+        <Route path="/grade" component={props => <GradeReport students={students}/>}></Route>
       
       </Router> 
     );

@@ -1,63 +1,48 @@
 import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import './make_class_component.css';
-import '../../node_modules/react-grid-layout/css/styles.css';
-import '../../node_modules/react-resizable/css/styles.css';
-import students from '../data/student_pairs';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
+import Modal from 'react-awesome-modal';
+
+import StudentItem from "./student_item";
+
+import './make_class_component.css';
+import '../../node_modules/react-grid-layout/css/styles.css';
+import '../../node_modules/react-resizable/css/styles.css';
 
 var ReactGridLayout = require('react-grid-layout');
-const data = students;
 
 var layout = [];
-var checkboxList = [];
 var pos_count;
 
 class Management extends Component{
     constructor(props){
         super(props)
         this.state={
+            students: props.students,
             username: "Gwangjo Gong",
             user_img: '../images/user_img.png',
-            open: false
+            open: false,
+            modal_visible: false
         }
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+
         pos_count = 0;
-        this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
     componentDidMount(){
         return;
     }
 
-    handleCheckbox(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        
-        for(var i=0; i<checkboxList.length; i++){
-            if(checkboxList[i].name===name){
-                checkboxList[i].checked = value;
-                break;
-            }
-        }
-    }
-
-    findCheckBox(name){
-        for(var i = 0; i < checkboxList.length; i++){
-            if(checkboxList[i].name === name){
-                return checkboxList[i];
-            }
-        }
-    }
-
     makeStudentList(){
-        return(data.map(student=>{
+        return(this.state.students.map(student=>{
             var layout_component = {
                 i: student.name,
                 x: 0,
@@ -67,185 +52,26 @@ class Management extends Component{
                 isResizable : false
             }
             layout.push(layout_component);
-            checkboxList.push({
-                name : student.name,
-                checked : false
-            });
             pos_count += 4;
             return(
                 <div key={student.name}>
-                    <Paper className="center">
-                        <Grid container className="center" spacing = {24}>
-                            <Grid item xs={1}>
-                                <input
-                                    name={student.name}
-                                    type="checkbox"
-                                    checked={this.findCheckBox(student.name).checked}
-                                    onChange={this.handleCheckbox}/>
-                            </Grid>
-                            <Grid item xs={11}>
-                                <Grid container className="center" spacing={24}>
-                                    <Grid item xs={1}>
-                                        Place for picture
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Grid container spacing = {24} style={{height:"100%"}}>
-                                            <Grid className="center"item xs={12}>
-                                                {student.sid}
-                                            </Grid>
-                                            <Grid className="center"item xs={12}>
-                                                {student.name}
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Grid container spacing = {24} style={{height:"100%"}}>
-                                            <Grid className="center" item xs={12}>
-                                                {student.dept}
-                                            </Grid>
-                                            <Grid className="center" item xs={12}>
-                                                {student.email}
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={8} style={{height:"inherit"}}>
-                                        <table style={{width:"100%",height:"100%",justifyContent:"center",alignItems:"center"}}>
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
-                                                        3/11
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
-                                                        3/18
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
-                                                        3/25
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/1
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/8
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/22
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/29
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/5
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/10
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/16
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/22
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/27
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
-                                                        3/13
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box" style={{backgroundColor:"#A8A8A8"}}>
-                                                        3/20
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box" style={{backgroundColor:"#FF6961"}}>
-                                                        3/27
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/3
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/10
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        4/24
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/1
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/7
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/12
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/18
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/24
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="box">
-                                                        5/29
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Paper>
+                    <StudentItem student={student}/>
                 </div>
             )
         })
         );
+    }
+
+    openModal(){
+        this.setState({
+            modal_visible : true
+        })
+    }
+
+    closeModal(){
+        this.setState({
+            modal_visible : false
+        })
     }
 
     handleToggle = () => {
@@ -257,6 +83,16 @@ class Management extends Component{
         return;
     }
         this.setState({ open: false });
+    }
+
+    handleGrade = event => {
+    if (this.anchorEl.contains(event.target)) {
+        return;
+    }
+        window.location.pathname = "/grade";
+    }
+    handleback(){
+        window.location.pathname="./check";
     }
 
     render(){
@@ -282,7 +118,7 @@ class Management extends Component{
                             >
                         </img>
                         </Button>
-                        <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+                        <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
                             {({ TransitionProps, placement }) => (
                             <Grow
                                 {...TransitionProps}
@@ -293,7 +129,7 @@ class Management extends Component{
                                 <ClickAwayListener onClickAway={this.handleClose}>
                                     <MenuList>
                                     <MenuItem onClick={this.handleClose}>Export</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>Grade Report</MenuItem>
+                                    <MenuItem onClick={this.handleGrade}>Grade Report</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>
                                 </Paper>
@@ -306,17 +142,25 @@ class Management extends Component{
                         <img id = 'user_img' src = {require('../images/user_img.png')} >
                         </img>
                     </div>
+                    <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
+                        <h3>Back to Class</h3>
+                    </div>
+                    <div id = 'backtoclass' onClick={this.handleback}>
+                        <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>
+                    </div>
                 </div>
                 <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
                     <h1 style={{marginLeft:"1.5%",whiteSpace:"nowrap"}}>Student Management</h1>
                     <Grid container spacing={24}>
-                        <Grid item xs={3}></Grid>
-                        <Grid item xs={3}></Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={3}/>
+                        <Grid item style={{marginTop:"1%"}} xs={3}>
+                            <img style={{width:"auto", height:"40px",paddingTop:"2%"}} src = {require("../images/color_explanation.png")}/>
+                        </Grid>
+                        <Grid item style={{marginTop:"1%"}} xs={3}>
                             <Button variant="contained" color="secondary" style={{marginLeft:"65%"}}>Delete</Button>
                         </Grid>
-                        <Grid item xs={3}>
-                            <Button variant="contained" color="primary" style={{marginLeft:"2%"}}>Send Invitation</Button>
+                        <Grid item style={{marginTop:"1%"}} xs={3}>
+                            <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.openModal}>Send Invitation</Button>
                         </Grid>                
                     </Grid>
                 </div>
@@ -325,6 +169,14 @@ class Management extends Component{
                         {this.makeStudentList()}
                     </ReactGridLayout>
                 </div>
+                <Modal 
+                    visible={this.state.modal_visible} 
+                    width="600" 
+                    height="600" 
+                    effect="fadeInUp" 
+                    onClickAway={this.closeModal}>
+                    HEY!!!
+                </Modal>
             </div>
         );
     }

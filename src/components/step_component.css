@@ -22,27 +22,27 @@ color: rgb(112, 63, 63);
 .step1{
     float: left;
     width: 50%;
-    height : 10vh;
-    background-color:rgb(255, 82, 111) ;
+    height : 8vh;
 }
 .step2{
     float: left;
     width: 50%;
-    height : 10vh;
-    background-color: pink;
+    height : 8vh;
 }
 
-.infobox{
+#fullbox{
+    width: 100%;
+}
+
+#infobox{
     float: left;
     height:100%;
     width: 50%;
 }
-.seatbox{
+#seatbox{
     float: left;
     height:100%;
     width: 50%;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 

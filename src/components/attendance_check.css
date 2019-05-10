@@ -8,11 +8,12 @@
     float: left;
     padding :0 ;
     margin:0;
-    min-height:100vh ;
     max-height:100%;
+    min-height:100vh ;
     max-width: 100%;
-    min-width: 100%;
+    min-width: 910px;
     text-align: center;
+    overflow-y: hidden;
 }
 
 #headbar2{
@@ -60,13 +61,16 @@
 #button-container{
     height: 100%;
     width: height;
-    margin-top: 5px;
-    margin-right: 20px;
     float:right;
 }
 
+
+#menu_button2{
+    height: 100%;
+    width: 100%;
+}
+
 #menu-img2{
-    margin-top: 5px;
     height: 60px;
     width:60px;
 }

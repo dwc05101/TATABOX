@@ -7,6 +7,27 @@ var students = [
         "attendance" : [1, 1, 1, 1, 1, 0]
     },
     {
+        "name" : "Gwangoo Yeo1",
+        "sid" : 20160372,
+        "dept" : "Electrical Engineering",
+        "email" : "gwangoo00525@kaist.ac.kr",
+        "attendance" : [1, 1, 1, 1, 1, 0]
+    },
+    {
+        "name" : "Gwangoo Yeo2",
+        "sid" : 20160372,
+        "dept" : "Electrical Engineering",
+        "email" : "gwangoo00525@kaist.ac.kr",
+        "attendance" : [1, 1, 1, 1, 1, 0]
+    },
+    {
+        "name" : "Gwangoo Yeo3",
+        "sid" : 20160372,
+        "dept" : "Electrical Engineering",
+        "email" : "gwangoo00525@kaist.ac.kr",
+        "attendance" : [1, 1, 1, 1, 1, 0]
+    },
+    {
         "name" : "Seokhyun Moon",
         "sid" : 20170223,
         "dept" : "Department of Chemistry",

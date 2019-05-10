@@ -40,6 +40,34 @@ class Main extends Component{
         });
       };
 
+    handleSignup = s=>{
+        if(s.sign_up_id != ""){
+            alert("invaild id!");
+            return;
+        }
+        if(s.sign_up_pw != ""){
+            alert("invaild pw!");
+            return;
+        }
+        if(s.sign_up_name != ""){
+            alert("invaild name!");
+            return;
+        }
+        if(s.sign_up_school != ""){
+            alert("invaild school!");
+            return;
+        }
+        if(s.sign_up_dept != ""){
+            alert("invaild dept!");
+            return;
+        }
+
+
+        Firebase.createUser(s.sign_up_id,s.sign_up_pw);
+        window.location.pathname = "/make";
+
+    };
+
     openUp(){
         this.setState({
             up_modal : true
@@ -235,12 +263,18 @@ class Main extends Component{
                             </div>
                         </div>
                         <div className = "signup-button-container">
-                            <Button className = "signup-button" variant="contained" color="primary" onClick={this.onSubmit} style={{
-                                width:"25%",borderRadius: 10,
-                                backgroundColor: "#4C9900",
-                                fontSize: "20px"}}>
+                            <Button className = "signup-button" 
+                                    variant="contained" 
+                                    color="primary" 
+                                    onClick={this.handleSignup(this.state)} 
+                                    style={{
+                                        width:"25%",borderRadius: 10,
+                                        backgroundColor: "#4C9900",
+                                        fontSize: "20px"}}
+                            >
                                 {/*padding: "18px 36px", */}
                                 Sign Up
+                                
                             </Button>
                         </div>
                     </Modal>

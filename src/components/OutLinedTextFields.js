@@ -9,8 +9,12 @@ import Button from '@material-ui/core/Button';
 import Select from 'react-select';
 import MakeClass from './make_class_component.js'
 import Typography from '@material-ui/core/Typography';
+import './step_component.css';
 
 const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit,
+  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -30,7 +34,9 @@ const styles = theme => ({
 const customStyles = {
   container: (provided, state) => ({
     ...provided,
-    fontFamily: ["Montserrat", "sans-serif"].join(",")
+    fontFamily: ["Montserrat", "sans-serif"].join(","),
+    fontSize: '20px',
+    width: "80%",
   }),
 };
 
@@ -79,12 +85,18 @@ class OutlinedTextFields extends React.Component {
     this.moveStep = this.moveStep.bind(this);
     this.buildingchange = this.buildingchange.bind(this);
     this.cancel = this.cancel.bind(this);
+    this.roomchange = this.roomchange.bind(this);
   }
   
   state = {
+    code: '',
+    name: '',
+    prof: '',
     bd : '',
     room:'',
     selectedOption: null,
+    isVisible: false,
+    preview: 0, 
   }
   handleChange = name => event => {
     this.setState({
@@ -97,14 +109,45 @@ class OutlinedTextFields extends React.Component {
     this.setState(initialState);
   }
 
+  roomchange = event => {
+    if (this.state.bd=='E11' && event.target.value=='311') {
+      this.setState({
+        room: event.target.value,
+        isVisible : true,
+        preview : 1,
+      })
+      console.log(`room change bd selected`);
+    }else if(this.state.selectedOption!=null && event.target.value!=''){
+      this.setState({
+        room: event.target.value,
+        isVisible : true,
+        preview : 2,
+      })
+    }else {
+      this.setState({
+        room: event.target.value,
+        isVisible : false,
+        preview : 0,
+      })
+      console.log(`room change bd not selected`);
+    }
+  }
+
   buildingchange = (selectedOption) => {
-    this.setState({ selectedOption });
+    if (this.state.room =='311' && selectedOption.value=='E11'){
+      this.setState({ selectedOption , bd: selectedOption.value, preview : 1 , isVisible : true,});
+    }else if(this.state.room!=''){
+      this.setState({ selectedOption, bd: selectedOption.value, preview : 2 , isVisible : true,})
+    }else{
+      this.setState({ selectedOption , bd: selectedOption.value, preview : 0 });
+    }
+    
     console.log(`Option selected:`, selectedOption);
   }
 
   onSubmit(){
     //send class info to DB
-    window.location.pathname = "/make";
+    window.location.pathname = "/made";
     this.moveStep();
     this.setState(initialState);
   }
@@ -118,95 +161,117 @@ class OutlinedTextFields extends React.Component {
   render() {
     const { classes } = this.props;
     const { selectedOption } = this.state;
+    let prev;
+    if (this.state.preview==2){
+      prev = require('../images/ready.png');
+    }else{
+      prev = require('../images/seat.png');
+    }
     let step;
     if (this.state.step==0) {
       step =
         <div>
-          <div className ="step1" style={{backgroundColor:"rgb(255, 82, 111)"}}><p>STEP1</p></div>
-      <div className ="step2" style={{backgroundColor:"pink"}}><p>STEP2</p></div>
-        <div className = "infobox">
-        <form className={classes.container} noValidate autoComplete="off">
-          <div>
-          <TextField
-            id="outlined-code"
-            label="Course Code"
-            className={classes.textField}
-            value={this.state.code}
-            onChange={this.handleChange('code')}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            id="outlined-name"
-            label="Course Name"
-            className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
-            margin="normal"
-            variant="outlined"
-          />
+          <img id="step" src = {require('../images/step1.png')} style={{width:'100%'}}/>
+          <div id = "fullbox">
+            <div id = "infobox">
+              <form className={classes.container} noValidate autoComplete="off">
+                <div style={{width: "100%"}}>
+                <TextField
+                  id="outlined-code"
+                  label="Course Code"
+                  className={classes.textField}
+                  value={this.state.code}
+                  onChange={this.handleChange('code')}
+                  margin="normal"
+                  variant="outlined"
+                />
+                <TextField
+                  id="outlined-name"
+                  label="Course Name"
+                  className={classes.textField}
+                  value={this.state.name}
+                  onChange={this.handleChange('name')}
+                  margin="normal"
+                  variant="outlined"
+                />
 
-          <TextField
-            id="outlined-prof"
-            label="Professor"
-            className={classes.textField}
-            value={this.state.prof}
-            onChange={this.handleChange('prof')}
-            margin="normal"
-            variant="outlined"
-          />
-            <Select
-                placeholder="Building"
-                styles={customStyles}
-                value={selectedOption}
-                onChange={this.buildingchange}
-                options={currencies}
-              />
-          <TextField
-            id="outlined-number"
-            label="Class Room"
-            value={this.state.room}
-            onChange={this.handleChange('room')}
-            type="number"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-            variant="outlined"
-          />
+                <TextField
+                  id="outlined-prof"
+                  label="Professor"
+                  className={classes.textField}
+                  value={this.state.prof}
+                  onChange={this.handleChange('prof')}
+                  margin="normal"
+                  variant="outlined"
+                /></div>
+                <div style={{width: "100%", marginTop:12, marginLeft:'10%'}} >
+                  <Select
+                      placeholder="Building"
+                      styles={customStyles}
+                      value={selectedOption}
+                      onChange={this.buildingchange}
+                      options={currencies}
+                    />
 
-          <div>
-          <Button variant="contained" color="secondary" onClick={this.cancel}>
-            Cancel
-          </Button>
-
-          <Button variant="contained" color="primary" onClick={this.moveStep}>
-            Next
-          </Button>
+                
+                </div>
+                <div style={{width: "100%"}}>
+                <TextField
+                  id="outlined-number"
+                  label="Class Room"
+                  value={this.state.room}
+                  onChange={this.roomchange}
+                  type="number"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  margin="normal"
+                  variant="outlined"
+                /></div>
+                
+              </form>
+            </div>
+            <div id = "seatbox">
+              <div id="seatlay" style={{width: "100%"}}>
+                Preview for Seat
+                <div>{ this.state.isVisible ? (
+                  <img id = 'seat' src = {prev} style={{marginTop:30}}/>
+                ) : null }
+                </div>
+              </div>
+              <div id="buttondiv" style={{width: "50%", height: "10vh", position: 'absolute' ,bottom:0}}>
+                <Button variant="contained" color="secondary" onClick={this.cancel} className={classes.margin}>
+                    Cancel
+                </Button>
+                <Button variant="contained" color="primary" onClick={this.moveStep}  className={classes.margin}>
+                    Next
+                </Button>
+              </div>
+            </div>
           </div>
-          </div><br/>
-        </form></div><div className = "seatbox"><img id = 'seat' src = {require('../images/seat.png')}></img></div></div>
-    }else{
-      step = <div>
-      <div className ="step1" style={{backgroundColor:"pink"}}><p>STEP1</p></div>
-      <div className ="step2" style={{backgroundColor:"rgb(255, 82, 111)"}}><p>STEP2</p></div>
-      <div className = "infobox">
-          <Typography component="h2" variant="h5" gutterBottom>
-          Invite other TAs
-          </Typography>
-          <Button variant="contained" >
-                          Invite
-                      </Button>
-          <br/>
-          <Button variant="contained" color="secondary" onClick={this.moveStep}>
-                          Back
-                      </Button>
-          <Button variant="contained" color='primary' onClick={this.onSubmit}>
-                          Finish
-                      </Button>
-          
       </div>
+    }else{
+      step = 
+      <div>
+        <img id="step" src = {require('../images/step2.png')} style={{width:'100%'}}/>
+        <div style={{marginTop:"10%",fontSize:"20px", height:"80%",}}>
+            <Typography component="h2" variant="h5" gutterBottom>
+            </Typography>
+            <p style={{fontSize:'25px'}}><b>You have to invite students to class</b></p><br/>
+            <p>Invitation link : <u style={{color:'#0040a8'}}>https://tatabox.com/happyta</u></p><br/>
+            <Button variant="contained" >Send</Button>
+            <p><br/>Click 'Send' button to send invitation link to students.</p><br/>
+            </div>
+        <div style={{height:"20%"}}>
+            <Button variant="contained" color="secondary" onClick={this.moveStep} className={classes.margin}>
+                            Back
+                        </Button>
+            <Button variant="contained" color='primary' onClick={this.onSubmit} className={classes.margin}>
+                            Done!
+                        </Button>
+            
+        </div>
       </div>
     }
     

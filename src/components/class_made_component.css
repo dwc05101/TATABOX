@@ -8,11 +8,10 @@
     float: left;
     padding :0 ;
     margin:0;
-    min-height:100vh ;
-    max-width: 100%;
+    width: 100%;
     max-height:100%;
     min-height: 100vh;
-    min-width: 100%;
+    min-width: 910px;
     text-align: center;
 }
 
@@ -63,13 +62,15 @@
 #menu{
     height: 100%;
     width: height;
-    margin-top: 5px;
-    margin-right: 20px;
     float:right;
 }
 
+#menu_button{
+    height: 100%;
+    width: 100%;
+}
+
 #menu-img{
-    margin-top: 5px;
     height: 60px;
     width:60px;
 }
@@ -85,7 +86,7 @@
     width: 60%;
     align-items: center;
     justify-content: center;
-    font-size: calc(15px + 2vmin);
+    font-size: 30px;
     text-align: left;
 }
 #plus2{
@@ -103,7 +104,7 @@
     min-height: 80vh;
     min-width: 150px;
     width: 39%;
-    font-size: calc(15px + 2vmin);
+    font-size:30px;
     text-align: left;
 
 }
@@ -119,6 +120,7 @@
 .class_container{
     width: auto;
     height: 13vh;
+    min-height: 100px;
     margin-left:10px;
     margin-right:10px;
     padding:0px;

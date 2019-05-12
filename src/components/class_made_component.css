@@ -43,7 +43,7 @@
     position: relative;
     overflow: hidden;
     border-radius: 50%;
-    border: 2px solid rgb(57, 58, 57);
+    border: 2px solid white;
 }
 
 #user_img{
@@ -112,7 +112,7 @@
 }
 
 .titleT{
-    margin-left: 30px;
+    margin-left: 40px;
     margin-top :20px;
     margin-bottom: 20px;
     height: 40px;
@@ -121,20 +121,17 @@
 
 #class_container{
     width: auto;
-    height: 13vh;
+    height: 15vh;
     min-height: 100px;
     margin-left:40px;
     margin-right:15px;
-    padding:0px;
     border-radius: 15px;
-    border : 0.5px solid rgb(57, 58, 57);
     background-color:rgba(243, 243, 243, 0.87);
 }
 
 .Class_code{
     width: 100%;
     margin: 10px;
-    margin-bottom: 0px;
     float: left;
     font-size:0.8em;
     color: rgb(65, 65, 65);
@@ -142,17 +139,13 @@
 .Class_name{
     margin-left: 10px;
     margin-top:5px;
-    margin-bottom:0px;
     float: left;
     font-size:1.2em;
     color: rgb(65, 65, 65);
 }
 .roomNprof{
     float: right;
-    margin:0px;
-    margin-right: 15px;
-    margin-top: 5px;
-    padding:0px;
+    padding-top: 15px;
     width: 30%;
     color: rgb(129, 129, 129)
 }
@@ -180,6 +173,5 @@
     margin-right:10px;
     padding:0px;
     border-radius: 20px;
-    border : 0.5px solid rgb(57, 58, 57);
     background-color:rgba(243, 243, 243, 0.87);
 }

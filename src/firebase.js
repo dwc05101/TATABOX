@@ -37,7 +37,7 @@ class Firebase{
     }
 
     signIn = (id,password) => {
-        this.fb.auth().signInWithEmailAndPassword(id,password).the(function success(userData){
+        this.fb.auth().signInWithEmailAndPassword(id,password).then(function success(userData){
             window.location.pathname = "/make";
         }).catch(function(error){
             var errorCode = error.code;

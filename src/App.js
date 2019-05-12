@@ -33,10 +33,10 @@ class App extends Component{
           render = {props => <MakeClass Firebase = {fb}/>}
         ></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
-        <Route path="/management" component = {props=><Management students={students}/>}></Route>
+        <Route path="/management" component = {props=><Management Firebase={fb} students={students}/>}></Route>
         <Route path="/made" component={props => <ClassMade/>}></Route>
         <Route path="/check" component={props => <AttendanceCheck/>}></Route>
-        <Route path="/grade" component={props => <GradeReport students={students}/>}></Route>
+        <Route path="/grade" component={props => <GradeReport Firebase={fb} students={students}/>}></Route>
       
       </Router> 
     );

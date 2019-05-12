@@ -239,7 +239,7 @@ class ClassMade extends Component {
                         </div>
                     </div>
                     
-                    <div id = 'makeclass2'>
+                    <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                         <h4 class= 'titleT'>Today's class</h4>
                         <Paper id = 'class_container' onClick = {this.gotoCheck} className={classes.root} elevation={1}>
                             <h4 class = 'Class_code'>CS374</h4>
@@ -256,8 +256,8 @@ class ClassMade extends Component {
                             <OutLinedTextFields/>
                         </Modal>
                     </div>
-                    <div id = 'notify'>
-                        <h4 class = 'titleT'>Notifications</h4>
+                    <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>
+                        <h4 class = 'titleT' style={{marginLeft:"10px"}}>Notifications</h4>
                         <Paper id = 'info_container' className={classes.root} elevation={1}>
                         
                         </Paper>

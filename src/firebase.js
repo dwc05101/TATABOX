@@ -27,8 +27,10 @@ class Firebase{
             })
 
             var datas = {name: name, dept: dept , schl: schl};
-            firebase.database().ref('/AUTH/'+userData.user.uid).set(datas);
-            window.location.pathname = "/make";
+            firebase.database().ref('/AUTH/'+userData.user.uid).set(datas)
+            .then(()=>{
+                window.location.pathname = "/make";
+            });
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;

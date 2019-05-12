@@ -21,11 +21,17 @@ class App extends Component{
   }
 
   render(){
-    var fb = new Firebase();
+    let fb = new Firebase();
+    
+    
     return (
       <Router basename="/TATABOX">
-        <Route path="/" exact component={props => <Main/>}  Firebase = {fb}></Route>
-        <Route path="/make" component={props => <MakeClass/>}></Route>
+        <Route path="/" exact
+          render = {props => <Main Firebase = {fb}/>}
+        ></Route>
+        <Route path="/make" 
+          render = {props => <MakeClass Firebase = {fb}/>}
+        ></Route>
         <Route path="/test" component={props => <Outline/>}></Route>
         <Route path="/management" component = {props=><Management students={students}/>}></Route>
         <Route path="/made" component={props => <ClassMade/>}></Route>
@@ -36,5 +42,6 @@ class App extends Component{
     );
   }
 }
+
 
 export default App;

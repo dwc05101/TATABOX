@@ -89,7 +89,7 @@
     text-align: left;
 }
 #plus2{
-    background-color: #7eab54;
+    background-color: rgb(149, 181, 101);
     color: white;
     position: fixed;
     width:60px;
@@ -128,6 +128,7 @@
     padding:0px;
     border-radius: 15px;
     border : 0.5px solid rgb(57, 58, 57);
+    background-color:rgba(243, 243, 243, 0.87);
 }
 
 .Class_code{
@@ -180,4 +181,5 @@
     padding:0px;
     border-radius: 20px;
     border : 0.5px solid rgb(57, 58, 57);
+    background-color:rgba(243, 243, 243, 0.87);
 }

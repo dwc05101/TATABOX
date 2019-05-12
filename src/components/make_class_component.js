@@ -3,35 +3,25 @@ import './make_class_component.css';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
-
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import OutLinedTextFields from './OutLinedTextFields';
-
-const styles = theme => ({
-    root: {
-      width: 500,
-    },
-    typography: {
-      padding: theme.spacing.unit * 2,
-    },
-  });
   
 class MakeClass extends Component {
 
     constructor(props) {
         super(props);
         this.closeModal = React.createRef;
+        this.firebaseO = this.props.Firebase;
+        this.firebase = this.firebaseO.fb; 
         this.state = {
             visible : false,
             code: '',
@@ -39,7 +29,7 @@ class MakeClass extends Component {
             prof: '',
             bd: '',
             room: '',
-            username: "Gwangjo Gong",
+            user_name: 'Gwangjo Gong',
             user_img: '../images/user_img.png',
             open: false,
         }
@@ -81,7 +71,19 @@ class MakeClass extends Component {
  
     render() {
         const { classes } = this.props;
+        var firebase =this.firebase;
+        this.firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              // User is signed in.
+              
+            } else {
+                alert("Oops! you are signed out!");
+                window.location.pathname = "/";
+            }
+          });
 
+          
+        
         return (
             <body id = 'full'>
                 <div id = 'headbar'>
@@ -122,7 +124,7 @@ class MakeClass extends Component {
                             )}
                         </Popper>
                     </div>
-                    <h3 id = 'userid'>{this.state.username}</h3>
+                    <h3 id = 'userid'>{this.state.user_name}</h3>
                     <div id = 'img_cropper'>
                         <img id = 'user_img' src = {require('../images/user_img.png')} >
                         </img>

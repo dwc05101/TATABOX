@@ -13,6 +13,8 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
 import OutLinedTextFields from './OutLinedTextFields';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
     container: {
@@ -28,6 +30,11 @@ const styles = theme => ({
     },
     menu: {
       width: 200,
+    },
+    root: {
+      ...theme.mixins.gutters(),
+      paddingTop: theme.spacing.unit * 2,
+      paddingBottom: theme.spacing.unit * 2,
     },
   });
   
@@ -69,7 +76,9 @@ class ClassMade extends Component {
             user_img: '../images/user_img.png',
             open: false
         }
-    }
+    };
+  
+    
  
     openModal() {
         this.setState({
@@ -232,25 +241,26 @@ class ClassMade extends Component {
                     
                     <div id = 'makeclass2'>
                         <h4 class= 'titleT'>Today's class</h4>
-                        <div class = 'class_container' onClick = {this.gotoCheck}>
+                        <Paper id = 'class_container' onClick = {this.gotoCheck} className={classes.root} elevation={1}>
                             <h4 class = 'Class_code'>CS374</h4>
                             <h4 class = 'Class_name'>Introduction to HCI</h4>
                             <div class = 'roomNprof'>
                                 <h4 class = 'Class_room'>E11 311</h4>
                                 <h4 class = 'Class_prof'>Prof.Juho Kim</h4>
                             </div>
-
-                        </div>
-                        <img id = 'plus2' src = {require('../images/add.png')} onClick={() => this.openModal()}></img>
+                        </Paper>
+                        <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
+                          <AddIcon id = 'large' />
+                        </Fab>
                         <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
                             <OutLinedTextFields/>
                         </Modal>
                     </div>
                     <div id = 'notify'>
                         <h4 class = 'titleT'>Notifications</h4>
-                        <div class = 'info_container'>
+                        <Paper id = 'info_container' className={classes.root} elevation={1}>
                         
-                        </div>
+                        </Paper>
                     </div>
                 </body>
             </section>

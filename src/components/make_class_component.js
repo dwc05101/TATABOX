@@ -12,6 +12,10 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 
+
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 import OutLinedTextFields from './OutLinedTextFields';
 
 const styles = theme => ({
@@ -131,7 +135,9 @@ class MakeClass extends Component {
                     <p id = 'clicktext2'>
                         Click here to create new class.
                     </p>
-                    <img id = 'plus' src = {require('../images/add.png')} onClick={() => this.openModal()}></img>
+                    <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
+                        <AddIcon id = 'large' />
+                    </Fab>
                     <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
                         <OutLinedTextFields closeModal={this.closeModal}/>
                     </Modal>

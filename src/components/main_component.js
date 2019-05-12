@@ -7,13 +7,16 @@ import {Link} from 'react-router-dom';
 import { func } from 'prop-types';
 import Modal from 'react-awesome-modal';
 import user from '../images/user.png';
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 
 
 class Main extends Component{
     constructor(props){
       super(props);
-
+      
+      this.firebaseO = this.props.Firebase;
+      this.firebase = this.firebaseO.fb; 
       this.state = {
         user_id : "",
         user_pw : "",
@@ -31,6 +34,7 @@ class Main extends Component{
       this.closeUp = this.closeUp.bind(this);
       this.openFind = this.openFind.bind(this);
       this.closeFind = this.closeFind.bind(this);
+      //this.onSubmit - this.onSubmit.bind(this);
     }
 
 
@@ -62,9 +66,11 @@ class Main extends Component{
             return;
         }
 
-
-        Firebase.createUser(this.state.sign_up_id,this.state.sign_up_pw);
-        window.location.pathname = "/make";
+        var user = this.firebaseO.createUser(this.state.sign_up_id,
+            this.state.sign_up_pw,
+            this.state.sign_up_name,
+            this.state.sign_up_school,
+            this.state.sign_up_dept);
 
     };
 
@@ -80,7 +86,7 @@ class Main extends Component{
         })
     };
 
-    openFind(){
+    openFind= e=>{
         this.setState({
             find_modal : true
         })
@@ -93,9 +99,10 @@ class Main extends Component{
     }
 
   
-    onSubmit(e){
-        window.location.pathname = "/make";
+    onSubmit = e =>{
+        this.firebaseO.signIn(this.state.user_id,this.state.user_pw);
     }
+    
   
     componentDidMount(){
         return;
@@ -104,6 +111,7 @@ class Main extends Component{
   
     render(){
       let picture_instruction = "Click icon to\nadd profile image";
+      this.firebaseO.signOut();
       return (
         <body>
             <div className="App">

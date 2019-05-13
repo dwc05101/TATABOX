@@ -370,7 +370,7 @@ class AttendanceCheck extends Component{
   };
 
   gotoManagement() {
-    window.location.pathname = "/management"
+    window.location.pathname = "TATABOX/management"
   }
 
   render() {

@@ -26,7 +26,7 @@ class App extends Component{
         <Route path="/" exact
           render = {props => <Main Firebase = {fb}/>}
         ></Route>
-        <Route path="/make" 
+        <Route path={process.env.PUBLIC_URL + "/make"} 
           render = {props => <MakeClass Firebase = {fb}/>}
         ></Route>
         <Route path="/test" component={props => <Outline/>}></Route>

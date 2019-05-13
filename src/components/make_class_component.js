@@ -28,12 +28,28 @@ class MakeClass extends Component {
             prof: '',
             bd: '',
             room: '',
-            user_name: 'Gwangjo Gong',
+            user_name: '...',
             user_img: '../images/user_img.png',
             open: false,
         }
+
+        let that = this;
+        that.firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+            // User is signed in.
+                that.setState({user_name : user.displayName})
+            } else {
+                alert("Oops! you are signed out!");
+                window.location.pathname = "TATABOX/";
+            }
+        });
     }
 
+    handlelogin = user =>{
+        this.setState({
+            user_name : user.displayName,
+        })
+    }
     
  
     openModal() {
@@ -70,20 +86,8 @@ class MakeClass extends Component {
  
     render() {
         const { classes } = this.props;
-        let fireb =this.firebase;
-
-        console.log(`make class firebase`,fireb);
-        this.firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // User is signed in.
-              
-            } else {
-                alert("Oops! you are signed out!");
-                window.location.pathname = "TATABOX/";
-            }
-          });
-
-          
+        var fireb =this.firebaseO;
+        var state = this.state;
         
         return (
             <body id = 'full'>

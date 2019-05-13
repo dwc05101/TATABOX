@@ -15,6 +15,8 @@ import MenuList from '@material-ui/core/MenuList';
 import OutLinedTextFields from './OutLinedTextFields';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Classblock from '../components/classes/index.js'
+import { resolveCname } from 'dns';
 
 const styles = theme => ({
     container: {
@@ -30,11 +32,6 @@ const styles = theme => ({
     },
     menu: {
       width: 200,
-    },
-    root: {
-      ...theme.mixins.gutters(),
-      paddingTop: theme.spacing.unit * 2,
-      paddingBottom: theme.spacing.unit * 2,
     },
   });
   
@@ -64,18 +61,65 @@ const buildings = [
 class ClassMade extends Component {
 
     constructor(props) {
-        super(props);
-        this.state = {
-            visible : false,
-            code: '',
-            name: '',
-            prof: '',
-            bd: '',
-            room: '',
-            username: "Gwangjo Gong",
-            user_img: '../images/user_img.png',
-            open: false
-        }
+      super(props);
+      this.state = {
+          visible : false,
+          code: '',
+          name: '',
+          prof: '',
+          bd: '',
+          room: '',
+          username: "...",
+          user_img: '../images/user_img.png',
+          open: false,
+          datas : [],
+          synch: false,
+      }
+
+       
+      this.firebaseO = this.props.Firebase;
+      this.firebase = this.firebaseO.fb; 
+      let that = this;
+      var datas = [];
+      new Promise(function(resolve, reject){
+        that.firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+          // User is signed in.
+          that.setState({username : user.displayName});
+            var classes = [];
+            
+            that.firebase.database().ref('/AUTH/'+user.uid+'/clas').once('value').then(function(snapshot){
+              var userclass = snapshot.val()
+              classes = userclass.split(',');
+            })
+            that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot){
+              snapshot.forEach(function(childSnapshot){
+                classes.forEach(function(classname){
+                    if(classname == childSnapshot.val().code){
+                      datas.push({bd:childSnapshot.val().bd, 
+                          code: childSnapshot.val().code, 
+                          name:childSnapshot.val().name,
+                          prof:childSnapshot.val().prof,
+                          room: childSnapshot.val().room})
+                    }
+                })
+                })
+                resolve();
+                console.log(datas);
+            })
+            
+          } else {
+                alert("Oops! you are signed out!");
+                window.location.pathname = "TATABOX/";
+          }
+        });
+
+      }).then(function(result){
+        that.setState({
+            datas: datas,
+            synch: true
+        })
+      });
     };
   
     
@@ -122,7 +166,10 @@ class ClassMade extends Component {
     };
  
     render() {
+      if(!this.state.synch) return null;
         const { classes } = this.props;
+        let datas  = this.state.datas;
+ 
         return (
             <section>
                 <body id = 'full'>
@@ -173,14 +220,8 @@ class ClassMade extends Component {
                     
                     <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                         <h4 class= 'titleT'>Today's class</h4>
-                        <Paper id = 'class_container' onClick = {this.gotoCheck} className={classes.root} elevation={1}>
-                            <h4 class = 'Class_code'>CS374</h4>
-                            <h4 class = 'Class_name'>Introduction to HCI</h4>
-                            <div class = 'roomNprof'>
-                                <h4 class = 'Class_room'>E11 311</h4>
-                                <h4 class = 'Class_prof'>Prof.Juho Kim</h4>
-                            </div>
-                        </Paper>
+                          <Classblock datas = {datas}>
+                          </Classblock>
                         <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                           <AddIcon id = 'large' />
                         </Fab>

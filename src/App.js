@@ -34,7 +34,7 @@ class App extends Component{
         <Route path="/made" component={props => <ClassMade/>}></Route>
         <Route path="/check" component={props => <AttendanceCheck/>}></Route>
         <Route path="/grade" component={props => <GradeReport Firebase={fb} students={students}/>}></Route>
-      </Router> 
+      </Router>
     );
   }
 }

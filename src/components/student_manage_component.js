@@ -210,7 +210,7 @@ class Management extends Component{
                         <img
                             id = "menu-img"
                             src = {require('../images/menu.png')}
-                            >
+                        >
                         </img>
                         </Button>
                         <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>

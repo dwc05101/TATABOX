@@ -23,10 +23,10 @@ class App extends Component{
     
     return (
       <Router basename="/TATABOX">
-        <Route path="/" exact
+        <Route path={process.env.PUBLIC_URL + '/'} exact
           render = {props => <Main Firebase = {fb}/>}
         ></Route>
-        <Route path="/make" 
+        <Route path={process.env.PUBLIC_URL + '/make'}
           render = {props => <MakeClass Firebase = {fb}/>}
         ></Route>
         <Route path="/test" component={props => <Outline/>}></Route>

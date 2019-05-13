@@ -211,6 +211,7 @@ class Main extends Component{
                                     <div className = "pw-input">
                                         <TextField
                                         id="user_pw"
+                                        type="password"
                                         value={this.state.sign_up_pw}
                                         onChange={this.handleChange("sign_up_pw")}
                                         margin="normal"

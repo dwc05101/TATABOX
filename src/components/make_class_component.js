@@ -71,7 +71,7 @@ class MakeClass extends Component {
  
     render() {
         const { classes } = this.props;
-        var firebase =this.firebase;
+        var fireb =this.firebase0;
         this.firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
               // User is signed in.
@@ -140,8 +140,8 @@ class MakeClass extends Component {
                     <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                         <AddIcon id = 'large' />
                     </Fab>
-                    <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                        <OutLinedTextFields closeModal={this.closeModal}/>
+                    <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
+                        <OutLinedTextFields Firebase={fireb}/>
                     </Modal>
                 </div>
             </body>

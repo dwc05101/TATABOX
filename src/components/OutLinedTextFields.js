@@ -229,7 +229,6 @@ class OutlinedTextFields extends React.Component {
                   variant="outlined"
                 />
                 <TextField
-                  required
                   id="outlined-name"
                   label="CourseName"
                   className={classes.textField}

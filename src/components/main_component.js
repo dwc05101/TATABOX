@@ -282,7 +282,6 @@ class Main extends Component{
                             >
                                 {/*padding: "18px 36px", */}
                                 Sign Up
-                                
                             </Button>
                         </div>
                     </Modal>

@@ -118,6 +118,20 @@ const absentStyle = {
   color: "black"
 }
 
+const modalStyle = {
+  overlay: {
+    position: 'fixed',
+    top: "90px",
+    left: "44%"
+  },
+  content : {
+    top                   : '80%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+  }
+}
+
 function putinDiv(data, reported) {
   var indents = [];
   if (reported) {
@@ -131,7 +145,6 @@ function putinDiv(data, reported) {
             <text style = {{color: "blue", fontSize: "20px"}}>{Object.values(data)[i]}</text>
           </Textfit>
         </div>
-
       )
       indents.push(<div style = {{height: "3%"}}></div>)
     }
@@ -146,6 +159,17 @@ function putinDiv(data, reported) {
   }
 }
 
+/* function myModal(props) {
+  return (
+    <body style = {{opacity: "0", float: "left", padding: "0", margin: "0", maxHeight: "100%", minHeight: "100vh", maxWidth: "100%", minWidth: "910px", textAlign: "center"}}>
+      <div style = {{opacity: "0", float: "left", height: "90px", width: "100%", position: "relative"}}></div>
+      <div style = {{opacity: "0", width: "100%", height: "90vh", display: "flex"}}>
+        <div style = {{backgroundColor: "black", opacity: "0.7", width: "56%"}}></div>
+      </div>
+    </body>
+  )
+} */
+
 /* const theme = createMuiTheme({
   overrides: {
     MuiTabs: {
@@ -153,6 +177,34 @@ function putinDiv(data, reported) {
     }
   }
 }) */
+
+
+  /* <Modal
+  style={{
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.75)'
+    },
+    content: {
+      position: 'absolute',
+      top: '40px',
+      left: '40px',
+      right: '40px',
+      bottom: '40px',
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      borderRadius: '4px',
+      outline: 'none',
+      padding: '20px'
+    }
+  }}>
+  </Modal> */
 
 class NavTabs extends React.Component {
   constructor(props) {
@@ -162,24 +214,39 @@ class NavTabs extends React.Component {
       reported: '',
       absent: '',
       loading: '',
-      modalOn: false,
+      reportedmodalOn: false,
+      absentmodalOn: false,
     };
 
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openreportedModal = this.openreportedModal.bind(this);
+    this.closereportedModal = this.closereportedModal.bind(this);
+    this.openabsentModal = this.openabsentModal.bind(this)
+    this.closeabsentModal = this.closeabsentModal.bind(this)
   }
 
-  openModal(){
+  openreportedModal(){
     this.setState({
-        modalOn : true
+      reportedmodalOn : true
     })
   };
 
-  closeModal(){
+  closereportedModal(){
     this.setState({
-        modalOn : false
+      reportedmodalOn : false
     })
   };
+
+  openabsentModal(){
+    this.setState({
+      absentmodalOn: true
+    })
+  }
+
+  closeabsentModal() {
+    this.setState({
+      absentmodalOn: false
+    })
+  }
 
   handleChange = (event, value) => {
     this.setState({value});
@@ -221,20 +288,19 @@ class NavTabs extends React.Component {
               </Tabs>
             </AppBar>
             {value === 0 && 
-            <Typography onClick = {this.openModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
+            <Typography onClick = {this.openreportedModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
               {this.props.children}{putinDiv(reportedStudents, true)}
             </Typography>}
             {value === 1 && 
-            <Typography onClick = {this.openModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
+            <Typography onClick = {this.openabsentModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
               {this.props.children}{putinDiv(absentStudents, false)}
             </Typography>}
             {/* {value === 0 && <TabContainer onClick = {this.openModal}>{putinDiv(reportedStudents, true)}</TabContainer>}
             {value === 1 && <TabContainer onClick = {this.openModal}>{putinDiv(reportedStudents, false)}</TabContainer>} */}
           </div>
-          <Modal className = "status-modal" visible={this.state.modalOn} width="600" height="600" effect="fadeInUp" onClickAway={()=> this.closeModal()}>
-            <div>I am a modal</div>
+          <Modal className = "status-modal" visible={this.state.reportedmodalOn} width="400" height="300" style = {modalStyle} effect="fadeInUp" onClickAway={()=> this.closereportedModal()}>
+            <div style = {{width: "380", height: "280", backgroundColor: "white"}}></div>
           </Modal>
-
         </NoSsr>
       // </MuiThemeProvider>
     );
@@ -303,12 +369,18 @@ class AttendanceCheck extends Component{
     this.setState({ open: false });
   };
 
+  gotoManagement() {
+    window.location.pathname = "/management"
+  }
+
   render() {
     return(
         <body id = 'full2'>
             <div id = 'headbar2'>
               <h1 id = 'logo'>TATABOX</h1>
               
+              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>CS374 : Introduction to HCI</h2>
+
               <div id = 'button-container'>
                 <Button
                     id = 'menu_button2'
@@ -337,6 +409,7 @@ class AttendanceCheck extends Component{
                             <MenuList>
                             <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                             <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            <MenuItem onClick={this.gotoManagement}>Management</MenuItem>
                             <MenuItem onClick={this.handleClose}>Logout</MenuItem>
                             </MenuList>
                         </ClickAwayListener>

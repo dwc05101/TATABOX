@@ -78,7 +78,7 @@ class MakeClass extends Component {
               
             } else {
                 alert("Oops! you are signed out!");
-                window.location.pathname = "/";
+                window.location.pathname = "TATABOX/";
             }
           });
 

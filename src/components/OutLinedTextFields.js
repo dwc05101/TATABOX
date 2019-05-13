@@ -114,7 +114,7 @@ class OutlinedTextFields extends React.Component {
   };
 
   cancel(){
-    window.location.pathname = "/make";
+    window.location.pathname = "TATABOX/make";
     this.setState(initialState);
   }
 
@@ -157,7 +157,7 @@ class OutlinedTextFields extends React.Component {
 
   onSubmit(){
     //send class info to DB
-    window.location.pathname = "/made";
+    window.location.pathname = "TATABOX/made";
     this.moveStep();
     this.setState(initialState);
   }

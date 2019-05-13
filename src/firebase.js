@@ -29,7 +29,7 @@ class Firebase{
             var datas = {name: name, dept: dept , schl: schl};
             firebase.database().ref('/AUTH/'+userData.user.uid).set(datas)
             .then(()=>{
-                window.location.pathname = "/make";
+                window.location.pathname = "TATABOX/make";
             });
         }).catch(function(error){
             var errorCode = error.code;
@@ -40,7 +40,7 @@ class Firebase{
 
     signIn = (id,password) => {
         this.fb.auth().signInWithEmailAndPassword(id,password).then(function success(userData){
-            window.location.pathname = "/make";
+            window.location.pathname = "TATABOX/make";
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;

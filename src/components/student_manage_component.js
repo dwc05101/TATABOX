@@ -103,10 +103,10 @@ class Management extends Component{
     if (this.anchorEl.contains(event.target)) {
         return;
     }
-        window.location.pathname = "/grade";
+        window.location.pathname = "TATAOBOX/grade";
     }
     handleback(){
-        window.location.pathname="./check";
+        window.location.pathname="TATABOX/check";
     }
 
     handleDelete(){

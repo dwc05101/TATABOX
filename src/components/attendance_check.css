@@ -56,12 +56,13 @@
     float: right;
     padding: 10px;
     margin-top: 20px;
+    color: white;
 }
 
 #button-container{
     height: 100%;
     width: height;
-    float:right;
+    float: right;
 }
 
 
@@ -73,10 +74,6 @@
 #menu-img2{
     height: 60px;
     width:60px;
-}
-
-#menu-list-grow{
-
 }
 
 #content{
@@ -103,14 +100,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid black;
+    /* border-top: 1px solid black; */
 }
 
 #report-tab{
     width: 44%;
     height: 100%;
-    z-index: -100;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 @font-face {

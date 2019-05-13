@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import logo, { ReactComponent } from './logo.svg';
 import './App.css';
-import {FirebaseDatabaseProvider} from "@react-firebase/database";
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import Main from "./components/main_component";
 import MakeClass from "./components/make_class_component";
-import Step from './components/step_component';
 import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
 import ClassMade from './components/class_made_component'

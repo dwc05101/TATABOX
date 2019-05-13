@@ -8,6 +8,8 @@ import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 import Modal from 'react-awesome-modal';
+import SearchBar from "material-ui-search-bar";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import StudentItem from "./student_item";
 
@@ -20,6 +22,7 @@ var ReactGridLayout = require('react-grid-layout');
 var layout = [];
 var checkedList;
 var pos_count;
+var backup = [];
 
 class Management extends Component{
     constructor(props){
@@ -29,19 +32,25 @@ class Management extends Component{
             username: "Gwangjo Gong",
             user_img: '../images/user_img.png',
             open: false,
-            modal_visible: false
+            modal_visible: false,
+
+            search_value: "",
         }
+
+        backup = this.state.students;
 
         this.handleDelete = this.handleDelete.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        
+        this.onChangeSearch = this.onChangeSearch.bind(this);
+        this.onRequestSearch = this.onRequestSearch.bind(this);
+
         checkedList = [];
         pos_count = 0;
     }
 
     componentDidMount(){
-        return;
+        this.SearchBar.focus();
     }
 
     makeStudentList(){
@@ -133,6 +142,54 @@ class Management extends Component{
         }
     }
 
+    onChangeSearch(e){
+        this.setState({
+            search_value : e
+        })
+        if(e.trim()===""){
+            if(this.state.students.length !== backup.length){
+                pos_count=0;
+                layout = [];
+                checkedList = [];
+                this.setState({
+                    students : backup
+                })
+            }
+        }
+
+    }
+
+    onRequestSearch(){
+        console.log("hi")
+
+        var searched = [];
+        var trimmed = this.state.search_value.trim();
+
+        pos_count=0;
+        layout = [];
+        checkedList = [];
+
+        if(trimmed===""){
+            if(this.state.students.length !== backup.length){
+                this.setState({
+                    students : backup
+                })
+            }
+        }
+        else
+        {
+            for(var i = 0; i < backup.length; i++){
+                if(backup[i].name.toLowerCase().includes(trimmed.toLowerCase())){
+                    searched.push(backup[i]);
+                }
+            }
+            this.setState({
+                students : searched
+            });
+        }
+
+    }
+
     render(){
         return(
             <div id = 'full'>
@@ -188,14 +245,26 @@ class Management extends Component{
                     </div>
                 </div>
                 <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
-                    <h1 style={{marginLeft:"1.5%",whiteSpace:"nowrap"}}>Student Management</h1>
+                    <h1 style={{marginLeft:"1.5%", marginTop:"0.5%",whiteSpace:"nowrap"}}>Student Management</h1>
                     <Grid container spacing={24}>
-                        <Grid item xs={3}/>
-                        <Grid item style={{marginTop:"1%"}} xs={3}>
-                            <img style={{width:"auto", height:"40px",paddingTop:"2%"}} src = {require("../images/color_explanation.png")}/>
+                        <Grid item xs={4} style={{marginTop:"1%"}}>
+                            <MuiThemeProvider>
+                                <SearchBar
+                                    ref={(input)=>{
+                                        this.SearchBar = input;
+                                        }}
+                                    onChange={this.onChangeSearch}
+                                    onRequestSearch={this.onRequestSearch}
+                                    style={{marginLeft:"10%",width:"auto"}}
+                                    hintText="Search by Name"    
+                                    />
+                            </MuiThemeProvider>
                         </Grid>
                         <Grid item style={{marginTop:"1%"}} xs={3}>
-                            <Button variant="contained" color="secondary" style={{marginLeft:"65%"}}
+                            <img style={{width:"auto", height:"40px",paddingTop:"2%",marginLeft:"10%"}} src = {require("../images/color_explanation.png")}/>
+                        </Grid>
+                        <Grid item style={{marginTop:"1%"}} xs={2}>
+                            <Button variant="contained" color="secondary" style={{marginLeft:"75%"}}
                             onClick={()=>{
                                 if(window.confirm("Are you sure to delete checked students? This action is not reversible.")){
                                     this.handleDelete();
@@ -221,7 +290,7 @@ class Management extends Component{
                     onClickAway={this.closeModal}>
                     <p style={{marginTop:"10vh",fontSize:'25px'}}><b>Send Invitation Link to Students</b></p><br/>
                     <p>Invitation link : <u style={{color:'#0040a8'}}>https://tatabox.com/happyta</u></p><br/>
-                    <Button variant="contained" color="primary" onClick={this.closeModal} >Send</Button>
+                    <Button variant="contained" color="primary" onClick={this.closeModal} >Copy</Button>
                 </Modal>
             </div>
         );

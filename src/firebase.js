@@ -39,8 +39,16 @@ class Firebase{
     }
 
     signIn = (id,password) => {
+        var that = this;
         this.fb.auth().signInWithEmailAndPassword(id,password).then(function success(userData){
-            window.location.pathname = "TATABOX/make";
+            that.fb.database().ref('/AUTH/' + userData.user.uid + '/clas').once('value').then(function(snapshot){
+                if(snapshot.val() != null){
+                    window.location.pathname = "TATABOX/made";
+                }else{
+                    window.location.pathname = "TATABOX/make";
+                }
+            })
+
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;

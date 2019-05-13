@@ -1,0 +1,8 @@
+{
+    "reported": {
+        "studentC": "student1",
+        "studnetD": "student2",
+        "student3": "student4"
+    },
+    "absent": ["studentA", "studentB"]
+}

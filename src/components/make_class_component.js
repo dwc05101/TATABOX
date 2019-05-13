@@ -9,7 +9,6 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
-
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -29,12 +28,28 @@ class MakeClass extends Component {
             prof: '',
             bd: '',
             room: '',
-            user_name: 'Gwangjo Gong',
+            user_name: '...',
             user_img: '../images/user_img.png',
             open: false,
         }
+
+        let that = this;
+        that.firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+            // User is signed in.
+                that.setState({user_name : user.displayName})
+            } else {
+                alert("Oops! you are signed out!");
+                window.location.pathname = "TATABOX/";
+            }
+        });
     }
 
+    handlelogin = user =>{
+        this.setState({
+            user_name : user.displayName,
+        })
+    }
     
  
     openModal() {
@@ -71,18 +86,8 @@ class MakeClass extends Component {
  
     render() {
         const { classes } = this.props;
-        var firebase =this.firebase;
-        this.firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // User is signed in.
-              
-            } else {
-                alert("Oops! you are signed out!");
-                window.location.pathname = "TATABOX/";
-            }
-          });
-
-          
+        var fireb =this.firebaseO;
+        var state = this.state;
         
         return (
             <body id = 'full'>
@@ -140,8 +145,8 @@ class MakeClass extends Component {
                     <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                         <AddIcon id = 'large' />
                     </Fab>
-                    <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                        <OutLinedTextFields closeModal={this.closeModal}/>
+                    <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
+                        <OutLinedTextFields Firebase={fireb}></OutLinedTextFields>
                     </Modal>
                 </div>
             </body>

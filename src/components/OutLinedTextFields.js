@@ -10,6 +10,7 @@ import Select from 'react-select';
 import MakeClass from './make_class_component.js'
 import Typography from '@material-ui/core/Typography';
 import './step_component.css';
+import { darkBlack } from 'material-ui/styles/colors';
 
 const styles = theme => ({
   margin: {
@@ -91,6 +92,38 @@ class OutlinedTextFields extends React.Component {
     this.cancel = this.cancel.bind(this);
     this.roomchange = this.roomchange.bind(this);
     this.errorhandle = this.errorhandle.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.firebase = this.props.Firebase;
+    let that = this;
+    new Promise(function(resolve, reject){
+      that.firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // User is signed in.
+          that.setState({userID : user.uid});
+          console.log(`constructor userid`,user.uid);
+          resolve();
+        } else {
+            alert("Oops! you are signed out!");
+            window.location.pathname = "TATABOX/";
+        }
+      });
+    })
+    .then(function(result) {
+      that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
+      console.log(`snapshot`,snapshot);
+      var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
+      var userdept = (snapshot.val() && snapshot.val().dept) || 'Anonymous';
+      var userschl = (snapshot.val() && snapshot.val().schl) || 'Anonymous';
+      var userclas = (snapshot.val() && snapshot.val().codes) || '';
+      console.log(`name`,username);
+      console.log(`dept`,userdept);
+      console.log(`schl`,userschl);
+      console.log(`clas`,userclas);
+      that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas});
+    });
+    })
+    
+
   }
   
   state = {
@@ -105,6 +138,7 @@ class OutlinedTextFields extends React.Component {
     preview: 0, 
     error:false,
     firebase:null,
+    userID:'',
   }
   handleChange = name => event => {
     this.setState({
@@ -125,7 +159,6 @@ class OutlinedTextFields extends React.Component {
         isVisible : true,
         preview : 1,
       })
-      console.log(`room change bd selected`);
     }else if(this.state.selectedOption!=null && event.target.value!=''){
       this.setState({
         room: event.target.value,
@@ -138,7 +171,6 @@ class OutlinedTextFields extends React.Component {
         isVisible : false,
         preview : 0,
       })
-      console.log(`room change bd not selected`);
     }
     this.isFull();
   }
@@ -152,25 +184,42 @@ class OutlinedTextFields extends React.Component {
       this.setState({ selectedOption , bd: selectedOption.value, preview : 0 });
     }
     this.isFull();
-    console.log(`Option selected:`, selectedOption);
   }
 
   onSubmit(){
-    //send class info to DB
-    window.location.pathname = "TATABOX/made";
+    let that = this;
+    console.log(`onSubmit`);
+    let newcode = this.state.userClas +","+this.state.code;
+    
+    //class Info sending..
+    this.firebase.database().ref('/classInfo/').push({
+      code : this.state.code,
+      name : this.state.name,
+      prof : this.state.prof,
+      bd : this.state.bd,
+      room : this.state.room,
+    });
+    
+    //user info update
+    this.firebase.database().ref('/AUTH/'+this.state.userID).set({
+      name : that.state.userName,
+      dept : that.state.userDept,
+      schl : that.state.userSchl,
+      clas : newcode,
+    });
     this.moveStep();
     this.setState(initialState);
+    window.location.pathname = "TATABOX/make";
   }
+
   isFull(){
-    console.log(`touch isFull`);
     if(this.state.code!='' && this.state.name!='' && this.state.prof!='' && this.state.bd!='' && this.state.room!=''){
       this.setState({error : false});
-      console.log(`success isFull`);
-
     }
   }
 
   moveStep(){
+    console.log(`this.state.userID`,this.state.userID);
     if(this.state.step==0){
       this.errorhandle();
       if(!this.state.error){
@@ -182,7 +231,6 @@ class OutlinedTextFields extends React.Component {
     }else{
       this.setState({step : 0,});
     }
-    console.log(`move step/error:`, this.state.error);
   }
   errorhandle(){
     if(this.state.code==''){
@@ -203,7 +251,7 @@ class OutlinedTextFields extends React.Component {
   }
 
   render() {
-    console.log(`enter render/error:`, this.state.error);
+    console.log(`outlined firebase`,this.firebase);
     const { classes } = this.props;
     const { selectedOption } = this.state;
     let prev;

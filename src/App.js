@@ -34,7 +34,19 @@ class App extends Component{
         <Route path="/made" component={props => <ClassMade/>}></Route>
         <Route path="/check" component={props => <AttendanceCheck/>}></Route>
         <Route path="/grade" component={props => <GradeReport Firebase={fb} students={students}/>}></Route>
-      
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <Route path="/" exact
+            render = {props => <Main Firebase = {fb}/>}
+          ></Route>
+          <Route path="/make" 
+            render = {props => <MakeClass Firebase = {fb}/>}
+          ></Route>
+          <Route path="/test" component={props => <Outline/>}></Route>
+          <Route path="/management" component = {props=><Management Firebase={fb} students={students}/>}></Route>
+          <Route path="/made" component={props => <ClassMade/>}></Route>
+          <Route path="/check" component={props => <AttendanceCheck/>}></Route>
+          <Route path="/grade" component={props => <GradeReport Firebase={fb} students={students}/>}></Route>
+      </BrowserRouter>
       </Router> 
     );
   }

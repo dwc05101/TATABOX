@@ -75,6 +75,7 @@ const initialState = {
   isVisible: false,
   preview: 0, 
   error:false,
+  firebase:null,
 };
 
 
@@ -103,6 +104,7 @@ class OutlinedTextFields extends React.Component {
     isVisible: false,
     preview: 0, 
     error:false,
+    firebase:null,
   }
   handleChange = name => event => {
     this.setState({
@@ -255,8 +257,6 @@ class OutlinedTextFields extends React.Component {
                       onChange={this.buildingchange}
                       options={currencies}
                     />
-
-                
                 </div>
                 <div style={{width: "100%"}}>
                 <TextField

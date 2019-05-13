@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "76e6b4b185f28ecd16db2c2b1424a1b3",
+    "revision": "a7d78acdd836d3ba56915522bbb72a38",
     "url": "/TATABOX/index.html"
   },
   {

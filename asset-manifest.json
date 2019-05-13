@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/TATABOX/static/css/main.9f5c8d53.chunk.css",
-    "main.js": "/TATABOX/static/js/main.5870f317.chunk.js",
-    "main.js.map": "/TATABOX/static/js/main.5870f317.chunk.js.map",
+    "main.js": "/TATABOX/static/js/main.c411c050.chunk.js",
+    "main.js.map": "/TATABOX/static/js/main.c411c050.chunk.js.map",
     "runtime~main.js": "/TATABOX/static/js/runtime~main.58dbc0cd.js",
     "runtime~main.js.map": "/TATABOX/static/js/runtime~main.58dbc0cd.js.map",
     "static/css/2.ec89db99.chunk.css": "/TATABOX/static/css/2.ec89db99.chunk.css",
     "static/js/2.fda42e5b.chunk.js": "/TATABOX/static/js/2.fda42e5b.chunk.js",
     "static/js/2.fda42e5b.chunk.js.map": "/TATABOX/static/js/2.fda42e5b.chunk.js.map",
     "index.html": "/TATABOX/index.html",
-    "precache-manifest.5dd044eeeb48c086a3e3638d42cd1195.js": "/TATABOX/precache-manifest.5dd044eeeb48c086a3e3638d42cd1195.js",
+    "precache-manifest.a3a3cfd1a850ef807388f6a8c79ed002.js": "/TATABOX/precache-manifest.a3a3cfd1a850ef807388f6a8c79ed002.js",
     "service-worker.js": "/TATABOX/service-worker.js",
     "static/css/2.ec89db99.chunk.css.map": "/TATABOX/static/css/2.ec89db99.chunk.css.map",
     "static/css/main.9f5c8d53.chunk.css.map": "/TATABOX/static/css/main.9f5c8d53.chunk.css.map",

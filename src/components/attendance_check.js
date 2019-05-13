@@ -15,6 +15,11 @@ import Tabs from '@material-ui/core/Tabs';
 import NoSsr from '@material-ui/core/NoSsr';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { pink, green } from "@material-ui/core/colors";
+import Modal from 'react-awesome-modal';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { Textfit } from 'react-textfit';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
 
@@ -37,6 +42,11 @@ const styles = theme => ({
   root: {
     flexGrow:1,
     backgroundColor: theme.palette.background.paper,
+    height: "100%",
+  },
+  indicator: {
+    height: "100%",
+    // borderRadius: "30px 30px 0px 0px"
   },
   /*----------------------for tabs-----------------------*/
 });
@@ -65,8 +75,9 @@ const buildings = [
 ];
 /*----------------------for tabs-----------------------*/
 function TabContainer(props) {
+  //"#e8f5e9"
   return (
-    <Typography component = "div" style = {{ padding: 8*3}}>
+    <Typography onClick = {props.openModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
       {props.children}
     </Typography>
   );
@@ -77,17 +88,71 @@ TabContainer.propTypes = {
 };
 
 function LinkTab(props) {
-  return <Tab component = "a" onClick={event => event.preventDefault()} {...props} />;
+  return <Tab component = "a" style = {{zIndex: "1300"}} onClick={event => event.preventDefault()} {...props} />;
 }
 
-/* function separateline(sampleList){
-  var newList = sampleList;
-  for (var i=0; i<sampleList.length; i++) {
-    var addValue = "<div>sampleList[i]</div>";
-    newList.push(addValue);
+const reportedStyle = {
+  height: "8%",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "10px 10px 10px 10px",
+  backgroundColor: "white",
+  zIndex: "1400",
+  fontWeight: "bold",
+  fontSize: "24px",
+  color: "#f50057",
+}
+
+const absentStyle = {
+  height: "8%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "10px 10px 10px 10px",
+  backgroundColor: "white",
+  zIndex: "1400",
+  fontWeight: "bold",
+  fontSize: "24px",
+  color: "black"
+}
+
+function putinDiv(data, reported) {
+  var indents = [];
+  if (reported) {
+    // dictionary data form
+    for (var i=0;i<Object.keys(data).length;i++) {
+      indents.push(
+        <div style = {reportedStyle}>
+          <Textfit mode="single" forceSingleModeWidth={false}>
+            <text >{Object.keys(data)[i]}</text>
+            <text style = {{color: "Gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; reported by &nbsp; </text>
+            <text style = {{color: "blue", fontSize: "20px"}}>{Object.values(data)[i]}</text>
+          </Textfit>
+        </div>
+
+      )
+      indents.push(<div style = {{height: "3%"}}></div>)
+    }
+    return indents;
+  } else {
+    // list data form
+    for (var i=0;i<data.length;i++) {
+      indents.push(<div style = {absentStyle}>{data[i]}</div>)
+      indents.push(<div style = {{height: "3%"}}></div>)
+    }
+    return indents;
   }
-  return newList;
-} */
+}
+
+/* const theme = createMuiTheme({
+  overrides: {
+    MuiTabs: {
+      borderRadius: "30px 30px 0px 0px"
+    }
+  }
+}) */
 
 class NavTabs extends React.Component {
   constructor(props) {
@@ -97,9 +162,24 @@ class NavTabs extends React.Component {
       reported: '',
       absent: '',
       loading: '',
+      modalOn: false,
     };
+
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
+  openModal(){
+    this.setState({
+        modalOn : true
+    })
+  };
+
+  closeModal(){
+    this.setState({
+        modalOn : false
+    })
+  };
 
   handleChange = (event, value) => {
     this.setState({value});
@@ -117,8 +197,8 @@ class NavTabs extends React.Component {
     })
     .then(json => {
       this.setState({
-        reported: json.absent,
-        absent: json.reported,
+        reported: json.reported,
+        absent: json.absent,
         loading: true,
       })
     })
@@ -131,20 +211,33 @@ class NavTabs extends React.Component {
     const reportedStudents = this.state.reported;
     const absentStudents = this.state.absent;
     return (
-      <NoSsr>
-        <div className = {classes.root}>
-          <AppBar position = "static">
-            <Tabs variant = "fullWidth" value = {value} onChange = {this.handleChange}>
-              <LinkTab label = "Reported" />
-              <LinkTab label = "Absent" />
-            </Tabs>
-          </AppBar>
-          {value === 0 && <TabContainer>{reportedStudents}</TabContainer>}
-          {value === 1 && <TabContainer>{absentStudents}</TabContainer>}
-        </div>
-      </NoSsr>
-    );
+      // <MuiThemeProvider theme={theme}>
+        <NoSsr>
+          <div className = {classes.root}>
+            <AppBar position = "static">
+              <Tabs variant = "fullWidth" classes = {{indicator: classes.indicator}} style = {{height: "10%"}} value = {value} onChange = {this.handleChange}>
+                <LinkTab label = "Reported" />
+                <LinkTab label = "Absent" />
+              </Tabs>
+            </AppBar>
+            {value === 0 && 
+            <Typography onClick = {this.openModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
+              {this.props.children}{putinDiv(reportedStudents, true)}
+            </Typography>}
+            {value === 1 && 
+            <Typography onClick = {this.openModal} component = "div" style = {{ padding: 8*3, backgroundColor: "#E1E2E1", height: "90%"}}>
+              {this.props.children}{putinDiv(absentStudents, false)}
+            </Typography>}
+            {/* {value === 0 && <TabContainer onClick = {this.openModal}>{putinDiv(reportedStudents, true)}</TabContainer>}
+            {value === 1 && <TabContainer onClick = {this.openModal}>{putinDiv(reportedStudents, false)}</TabContainer>} */}
+          </div>
+          <Modal className = "status-modal" visible={this.state.modalOn} width="600" height="600" effect="fadeInUp" onClickAway={()=> this.closeModal()}>
+            <div>I am a modal</div>
+          </Modal>
 
+        </NoSsr>
+      // </MuiThemeProvider>
+    );
   }
 }
 
@@ -232,7 +325,7 @@ class AttendanceCheck extends Component{
                   >
                 </img>
                 </Button>
-                <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
+                <Popper open={this.state.open} style = {{zIndex: "1500"}} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
                     {({ TransitionProps, placement }) => (
                     <Grow
                         {...TransitionProps}
@@ -270,7 +363,7 @@ class AttendanceCheck extends Component{
                 </div>
               </div>
               <div id = "report-tab">
-                <NavTabs/>
+                <NavTabs styles = {{height: "100%"}}></NavTabs>
               </div>
             </div>
         </body>

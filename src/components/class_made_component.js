@@ -169,76 +169,7 @@ class ClassMade extends Component {
       if(!this.state.synch) return null;
         const { classes } = this.props;
         let datas  = this.state.datas;
-        console.log(datas);
-
-        let step1;
-        step1 = 
-        <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          id="outlined-code"
-          label="Course Code"
-          className={classes.textField}
-          value={this.state.code}
-          onChange={this.handleChange('code')}
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-name"
-          label="Course Name"
-          className={classes.textField}
-          value={this.state.name}
-          onChange={this.handleChange('name')}
-          margin="normal"
-          variant="outlined"
-        />
-
-        <TextField
-          id="outlined-prof"
-          label="Professor"
-          className={classes.textField}
-          value={this.state.prof}
-          onChange={this.handleChange('prof')}
-          margin="normal"
-          variant="outlined"
-        />
-
-        <TextField
-          id="outlined-select-building"
-          select
-          label="Building"
-          className={classes.textField}
-          value={this.state.bd}
-          onChange={this.handleChange('bd')}
-          SelectProps={{
-            MenuProps: {
-              className: classes.menu,
-            },
-          }}
-          helperText="Please select Building"
-          margin="normal"
-          variant="outlined"
-        >
-          <MenuItem key="ahhh" value="jutkatta">
-            yeahhhhhh
-          </MenuItem>
-        </TextField>
-
-        <TextField
-          id="outlined-number"
-          label="Class Room"
-          value={this.state.room}
-          onChange={this.handleChange('room')}
-          type="number"
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          margin="normal"
-          variant="outlined"
-        />
-      </form>
-
+ 
         return (
             <section>
                 <body id = 'full'>

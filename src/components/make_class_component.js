@@ -9,7 +9,6 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
-
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -38,7 +37,6 @@ class MakeClass extends Component {
         that.firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
             // User is signed in.
-
                 that.setState({user_name : user.displayName})
             } else {
                 alert("Oops! you are signed out!");
@@ -148,7 +146,7 @@ class MakeClass extends Component {
                         <AddIcon id = 'large' />
                     </Fab>
                     <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                        <OutLinedTextFields Firebase={fireb}/>
+                        <OutLinedTextFields Firebase={fireb}></OutLinedTextFields>
                     </Modal>
                 </div>
             </body>

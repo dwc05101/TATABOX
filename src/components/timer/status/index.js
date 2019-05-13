@@ -93,39 +93,3 @@ function Status(props) {
 }
 
 export default Status;
-
-/* function nop() {
-}
-
-function freezeDate(date) {
-  allNames(date).forEach(name => {
-    if (name.startsWith("set") && typeof date[name] === "function") {
-      date[name] = nop;
-    }
-  });
-  Object.freeze(date);
-  //console.log(2, date);
-  return date;
-}
-function allNames(obj) {
-  var names = Object.create(null);
-  var thisObj;
-  
-  for (thisObj = obj; thisObj; thisObj = Object.getPrototypeOf(thisObj)) {
-    Object.getOwnPropertyNames(thisObj).forEach(name => {
-      names[name] = 1;
-    });
-  }
-  //console.log(1, names);
-  return Object.keys(names);
-}
-
-function SuperAndrewDate(realDate) {
-    return new Proxy(realDate, {
-        get(target, prop) {
-            if (!prop.startsWith('set')) {
-                return Reflect.get(target, prop);
-            }
-        }
-    });
-} */

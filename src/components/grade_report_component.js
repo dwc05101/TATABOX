@@ -60,7 +60,7 @@ class GradeReport extends Component{
     }
 
     handleback(){
-        window.location.pathname="./check";
+        window.location.pathname="TATABOX/check";
     }
 
     render(){

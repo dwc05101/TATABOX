@@ -87,7 +87,7 @@ class ClassMade extends Component {
     }
 
     gotoCheck(e){
-      window.location.pathname = "/check";
+      window.location.pathname = "TATABOX/check";
     }
 
     mapBuildings(){

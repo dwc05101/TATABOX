@@ -93,7 +93,7 @@ class OutlinedTextFields extends React.Component {
     this.roomchange = this.roomchange.bind(this);
     this.errorhandle = this.errorhandle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.firebase = this.props.Firebase;
+    this.firebase = this.props.Firebase.fb;
     let that = this;
     new Promise(function(resolve, reject){
       that.firebase.auth().onAuthStateChanged(function(user) {
@@ -209,7 +209,7 @@ class OutlinedTextFields extends React.Component {
     });
     this.moveStep();
     this.setState(initialState);
-    window.location.pathname = "TATABOX/make";
+    window.location.pathname = "TATABOX/made";
   }
 
   isFull(){

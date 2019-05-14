@@ -58,28 +58,6 @@ const styles = theme => ({
   },
 });
 
-const buildings = [
-  {
-    value: 'N1',
-    label: 'N1 (김병호 김삼열 IT융합빌딩)',
-  },
-  {
-    value: 'N4',
-    label: 'N4 (인문사회과학동)',
-  },
-  {
-    value: 'E11',
-    label: 'E11 (창의학습관)',
-  },
-  {
-    value: 'E2-2',
-    label: 'E2-2 (산업경영학동)',
-  },
-  {
-    value: 'E6-5',
-    label: 'E6-5 (궁리실험관)',
-  },
-];
 /*----------------------for tabs-----------------------*/
 
 function LinkTab(props) {
@@ -139,13 +117,14 @@ class NavTabs extends React.Component {
       absentList: [],
       reportInfo: ["","",""],
       absentInfo: [""],
+      
     };
-
     this.openreportedModal = this.openreportedModal.bind(this);
     this.closereportedModal = this.closereportedModal.bind(this);
     this.openabsentModal = this.openabsentModal.bind(this);
     this.closeabsentModal = this.closeabsentModal.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    
   }
 
   openreportedModal(e){
@@ -318,25 +297,28 @@ class AttendanceCheck extends Component{
         user_img: '../images/user_img.png',
         open: false,
         absent: '',
-        reported: ''
+        reported: '',
+        userID:'',
     }
-  }
+    this.firebaseO = this.props.Firebase;
+    this.firebase = this.firebaseO.fb; 
+    console.log(this.firebase);
+    let that = this;
+    that.firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+      // User is signed in.
+          that.setState({username : user.displayName})
+      } else {
 
+      }
+  });
+  }
   openModal() {
     this.setState({
         visible : true
     });
   }
 
-  mapBuildings(){
-    return buildings.map(option => {
-      return(
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      )
-    })
-  }
 
   closeModal() {
       this.setState({
@@ -369,7 +351,7 @@ class AttendanceCheck extends Component{
             <div id = 'headbar2'>
               <h1 id = 'logo'>TATABOX</h1>
               
-              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>CS374 : Introduction to HCI</h2>
+              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>Check Attendance</h2>
 
               <div id = 'button-container'>
                 <Button

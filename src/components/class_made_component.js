@@ -220,7 +220,7 @@ class ClassMade extends Component {
                     
                     <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                         <h4 class= 'titleT'>Today's class</h4>
-                          <Classblock datas = {datas}>
+                          <Classblock datas = {datas} gotoCheck = {this.gotoCheck}>
                           </Classblock>
                         <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                           <AddIcon id = 'large' />

@@ -74,9 +74,11 @@ class ClassMade extends Component {
           open: false,
           datas : [],
           synch: false,
+          selected: 0
       }
 
-       
+      this.handleClick = this.handleClick.bind(this);
+
       this.firebaseO = this.props.Firebase;
       this.firebase = this.firebaseO.fb; 
       let that = this;
@@ -132,6 +134,13 @@ class ClassMade extends Component {
 
     gotoCheck(e){
       window.location.pathname = "TATABOX/check";
+    }
+
+    handleClick(e) {
+      var index = e.target.getAttribute("data-index")
+      this.setState({
+        selected: index,
+      });
     }
 
     mapBuildings(){
@@ -220,7 +229,7 @@ class ClassMade extends Component {
                     
                     <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                         <h4 class= 'titleT'>Today's class</h4>
-                          <Classblock datas = {datas} gotoCheck = {this.gotoCheck}>
+                          <Classblock datas = {datas} gotoCheck = {this.gotoCheck} handleClick = {this.handleClick}>
                           </Classblock>
                         <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                           <AddIcon id = 'large' />

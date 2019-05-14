@@ -94,6 +94,28 @@ class OutlinedTextFields extends React.Component {
     this.errorhandle = this.errorhandle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.firebase = this.props.Firebase.fb;
+
+    this.state = {
+      code: '',
+      name: '',
+      prof: '',
+      bd : '',
+      room:'',
+      step:0,
+      selectedOption: null,
+      isVisible: false,
+      preview: 0, 
+      error:false,
+      firebase:null,
+      userID:'',
+      userName:'',
+      userDept:'',
+      userSchl:'',
+      userClas:'hi',
+      synch:false
+    }
+
+
     let that = this;
     new Promise(function(resolve, reject){
       that.firebase.auth().onAuthStateChanged(function(user) {
@@ -114,32 +136,16 @@ class OutlinedTextFields extends React.Component {
       var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
       var userdept = (snapshot.val() && snapshot.val().dept) || 'Anonymous';
       var userschl = (snapshot.val() && snapshot.val().schl) || 'Anonymous';
-      var userclas = (snapshot.val() && snapshot.val().codes) || '';
+      var userclas = (snapshot.val() && snapshot.val().clas) || '';
       console.log(`name`,username);
       console.log(`dept`,userdept);
       console.log(`schl`,userschl);
       console.log(`clas`,userclas);
-      that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas});
+      that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas, synch: true});
     });
     })
-    
+  }
 
-  }
-  
-  state = {
-    code: '',
-    name: '',
-    prof: '',
-    bd : '',
-    room:'',
-    step:0,
-    selectedOption: null,
-    isVisible: false,
-    preview: 0, 
-    error:false,
-    firebase:null,
-    userID:'',
-  }
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
@@ -190,7 +196,7 @@ class OutlinedTextFields extends React.Component {
     let that = this;
     console.log(`onSubmit`);
     let newcode = this.state.userClas +","+this.state.code;
-    
+
     //class Info sending..
     this.firebase.database().ref('/classInfo/').push({
       code : this.state.code,
@@ -251,6 +257,7 @@ class OutlinedTextFields extends React.Component {
   }
 
   render() {
+    if(!this.state.synch) return null;
     console.log(`outlined firebase`,this.firebase);
     const { classes } = this.props;
     const { selectedOption } = this.state;

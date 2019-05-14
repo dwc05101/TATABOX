@@ -19,7 +19,7 @@ function Classblock(props) {
     var length = datas.length;
     if(length == 1){
         return (
-            <Paper id = 'class_container' className={classes.root} elevation={1} onClick = {props.gotoCheck}>
+            <Paper id = 'class_container' className={classes.root} data-index={0} elevation={1} onClick = {props.gotoCheck}>
                 <h4 class = 'Class_code'>{datas[0].code}</h4>
                 <h4 class = 'Class_name'>{datas[0].name}</h4>
                 <div class = 'roomNprof'>
@@ -31,7 +31,7 @@ function Classblock(props) {
     }else if(length == 2){
         return (
             <div>
-                <Paper id = 'class_container' className={classes.root} elevation={1} onClick = {props.gotoCheck}>
+                <Paper id = 'class_container' className={classes.root} data-index={0} elevation={1} onClick = {props.gotoCheck}>
                     <h4 class = 'Class_code'>{datas[0].code}</h4>
                     <h4 class = 'Class_name'>{datas[0].name}</h4>
                     <div class = 'roomNprof'>
@@ -39,7 +39,7 @@ function Classblock(props) {
                         <h4 class = 'Class_prof'>{datas[0].prof}</h4>
                     </div>
                 </Paper>
-                <Paper id = 'class_container' className={classes.root} elevation={1} onClick = {props.gotoCheck}>
+                <Paper id = 'class_container' className={classes.root} data-index={1} elevation={1} onClick = {props.gotoCheck}>
                     <h4 class = 'Class_code'>{datas[1].code}</h4>
                     <h4 class = 'Class_name'>{datas[1].name}</h4>
                     <div class = 'roomNprof'>
@@ -52,7 +52,7 @@ function Classblock(props) {
     }else{
         return (
             <div>
-                <Paper id = 'class_container' className={classes.root} elevation={1} onClick = {props.gotoCheck}>
+                <Paper id = 'class_container' className={classes.root} data-index={0} elevation={1} onClick = {function(event){ props.gotoCheck(); props.handleClick()}}>
                     <h4 class = 'Class_code'>{datas[0].code}</h4>
                     <h4 class = 'Class_name'>{datas[0].name}</h4>
                     <div class = 'roomNprof'>
@@ -60,7 +60,7 @@ function Classblock(props) {
                         <h4 class = 'Class_prof'>{datas[0].prof}</h4>
                     </div>
                 </Paper>
-                <Paper id = 'class_container' className={classes.root} elevation={1} onClick = {props.gotoCheck}>
+                <Paper id = 'class_container' className={classes.root} data-index={1} elevation={1} onClick = {props.gotoCheck}>
                 <h4 class = 'Class_code'>{datas[1].code}</h4>
                 <h4 class = 'Class_name'>{datas[1].name}</h4>
                 <div class = 'roomNprof'>
@@ -68,7 +68,7 @@ function Classblock(props) {
                     <h4 class = 'Class_prof'>{datas[1].prof}</h4>
                 </div>
                 </Paper>
-                <Paper id = 'class_container' className={classes.root} elevation={1} onClick = {props.gotoCheck}>
+                <Paper id = 'class_container' className={classes.root} data-index={2} elevation={1} onClick = {props.gotoCheck}>
                 <h4 class = 'Class_code'>{datas[2].code}</h4>
                 <h4 class = 'Class_name'>{datas[2].name}</h4>
                 <div class = 'roomNprof'>

@@ -376,7 +376,6 @@ class OutlinedTextFields extends React.Component {
         </div>
       </div>
     }
-    
     return (<div>
       {step}
         </div>);

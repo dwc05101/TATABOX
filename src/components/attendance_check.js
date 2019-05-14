@@ -22,6 +22,7 @@ import { Textfit } from 'react-textfit';
 // import axios from 'axios';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
+import ClassMade from './class_made_component';
 
 const styles = theme => ({
   container: {
@@ -300,6 +301,7 @@ class AttendanceCheck extends Component{
         reported: '',
         userID:'',
     }
+
     this.firebaseO = this.props.Firebase;
     this.firebase = this.firebaseO.fb; 
     console.log(this.firebase);
@@ -311,14 +313,14 @@ class AttendanceCheck extends Component{
       } else {
 
       }
-  });
+    });
   }
+  
   openModal() {
     this.setState({
         visible : true
     });
   }
-
 
   closeModal() {
       this.setState({
@@ -351,7 +353,8 @@ class AttendanceCheck extends Component{
             <div id = 'headbar2'>
               <h1 id = 'logo'>TATABOX</h1>
               
-              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>Check Attendance</h2>
+              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{/* ClassMade.state.selected */}</h2>
+
 
               <div id = 'button-container'>
                 <Button

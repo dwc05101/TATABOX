@@ -19,7 +19,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 // import Modal from 'react-awesome-modal';
 import Modal from '@material-ui/core/Modal';
 import { Textfit } from 'react-textfit';
-
+// import axios from 'axios';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
 
@@ -56,15 +56,6 @@ const styles = theme => ({
     fontSize: "24px",
     fontWeight: "bold"
   },
-  /*----------------------for modals-----------------------*/
-  /* paper: {
-    position: 'absolute',
-    width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    outline: 'none',
-  }, */
 });
 
 const buildings = [
@@ -127,7 +118,12 @@ const absentStyle = {
   fontSize: "24px",
   color: "black"
 }
- 
+
+/* let axios = require('axios');
+const ax = axios.create({
+  baseURL: 'http://localhost:3000/TATABOX'
+}) */
+
 class NavTabs extends React.Component {
   constructor(props) {
     super(props);
@@ -189,11 +185,11 @@ class NavTabs extends React.Component {
         'Accept': 'application.json'
       }
     })
+    // ax.get("tabtest.json")
     .then(response => {
       return response.json();
     })
     .then(json => {
-      console.log("setstate1");
       this.setState({
         reported: json.reported,
         absent: json.absent,
@@ -226,7 +222,6 @@ class NavTabs extends React.Component {
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push(absentStudents[i])
       }
-      console.log("setstate2");
       this.setState({
         reportList: reportIndents,
         absentList: absentIndents,
@@ -246,7 +241,6 @@ class NavTabs extends React.Component {
   render() {
     const {classes} = this.props;
     const {value} = this.state;
-    console.log(this.state.reportInfo);
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -267,14 +261,6 @@ class NavTabs extends React.Component {
               {this.props.children}{this.state.absentList}
             </Typography>}
           </div>
-          {/* <Modal className = "status-modal" visible={this.state.reportedmodalOn} width="400" height="300" style={{color:"yellow"}} effect="fadeInUp" onClickAway={()=> this.closereportedModal()}>
-            <div style = {{width: "400", height: "300", backgroundColor: "#ef9a9a"}}></div>
-            <text>{reportInfo[this.state.modalIndex]}</text>
-          </Modal>
-          <Modal className = "status-modal" visible={this.state.absentmodalOn} width="400" height="300" styles={modalStyle} effect="fadeInUp" onClickAway={()=> this.closeabsentModal()}>
-            <div style = {{width: "400", height: "300", backgroundColor: "#9e9e9e", zIndex: "10000"}}></div>
-            <text>{absentInfo[this.state.modalIndex]}</text>
-          </Modal> */}
             <Modal open={this.state.reportedmodalOn} onClose={this.closereportedModal}>
               <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
@@ -292,7 +278,7 @@ class NavTabs extends React.Component {
               </div>
             </Modal>
             <Modal open={this.state.absentmodalOn} onClose={this.closeabsentModal}>
-              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#9e9e9e", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closeabsentModal} style = {{top: "0"}}>
                       <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
@@ -312,19 +298,12 @@ class NavTabs extends React.Component {
   }
 }
 
-/* position: 'absolute', 
-width: theme.spacing.unit * 50,
-boxShadow: theme.shadows[5],
-padding: theme.spacing.unit * 4,
-outline: 'none' */
-
 NavTabs.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
 NavTabs = withStyles(styles)(NavTabs);
 /*----------------------for tabs-----------------------*/
-
 class AttendanceCheck extends Component{
   constructor(props) {
     super(props);

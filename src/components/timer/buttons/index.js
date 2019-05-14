@@ -35,7 +35,7 @@ function Buttons(props) {
         return (
             <div className='timer-buttons-start'>
                 <MuiThemeProvider theme={theme}>
-                    <Button variant="contained" style = {buttonStyle} fullWidth = "true" size = "large" color = "primary" className={classes.button} onClick = {props.handleClick}>
+                    <Button variant="contained" style = {buttonStyle} fullWidth = {true} size = "large" color = "primary" className={classes.button} onClick = {props.handleClick}>
                         {label}
                     </Button>
                 </MuiThemeProvider>
@@ -45,7 +45,7 @@ function Buttons(props) {
         return (
             <div className='timer-buttons-stop'>
                 <MuiThemeProvider theme={theme}>
-                    <Button variant="contained" style = {buttonStyle} fullWidth = "true" size = "large" color = "secondary" className={classes.button} onClick = {props.handleClick}>
+                    <Button variant="contained" style = {buttonStyle} fullWidth = {true} size = "large" color = "secondary" className={classes.button} onClick = {props.handleClick}>
                         {label}
                     </Button>
                 </MuiThemeProvider>

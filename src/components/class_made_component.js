@@ -226,7 +226,7 @@ class ClassMade extends Component {
                           <AddIcon id = 'large' />
                         </Fab>
                         <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
-                            <OutLinedTextFields/>
+                          <OutLinedTextFields Firebase={this.firebaseO}></OutLinedTextFields>
                         </Modal>
                     </div>
                     <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>

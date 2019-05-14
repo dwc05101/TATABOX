@@ -58,6 +58,7 @@ const styles = theme => ({
     fontWeight: "bold"
   },
 });
+
 /*----------------------for tabs-----------------------*/
 
 function LinkTab(props) {
@@ -117,13 +118,14 @@ class NavTabs extends React.Component {
       absentList: [],
       reportInfo: ["","",""],
       absentInfo: [""],
+      
     };
-
     this.openreportedModal = this.openreportedModal.bind(this);
     this.closereportedModal = this.closereportedModal.bind(this);
     this.openabsentModal = this.openabsentModal.bind(this);
     this.closeabsentModal = this.closeabsentModal.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    
   }
 
   openreportedModal(e){
@@ -296,9 +298,10 @@ class AttendanceCheck extends Component{
         user_img: '../images/user_img.png',
         open: false,
         absent: '',
-        reported: ''
+        reported: '',
+        userID:'',
     }
-    
+
     this.firebaseO = this.props.Firebase;
     this.firebase = this.firebaseO.fb; 
     console.log(this.firebase);
@@ -312,7 +315,7 @@ class AttendanceCheck extends Component{
       }
     });
   }
-
+  
   openModal() {
     this.setState({
         visible : true
@@ -351,6 +354,7 @@ class AttendanceCheck extends Component{
               <h1 id = 'logo'>TATABOX</h1>
               
               <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{/* ClassMade.state.selected */}</h2>
+
 
               <div id = 'button-container'>
                 <Button

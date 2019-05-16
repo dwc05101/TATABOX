@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 /*----------------------for tabs-----------------------*/
@@ -406,8 +407,274 @@ class AttendanceCheck extends Component{
                 <div id = "timer">
                   <Timer />
                 </div>
-                <div id = "layout">
-                  <img id = 'layout_img' src = {require('../images/seat.png')}></img>
+                <div id = "layout" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
+                  <Grid container spacing={24} style={{width:"100%"}}>
+                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4} style={{border:"1px solid black",textAlign:"center",fontSize:"4vh"}}>
+                      Screen
+                    </Grid>
+                    <Grid item xs={4}></Grid>
+                  </Grid>
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid item xs={3}>1</Grid>
+                            <Grid item xs={3}>2</Grid>
+                            <Grid item xs={3}>3</Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>4</Grid>
+                            <Grid item xs={3}>5</Grid>
+                            <Grid item xs={3}>6</Grid>
+                            <Grid item xs={3}>7</Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid item xs={3}>8</Grid>
+                            <Grid item xs={3}>9</Grid>
+                            <Grid item xs={3}>10</Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>11</Grid>
+                            <Grid item xs={3}>12</Grid>
+                            <Grid item xs={3}>13</Grid>
+                            <Grid item xs={3}>14</Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+
+                  </Grid>
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>A</Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  </Grid>
+
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>B</Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  </Grid>
+
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>C</Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  </Grid>
+
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>D</Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  </Grid>
+
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>E</Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  </Grid>
+
+                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
+                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}>F</Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Grid container spacing={24}>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="box" item xs={3}></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  </Grid>
+
+
                 </div>
               </div>
               <div id = "report-tab">

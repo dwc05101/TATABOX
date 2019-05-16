@@ -26,15 +26,15 @@ var backup = [];
 
 class Management extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state={
-            students: props.students,
+            students: [],
             username: "Gwangjo Gong",
             user_img: '../images/user_img.png',
             open: false,
             modal_visible: false,
-
             search_value: "",
+            firebase : props.Firebase.fb,
         }
 
         backup = this.state.students;
@@ -44,13 +44,25 @@ class Management extends Component{
         this.closeModal = this.closeModal.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
-
-        checkedList = [];
-        pos_count = 0;
+        
     }
 
     componentDidMount(){
-        this.SearchBar.focus();
+        var students = [];
+        this.state.firebase.database().ref("/students").once("value").then(function(snapshot){
+            snapshot.forEach(function(child){
+                students.push(child.val());
+            })
+        })
+        .then(()=>{
+            layout = [];
+            checkedList = [];
+            pos_count = 0;
+            backup = students;
+            this.setState({
+                students : students
+            });
+        });
     }
 
     makeStudentList(){

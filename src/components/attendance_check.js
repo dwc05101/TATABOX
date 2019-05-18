@@ -19,10 +19,9 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 // import Modal from 'react-awesome-modal';
 import Modal from '@material-ui/core/Modal';
 import { Textfit } from 'react-textfit';
-// import axios from 'axios';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
-import ClassMade from './class_made_component';
+import user from '../images/user_white.png';
 
 const styles = theme => ({
   container: {
@@ -221,7 +220,6 @@ class NavTabs extends React.Component {
   render() {
     const {classes} = this.props;
     const {value} = this.state;
-
     return (
       <MuiThemeProvider theme={theme}>
         <NoSsr>
@@ -287,6 +285,7 @@ NavTabs = withStyles(styles)(NavTabs);
 class AttendanceCheck extends Component{
   constructor(props) {
     super(props);
+
     this.state = {
         visible : false,
         code: '',
@@ -294,27 +293,46 @@ class AttendanceCheck extends Component{
         prof: '',
         bd: '',
         room: '',
-        username: "Gwangjo Gong",
-        user_img: '../images/user_img.png',
+        username: '...',
+        userID: '',
+        user_img: user,
         open: false,
         absent: '',
         reported: '',
-        userID:'',
+        synch: false,
+        classname: '',
+        //classname: match.params.classname,
     }
+    
+    this.gotoManagement = this.gotoManagement.bind(this)
+
+    let {match} = this.props;
 
     this.firebaseO = this.props.Firebase;
     this.firebase = this.firebaseO.fb; 
-    console.log(this.firebase);
-    let that = this;
-    that.firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-      // User is signed in.
-          that.setState({username : user.displayName})
-      } else {
 
-      }
-    });
+    let that = this;
+
+    new Promise(function(resolve, reject) {
+      that.firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+        // User is signed in.
+            that.setState({username : user.displayName, userID: user.uid})
+            resolve();
+        } else {
+          alert("Oops! you are signed out!");
+          window.location.pathname = "TATABOX/";
+        }
+      });
+    }).then(function(result) {
+        that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
+        var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
+        that.setState({user_img: userimgs, synch: true, classname: match.params.classname});
+      });
+    })
   }
+
+
   
   openModal() {
     this.setState({
@@ -344,16 +362,33 @@ class AttendanceCheck extends Component{
   };
 
   gotoManagement() {
-    window.location.pathname = "TATABOX/management"
+    let classname_ = this.state.classname;
+    window.location.pathname = "TATABOX/management/" + classname_
+  }
+
+  gotoMade() {
+    window.location.pathname="TATABOX/made"
   }
 
   render() {
+    if (!this.state.synch) return null;
+
+    let {match} = this.props;
+
+    let $profileImg = null;
+    if (this.state.synch) {
+        console.log(this.state.user_img);
+        $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+    } else {
+        $profileImg = (<img src={user} id = 'user_img'/>);
+    }
+
     return(
         <body id = 'full2'>
             <div id = 'headbar2'>
-              <h1 id = 'logo'>TATABOX</h1>
+              <h1 id = 'logo'style={{marginTop:"5px", cursor: "pointer"}} onClick={this.gotoMade}>TATABOX</h1>
               
-              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{/* ClassMade.state.selected */}</h2>
+              <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
 
 
               <div id = 'button-container'>
@@ -397,7 +432,7 @@ class AttendanceCheck extends Component{
               <h3 id = 'user_id2'>{this.state.username}</h3>
 
               <div id = 'img-container'>
-                <img id = 'user_img2' src = {require('../images/user_img.png')}></img>
+                {$profileImg}
               </div>
               
             </div>

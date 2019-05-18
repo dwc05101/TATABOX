@@ -8,15 +8,25 @@ import { func } from 'prop-types';
 import Modal from 'react-awesome-modal';
 import user from '../images/user.png';
 import SelectInput from '@material-ui/core/Select/SelectInput';
+import axios from 'axios';
+import firebase from '@firebase/app';
+import ExifOrientationImg from 'react-exif-orientation-img'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { green, red } from '@material-ui/core/colors'
 
-
+const theme = createMuiTheme({
+    palette: {
+      primary: green,
+      secondary: red
+    },
+});
 
 class Main extends Component{
     constructor(props){
       super(props);
       
       this.firebaseO = this.props.Firebase;
-      this.firebase = this.firebaseO.fb; 
+      this.firebase = this.firebaseO.fb;
       this.state = {
         user_id : "",
         user_pw : "",
@@ -26,7 +36,11 @@ class Main extends Component{
         sign_up_pw : "",
         sign_up_name : "",
         sign_up_school : "",
-        sign_up_dept : ""
+        sign_up_dept : "",
+        selectedFile: '',
+        imgPreviewUrl: '',
+        user_img_url: '',
+        synch:false
       }
       
       this.handleChange = this.handleChange.bind(this);
@@ -45,33 +59,94 @@ class Main extends Component{
       };
 
     handleSignup = e =>{
-        if(this.state.sign_up_id == ""){
+        let that = this;
+
+        if(that.state.sign_up_id == ""){
             alert("invaild id!");
             return;
         }
-        if(this.state.sign_up_pw == ""){
+        if(that.state.sign_up_pw == ""){
             alert("invaild pw!");
             return;
         }
-        if(this.state.sign_up_name == ""){
+        if(that.state.sign_up_name == ""){
             alert("invaild name!");
             return;
         }
-        if(this.state.sign_up_school == ""){
+        if(that.state.sign_up_school == ""){
             alert("invaild school!");
             return;
         }
-        if(this.state.sign_up_dept == ""){
+        if(that.state.sign_up_dept == ""){
             alert("invaild dept!");
             return;
         }
 
-        var user = this.firebaseO.createUser(this.state.sign_up_id,
-            this.state.sign_up_pw,
-            this.state.sign_up_name,
-            this.state.sign_up_school,
-            this.state.sign_up_dept);
+        const file = that.state.selectedFile;
 
+        const storage = that.firebaseO.fb.storage();
+        const storageRef = storage.ref();
+        const imgRef = storageRef.child('images/' + file.name);
+
+        const metadata = {
+            contentType: 'image/jpeg'
+        }
+
+        const uploadTask = imgRef.put(file , metadata)
+
+        new Promise(function(resolve, reject) {
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                function(snapshot) {
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED:
+                            console.log('Upload is paused');
+                            break;
+                        case firebase.storage.TaskState.RUNNING:
+                            console.log('Upload is running');
+                            break;
+                    }
+                }, function(error) {
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            break;
+                        case 'storage/canceled':
+                            break;
+                        case 'storage/unknown':
+                            break;
+                    }
+                }, function() {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        new Promise(function(resolve, reject) {
+                            that.setState({
+                                user_img_url : downloadURL,
+                                synch: true
+                            })
+                            console.log('File available at ', downloadURL)
+                            resolve()
+                        }).then(function() {
+                            console.log('last');
+                            if (that.state.synch) {
+                                var user = that.firebaseO.createUser(that.state.sign_up_id,
+                                    that.state.sign_up_pw,
+                                    that.state.sign_up_name,
+                                    that.state.sign_up_school,
+                                    that.state.sign_up_dept,
+                                    that.state.user_img_url);
+                            }
+                        })
+                    })
+                })
+            if (that.state.sign_up_id == "" ||
+                that.state.sign_up_dept == "" ||
+                that.state.sign_up_pw == "" ||
+                that.state.sign_up_name == "" ||
+                that.state.sign_up_school == ""){
+                uploadTask.cancel();
+            }
+            resolve()
+        })
     };
 
     openUp(){
@@ -82,11 +157,16 @@ class Main extends Component{
 
     closeUp(){
         this.setState({
-            up_modal : false
+            up_modal : false,
+            sign_up_id : "",
+            sign_up_dept : "",
+            sign_up_pw : "",
+            sign_up_name : "",
+            sign_up_school : ""
         })
     };
 
-    openFind= e=>{
+    openFind= e =>{
         this.setState({
             find_modal : true
         })
@@ -98,11 +178,42 @@ class Main extends Component{
         })
     }
 
-  
     onSubmit = e =>{
         this.firebaseO.signIn(this.state.user_id,this.state.user_pw);
     }
+
+    signupKeyPress(event) {
+        var code = event.keyCode || event.which;
+        if (code == 13) {
+            this.handleSignup()
+        }
+    }
+
+    singinKeyPress(event) {
+        var code = event.keyCode || event.which;
+        if (code == 13) {
+            this.onSubmit()
+        }
+    }
     
+    fileSelectedHandler = e => {
+        //e.preventDefault();
+
+        let that = this;
+        let reader = new FileReader();
+        let file = e.target.files[0];
+        
+        if (file !== null) {
+            reader.onloadend = () => {
+                that.setState({
+                    selectedFile: file,
+                    imgPreviewUrl: reader.result
+                });
+            }
+            reader.readAsDataURL(file)
+        }
+
+    }
   
     componentDidMount(){
         return;
@@ -112,6 +223,15 @@ class Main extends Component{
     render(){
       let picture_instruction = "Click icon to\nadd profile image";
       this.firebaseO.signOut();
+
+      let {imgPreviewUrl} = this.state;
+      let $imgPreview = null;
+      if (imgPreviewUrl) {
+        $imgPreview = (<img src={imgPreviewUrl} style={{borderRadius: "50%"}}/>);
+      } else {
+        $imgPreview = (<img src={user} alt="user"/>);
+      }
+  
       return (
         <body>
             <div className="App">
@@ -133,6 +253,7 @@ class Main extends Component{
                             id="user_id"
                             value={this.state.user_id}
                             onChange={this.handleChange("user_id")}
+                            onKeyPress={this.singinKeyPress.bind(this)}
                             margin="normal"
                             style={{width:"70%"}}
                             />
@@ -150,6 +271,7 @@ class Main extends Component{
                         value={this.state.user_pw}
                         type="password"
                         onChange={this.handleChange("user_pw")}
+                        onKeyPress={this.singinKeyPress.bind(this)}
                         margin="normal"
                         style={{width:"70%"}}
                         />
@@ -176,7 +298,9 @@ class Main extends Component{
                             <div className = "pic">
                                 <div className = "pic-select">
                                     <div className = 'picture-container'>
-                                        <img src={user} alt={"user"}/>
+                                        <input accept="image/*" type="file" name="file" id="file" class="inputfile" onChange={this.fileSelectedHandler} />
+                                        {/* <label for="file"><img src={user} alt="user"/></label> */}
+                                        <label for="file">{$imgPreview}</label>
                                     </div>
                                 </div>
                                 <div className = 'instruction-container'>
@@ -197,6 +321,7 @@ class Main extends Component{
                                         id="user_id"
                                         value={this.state.sign_up_id}
                                         onChange={this.handleChange("sign_up_id")}
+                                        onKeyPress={this.signupKeyPress.bind(this)}
                                         margin="normal"
                                         style={{width:"80%"}}
                                         />
@@ -214,6 +339,7 @@ class Main extends Component{
                                         type="password"
                                         value={this.state.sign_up_pw}
                                         onChange={this.handleChange("sign_up_pw")}
+                                        onKeyPress={this.signupKeyPress.bind(this)}
                                         margin="normal"
                                         style={{width:"80%"}}
                                         />
@@ -233,6 +359,7 @@ class Main extends Component{
                                         id="user_name"
                                         value={this.state.sign_up_name}
                                         onChange={this.handleChange("sign_up_name")}
+                                        onKeyPress={this.signupKeyPress.bind(this)}
                                         margin="normal"
                                         style={{marginLeft: "2.5%", width:"80%"}}
                                         />
@@ -249,6 +376,7 @@ class Main extends Component{
                                         id="user_school"
                                         value={this.state.sign_up_school}
                                         onChange={this.handleChange("sign_up_school")}
+                                        onKeyPress={this.signupKeyPress.bind(this)}
                                         margin="normal"
                                         style={{marginRight: "10%", width:"90%"}}
                                         />
@@ -266,24 +394,46 @@ class Main extends Component{
                                 id="user_dept"
                                 value={this.state.sign_up_dept}
                                 onChange={this.handleChange("sign_up_dept")}
+                                onKeyPress={this.signupKeyPress.bind(this)}
                                 margin="normal"
                                 style={{width:"90%"}}
                                 />
                             </div>
                         </div>
                         <div className = "signup-button-container">
-                            <Button className = "signup-button" 
-                                    variant="contained" 
-                                    color="primary" 
-                                    onClick={this.handleSignup} 
-                                    style={{
-                                        width:"25%",borderRadius: 10,
-                                        backgroundColor: "#4C9900",
-                                        fontSize: "20px"}}
-                            >
-                                {/*padding: "18px 36px", */}
-                                Sign Up
-                            </Button>
+                            <MuiThemeProvider theme={theme}>
+                                <Button className = "signup-button" 
+                                        variant="contained" 
+                                        color="primary" 
+                                        onClick={this.handleSignup} 
+                                        style={{
+                                            width:"25%",
+                                            borderRadius: 10,
+                                            color: "white",
+                                            fontSize: "20px",
+                                            marginRight: "5%"
+                                        }}
+                                >
+                                    {/*padding: "18px 36px", */}
+                                    Sign Up
+                                </Button>
+                            </MuiThemeProvider>
+                            <MuiThemeProvider theme={theme}>
+                                <Button className = "cancel-signup"
+                                        variant="contained" 
+                                        color="secondary" 
+                                        onClick={this.closeUp} 
+                                        style={{
+                                            width:"25%",
+                                            borderRadius: 10,
+                                            color: "white",
+                                            fontSize: "20px",
+                                            marginLeft: "5%"
+                                        }}
+                                >
+                                    Cancel
+                                </Button>
+                            </MuiThemeProvider>
                         </div>
                     </Modal>
                     <Modal visible={this.state.find_modal} width="600" height="600" effect="fadeInUp" onClickAway={()=> this.closeFind()}

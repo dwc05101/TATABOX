@@ -17,16 +17,16 @@ class Firebase{
         this.fb = firebase.initializeApp(config);
     }
 
-    
     // **** AUTH API ****
-    createUser = (id, password, name, dept, schl) => {
+    createUser = (id, password, name, dept, schl, imgurl) => {
         var firebase = this.fb;
-        firebase.auth().createUserWithEmailAndPassword(id,password).then(function success(userData){
+        firebase.auth().createUserWithEmailAndPassword(id,password)
+        .then(function success(userData){
             userData.user.updateProfile({
                 displayName: name
             })
 
-            var datas = {name: name, dept: dept , schl: schl};
+            var datas = {name: name, dept: dept , schl: schl, imgs: imgurl};
             firebase.database().ref('/AUTH/'+userData.user.uid).set(datas)
             .then(()=>{
                 window.location.pathname = "TATABOX/make";
@@ -48,7 +48,6 @@ class Firebase{
                     window.location.pathname = "TATABOX/make";
                 }
             })
-
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -59,25 +58,6 @@ class Firebase{
     signOut = () => {
         this.fb.auth().signOut();
     }
-
-
-/*     
-    var user = firebase.auth().currentUser;
-    if (user) {
-    // User is signed in.
-    } else {
-    // No user is signed in.
-    }
-
-
-    //user change detect
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          // User is signed in.
-        } else {
-          // No user is signed in.
-        }
-      }); */
 
 }
 

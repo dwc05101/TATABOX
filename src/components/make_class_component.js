@@ -11,9 +11,10 @@ import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import user from '../images/user_white.png';
 
 import OutLinedTextFields from './OutLinedTextFields';
-  
+
 class MakeClass extends Component {
 
     constructor(props) {
@@ -29,20 +30,31 @@ class MakeClass extends Component {
             bd: '',
             room: '',
             user_name: '...',
-            user_img: '../images/user_img.png',
+            userID: '',
+            user_img: user,
+            synch: false,
             open: false,
         }
 
         let that = this;
-        that.firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-            // User is signed in.
-                that.setState({user_name : user.displayName})
-            } else {
-                alert("Oops! you are signed out!");
-                window.location.pathname = "TATABOX/";
-            }
-        });
+
+        new Promise(function(resolve, reject){
+            that.firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    that.setState({user_name : user.displayName, userID : user.uid});
+                    resolve();
+                } else {
+                    alert("Oops! you are signed out!");
+                    window.location.pathname = "TATABOX/";
+                }
+            });
+        }).then(function(result) {
+                that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
+                var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
+                that.setState({user_img: userimgs, synch: true});
+            });
+        })
     }
 
     handlelogin = user =>{
@@ -69,11 +81,12 @@ class MakeClass extends Component {
         this.setState({
           [name]: event.target.value,
         });
-      }
-      handleToggle = () => {
+    }
+
+    handleToggle = () => {
         this.setState(state => ({ open: !state.open }));
-      };
-    
+    };
+
 
   
     handleClose = event => {
@@ -85,10 +98,19 @@ class MakeClass extends Component {
 
  
     render() {
+        if (!this.state.synch) return null;
+
         const { classes } = this.props;
         var fireb =this.firebaseO;
-        var state = this.state;
-        
+
+        let $profileImg = null;
+        if (this.state.synch) {
+            console.log(this.state.user_img);
+            $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+        } else {
+            $profileImg = (<img src={user} id = 'user_img'/>);
+        }
+
         return (
             <body id = 'full'>
                 <div id = 'headbar'>
@@ -131,8 +153,7 @@ class MakeClass extends Component {
                     </div>
                     <h3 id = 'userid'>{this.state.user_name}</h3>
                     <div id = 'img_cropper'>
-                        <img id = 'user_img' src = {require('../images/user_img.png')} >
-                        </img>
+                        {$profileImg}
                     </div>
                 </div>
                 <div id = 'makeclass'>

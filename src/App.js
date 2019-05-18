@@ -28,13 +28,21 @@ class App extends Component{
         <Route path="/make"
           render = {props => <MakeClass Firebase = {fb} />}
         ></Route>
-        <Route path="/test" component={props => <Outline/>}></Route>
-        <Route path="/management" component = {props=><Management Firebase={fb} students={students}/>}></Route>
+        <Route path="/test"
+          component={props => <Outline/>}
+        ></Route>
+        <Route path="/management/:classname"
+          component = {props=><Management Firebase={fb} students={students} {...props}/>}
+        ></Route>
         <Route path="/made"
           render = {props => <ClassMade Firebase = {fb} />}
         ></Route>
-        <Route path="/check" render = {props => <AttendanceCheck Firebase = {fb} />}></Route>
-        <Route path="/grade" component={props => <GradeReport Firebase={fb} students={students}/>}></Route>
+        <Route path="/check/:classname"
+          component = {props => <AttendanceCheck Firebase = {fb} {...props}/>}
+        ></Route>
+        <Route path="/grade/:classname"
+          component={props => <GradeReport Firebase={fb} students={students} {...props}/>}
+        ></Route>
       </Router>
     );
   }

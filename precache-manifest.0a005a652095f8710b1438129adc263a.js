@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "398cd2fe9f9ada4eed4132227138e12a",
+    "revision": "5c8cabfcd2e9c99e8f3f0a252c35089a",
     "url": "/TATABOX/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/TATABOX/static/css/2.29b96896.chunk.css"
   },
   {
-    "revision": "0877ca86611219d97e11",
+    "revision": "31c782706655476f0568",
     "url": "/TATABOX/static/css/main.86fa51a9.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/TATABOX/static/js/2.e7ecd211.chunk.js"
   },
   {
-    "revision": "0877ca86611219d97e11",
-    "url": "/TATABOX/static/js/main.3e2f9dc7.chunk.js"
+    "revision": "31c782706655476f0568",
+    "url": "/TATABOX/static/js/main.6fdc66ba.chunk.js"
   },
   {
     "revision": "6665888ba45a7f3187e7",

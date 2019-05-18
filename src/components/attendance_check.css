@@ -95,12 +95,13 @@
     align-items: center;
 }
 
+.box{
+    border: 1px solid black;
+    height: 48px;
+}
+
 #layout{
     height: 75vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* border-top: 1px solid black; */
 }
 
 #report-tab{

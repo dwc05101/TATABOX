@@ -39,7 +39,9 @@ class Management extends Component{
             synch: false,
             userID: '',
             classname: '',
+
             search_value: "",
+            firebase : props.Firebase.fb,
         }
 
         let {match} = this.props;
@@ -72,13 +74,25 @@ class Management extends Component{
         this.closeModal = this.closeModal.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
-
-        checkedList = [];
-        pos_count = 0;
+        
     }
 
     componentDidMount(){
-        this.SearchBar.focus();
+        var students = [];
+        this.state.firebase.database().ref("/students").once("value").then(function(snapshot){
+            snapshot.forEach(function(child){
+                students.push(child.val());
+            })
+        })
+        .then(()=>{
+            layout = [];
+            checkedList = [];
+            pos_count = 0;
+            backup = students;
+            this.setState({
+                students : students
+            });
+        });
     }
 
     makeStudentList(){

@@ -156,7 +156,7 @@ class MakeClass extends Component {
                         {$profileImg}
                     </div>
                 </div>
-                <div id = 'makeclass'>
+                <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
                     <p id = 'clicktext1'>
                         You don't have any class yet.
                     </p>

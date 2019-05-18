@@ -78,12 +78,17 @@ class ClassMade extends Component {
           synch: false,
           selected: 0,
           classname: '',
+          loading:true,
       }
-
       this.handleClick = this.handleClick.bind(this);
-
       this.firebaseO = this.props.Firebase;
       this.firebase = this.firebaseO.fb; 
+      this.componentDidMount = this.componentDidMount.bind(this);
+      
+    };
+
+    componentDidMount() {
+      // this simulates an async action, after which the component will render the content
       let that = this;
       var datas = [];
       new Promise(function(resolve, reject){
@@ -123,9 +128,9 @@ class ClassMade extends Component {
           var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
           that.setState({datas: datas, user_img: userimgs, synch: true})
         })
-      })
-    };
- 
+      }).then(() => this.setState({ loading: false }));
+    }
+    
     openModal() {
         this.setState({
             visible : true
@@ -150,17 +155,6 @@ class ClassMade extends Component {
       }).then(function(result) {
         window.location.pathname = 'TATABOX/check/'+classname_;
       })
-      /* var index = e.target.getAttribute("data-index")
-      var classname = this.state.datas[index].name
-      this.setState({
-        selected: index,
-        classname: classname
-      })
-      console.log(index);
-      console.log(this.state.datas[index].name);
-      var classname_ = this.state.classname;
-      console.log(classname_);
-      console.log(classname_.toString()); */
     }
 
     mapBuildings(){
@@ -196,6 +190,13 @@ class ClassMade extends Component {
  
     render() {
       if(!this.state.synch) return null;
+
+      console.log(this.state.loading);
+      if(this.state.loading) {
+        console.log("loading..");
+        return null;
+      }
+
       const { classes } = this.props;
       let datas = this.state.datas;
 
@@ -206,7 +207,7 @@ class ClassMade extends Component {
           $profileImg = (<img src={user} id = 'user_img'/>);
       }
       console.log($profileImg);
-
+      
       return (
           <section>
               <body id = 'full'>
@@ -261,9 +262,11 @@ class ClassMade extends Component {
                       <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                         <AddIcon id = 'large' />
                       </Fab>
-                      <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp">
+                      
+                      <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
                         <OutLinedTextFields Firebase={this.firebaseO}></OutLinedTextFields>
                       </Modal>
+                      
                   </div>
                   <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>
                       <h4 class = 'titleT' style={{marginLeft:"10px"}}>Notifications</h4>

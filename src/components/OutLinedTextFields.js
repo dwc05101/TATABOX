@@ -11,6 +11,7 @@ import MakeClass from './make_class_component.js'
 import Typography from '@material-ui/core/Typography';
 import './step_component.css';
 import { darkBlack } from 'material-ui/styles/colors';
+import user from '../images/user_white.png';
 
 const styles = theme => ({
   margin: {
@@ -112,6 +113,7 @@ class OutlinedTextFields extends React.Component {
       userDept:'',
       userSchl:'',
       userClas:'hi',
+      userImgs:'',
       synch:false
     }
 
@@ -122,7 +124,7 @@ class OutlinedTextFields extends React.Component {
         if (user) {
           // User is signed in.
           that.setState({userID : user.uid});
-          console.log(`constructor userid`,user.uid);
+          // console.log(`constructor userid`,user.uid);
           resolve();
         } else {
             alert("Oops! you are signed out!");
@@ -132,16 +134,19 @@ class OutlinedTextFields extends React.Component {
     })
     .then(function(result) {
       that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
-      console.log(`snapshot`,snapshot);
+      // console.log(`snapshot`,snapshot.val());
       var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
       var userdept = (snapshot.val() && snapshot.val().dept) || 'Anonymous';
       var userschl = (snapshot.val() && snapshot.val().schl) || 'Anonymous';
       var userclas = (snapshot.val() && snapshot.val().clas) || '';
-      console.log(`name`,username);
-      console.log(`dept`,userdept);
-      console.log(`schl`,userschl);
-      console.log(`clas`,userclas);
-      that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas, synch: true});
+      // added
+      var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
+      // console.log(`name`,username);
+      // console.log(`dept`,userdept);
+      // console.log(`schl`,userschl);
+      // console.log(`clas`,userclas);
+      // console.log(`imgs`,userimgs);
+      that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas, userImgs: userimgs, synch: true});
     });
     })
   }
@@ -212,6 +217,7 @@ class OutlinedTextFields extends React.Component {
       dept : that.state.userDept,
       schl : that.state.userSchl,
       clas : newcode,
+      imgs : that.state.userImgs
     });
     this.moveStep();
     this.setState(initialState);
@@ -258,7 +264,7 @@ class OutlinedTextFields extends React.Component {
 
   render() {
     if(!this.state.synch) return null;
-    console.log(`outlined firebase`,this.firebase);
+    // console.log(`outlined firebase`,this.firebase);
     const { classes } = this.props;
     const { selectedOption } = this.state;
     let prev;

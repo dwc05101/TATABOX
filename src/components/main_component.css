@@ -148,12 +148,14 @@ padding-left: 8%;
 width: 100%;
 height: 80%;
 }
-.picture-container {
-padding-top: 3.6%;
+#file {
+opacity: 0;
+position: absolute;
 }
 img {
 width: 90%;
 height: 90%;
+cursor: pointer;
 }
 .pic-instruction {
 width: 100%;

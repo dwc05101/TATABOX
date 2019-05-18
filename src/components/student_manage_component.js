@@ -10,6 +10,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Modal from 'react-awesome-modal';
 import SearchBar from "material-ui-search-bar";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import user from '../images/user_white.png';
 
 import StudentItem from "./student_item";
 
@@ -26,19 +27,48 @@ var backup = [];
 
 class Management extends Component{
     constructor(props){
-        super(props);
+        super(props)
+        this.firebaseO = this.props.Firebase;
+        this.firebase = this.firebaseO.fb; 
         this.state={
-            students: [],
-            username: "Gwangjo Gong",
-            user_img: '../images/user_img.png',
+            students: props.students,
+            user_name: '...',
+            user_img: user,
             open: false,
             modal_visible: false,
+            synch: false,
+            userID: '',
+            classname: '',
+
             search_value: "",
             firebase : props.Firebase.fb,
         }
 
+        let {match} = this.props;
+
+        let that = this;
+        new Promise(function(resolve, reject){
+            that.firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    that.setState({user_name : user.displayName, userID : user.uid});
+                    resolve();
+                } else {
+                    alert("Oops! you are signed out!");
+                    window.location.pathname = "TATABOX/";
+                }
+            });
+        }).then(function(result) {
+                that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
+                var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
+                that.setState({user_img: userimgs, classname: match.params.classname, synch: true});
+            });
+        })
+
         backup = this.state.students;
 
+        this.handleGrade = this.handleGrade.bind(this)
+        this.handleback = this.handleback.bind(this)
         this.handleDelete = this.handleDelete.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -98,7 +128,9 @@ class Management extends Component{
         })
     }
 
-
+    gotoMade() {
+        window.location.pathname="TATABOX/made"
+    }
 
     handleToggle = () => {
         this.setState(state => ({ open: !state.open }));
@@ -115,10 +147,12 @@ class Management extends Component{
     if (this.anchorEl.contains(event.target)) {
         return;
     }
-        window.location.pathname = "TATABOX/grade";
+    let classname_ = this.state.classname;
+    window.location.pathname = "TATABOX/grade/" + classname_;
     }
     handleback(){
-        window.location.pathname="TATABOX/check";
+        let classname_ = this.state.classname;
+        window.location.pathname="TATABOX/check/" + classname_;
     }
 
     handleDelete(){
@@ -203,11 +237,21 @@ class Management extends Component{
     }
 
     render(){
+        let {match} = this.props;
+
+        let $profileImg = null;
+        if (this.state.synch) {
+            console.log(this.state.user_img);
+            $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+        } else {
+            $profileImg = (<img src={user} id = 'user_img'/>);
+        }
+
         return(
             <div id = 'full'>
                 <div id = 'headbar'>
-                    <h1 id = 'logo'style={{marginTop:"5px"}}>TATABOX</h1>
-                    <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>CS374 : Introduction to HCI</h2>
+                    <h1 id = 'logo'style={{marginTop:"5px", cursor:"pointer"}} onClick={this.gotoMade}>TATABOX</h1>
+                    <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
                     <div id = 'menu'>
                         <Button
                             className="center"
@@ -244,10 +288,9 @@ class Management extends Component{
                             )}
                         </Popper>
                     </div>
-                        <h3 id = 'userid'>{this.state.username}</h3>
+                        <h3 id = 'userid'>{this.state.user_name}</h3>
                     <div id = 'img_cropper'>
-                        <img id = 'user_img' src = {require('../images/user_img.png')} >
-                        </img>
+                        {$profileImg}
                     </div>
                     <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
                         <h3>Back to Class</h3>

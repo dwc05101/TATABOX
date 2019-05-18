@@ -28,10 +28,9 @@ var backup = [];
 class Management extends Component{
     constructor(props){
         super(props)
-        this.firebaseO = this.props.Firebase;
-        this.firebase = this.firebaseO.fb; 
+
         this.state={
-            students: props.students,
+            students: [],
             user_name: '...',
             user_img: user,
             open: false,
@@ -48,7 +47,7 @@ class Management extends Component{
 
         let that = this;
         new Promise(function(resolve, reject){
-            that.firebase.auth().onAuthStateChanged(function(user) {
+            that.state.firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     // User is signed in.
                     that.setState({user_name : user.displayName, userID : user.uid});
@@ -59,7 +58,7 @@ class Management extends Component{
                 }
             });
         }).then(function(result) {
-                that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
+                that.state.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
                 var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
                 that.setState({user_img: userimgs, classname: match.params.classname, synch: true});
             });

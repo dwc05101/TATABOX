@@ -12,8 +12,57 @@ import MenuList from '@material-ui/core/MenuList';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import user from '../images/user_white.png';
-
+import Classblock from '../components/classes/index.js'
 import OutLinedTextFields from './OutLinedTextFields';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { resolveCname } from 'dns';
+
+
+const styles = theme => ({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
+    dense: {
+      marginTop: 160,
+    },
+    menu: {
+      width: 200,
+    },
+    root: {
+        ...theme.mixins.gutters(),
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
+    },
+  });
+
+const buildings = [
+    {
+      value: 'N1',
+      label: 'N1 (김병호 김삼열 IT융합빌딩)',
+    },
+    {
+      value: 'N4',
+      label: 'N4 (인문사회과학동)',
+    },
+    {
+      value: 'E11',
+      label: 'E11 (창의학습관)',
+    },
+    {
+      value: 'E2-2',
+      label: 'E2-2 (산업경영학동)',
+    },
+    {
+      value: 'E6-5',
+      label: 'E6-5 (궁리실험관)',
+    },
+  ];
 
 class MakeClass extends Component {
 
@@ -34,16 +83,45 @@ class MakeClass extends Component {
             user_img: user,
             synch: false,
             open: false,
+            datas : [],
+            selected: 0,
+            classname: '',
+            loading:true,
         }
+        this.handleClick = this.handleClick.bind(this);
+        this.firebaseO = this.props.Firebase;
+        this.firebase = this.firebaseO.fb; 
+        //this.componentDidMount = this.componentDidMount.bind(this);
 
         let that = this;
-
         new Promise(function(resolve, reject){
             that.firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     // User is signed in.
                     that.setState({user_name : user.displayName, userID : user.uid});
-                    resolve();
+                    var classes = [];
+                    that.firebase.database().ref('/AUTH/'+user.uid+'/clas').once('value').then(function(snapshot){
+                        var userclass = snapshot.val();
+                        if(userclass != null)classes = userclass.split(',');
+                    })
+
+                    if(classes != []){
+                        that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot){
+                            snapshot.forEach(function(childSnapshot){
+                                classes.forEach(function(classname){
+                                    if(classname == childSnapshot.val().code){
+                                    that.state.datas.push({bd:childSnapshot.val().bd, 
+                                        code: childSnapshot.val().code, 
+                                        name:childSnapshot.val().name,
+                                        prof:childSnapshot.val().prof,
+                                        room: childSnapshot.val().room})
+                                    }
+                                })
+                                })
+                                resolve();
+                        });
+
+                    }
                 } else {
                     alert("Oops! you are signed out!");
                     window.location.pathname = "TATABOX/";
@@ -54,7 +132,7 @@ class MakeClass extends Component {
                 var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
                 that.setState({user_img: userimgs, synch: true});
             });
-        })
+        }).then(() => this.setState({ loading: false }));
     }
 
     handlelogin = user =>{
@@ -62,7 +140,6 @@ class MakeClass extends Component {
             user_name : user.displayName,
         })
     }
-    
  
     openModal() {
         this.setState({
@@ -87,7 +164,25 @@ class MakeClass extends Component {
         this.setState(state => ({ open: !state.open }));
     };
 
-
+    handleClick(e) {
+        var index = 0;
+        var classname = '';
+        var classname_ = '';
+        let that = this;
+        new Promise(function(resolve, reject) {
+          index = e.target.getAttribute("data-index")
+          classname = that.state.datas[index].name
+          resolve()
+        }).then(function(result) {
+          that.setState({
+            slected: index,
+            classname: classname
+          })
+          classname_ = that.state.classname;
+        }).then(function(result) {
+          window.location.pathname = 'TATABOX/check/'+classname_;
+        })
+    }
   
     handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
@@ -96,12 +191,28 @@ class MakeClass extends Component {
       this.setState({ open: false });
     };
 
+    mapBuildings(){
+        return buildings.map(option => {
+          return(
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          )
+        })
+      }
+
  
     render() {
         if (!this.state.synch) return null;
+        if(this.state.loading) {
+          console.log("loading..");
+          return null;
+        }
 
         const { classes } = this.props;
         var fireb =this.firebaseO;
+        let datas = this.state.datas;
+
 
         let $profileImg = null;
         if (this.state.synch) {
@@ -111,67 +222,138 @@ class MakeClass extends Component {
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
 
-        return (
-            <body id = 'full'>
-                <div id = 'headbar'>
-                    <h1 id = 'logo'>TATABOX</h1>
-                    <div id = 'menu'>
-                        <Button
-                            id = 'menu_button'
-                            buttonRef={node => {
-                            this.anchorEl = node;
-                            }}
-                            aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleToggle}
-                        >
-                        <img
-                            id = "menu-img"
-                            src = {require('../images/menu.png')}
+        if(datas.length == 0){
+            return (
+                <body id = 'full'>
+                    <div id = 'headbar'>
+                        <h1 id = 'logo'>TATABOX</h1>
+                        <div id = 'menu'>
+                            <Button
+                                id = 'menu_button'
+                                buttonRef={node => {
+                                this.anchorEl = node;
+                                }}
+                                aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleToggle}
                             >
-                        </img>
-                        </Button>
-                        <Popper id= "menuitems" open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                            {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                id="menu-list-grow"
-                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                            >
-                                <Paper>
-                                <ClickAwayListener onClickAway={this.handleClose}>
-                                    <MenuList>
-                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>My Accountrewqrrqewrqwxw</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                                    </MenuList>
-                                </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                            )}
-                        </Popper>
+                            <img
+                                id = "menu-img"
+                                src = {require('../images/menu.png')}
+                                >
+                            </img>
+                            </Button>
+                            <Popper id= "menuitems" open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
+                                {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    id="menu-list-grow"
+                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                >
+                                    <Paper>
+                                    <ClickAwayListener onClickAway={this.handleClose}>
+                                        <MenuList>
+                                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>My Accountrewqrrqewrqwxw</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                                )}
+                            </Popper>
+                        </div>
+                        <h3 id = 'userid'>{this.state.user_name}</h3>
+                        <div id = 'img_cropper'>
+                            {$profileImg}
+                        </div>
                     </div>
-                    <h3 id = 'userid'>{this.state.user_name}</h3>
-                    <div id = 'img_cropper'>
-                        {$profileImg}
+                    <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
+                        <p id = 'clicktext1'>
+                            You don't have any class yet.
+                        </p>
+                        <p id = 'clicktext2'>
+                            Click here to create new class.
+                        </p>
+                        <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
+                            <AddIcon id = 'large' />
+                        </Fab>
+                        <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
+                            <OutLinedTextFields Firebase={fireb}></OutLinedTextFields>
+                        </Modal>
                     </div>
-                </div>
-                <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
-                    <p id = 'clicktext1'>
-                        You don't have any class yet.
-                    </p>
-                    <p id = 'clicktext2'>
-                        Click here to create new class.
-                    </p>
-                    <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
-                        <AddIcon id = 'large' />
-                    </Fab>
-                    <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                        <OutLinedTextFields Firebase={fireb}></OutLinedTextFields>
-                    </Modal>
-                </div>
-            </body>
-        );
+                </body>
+            );
+        }else {
+            return (
+                <section>
+                    <body id = 'full'>
+                        <div id = 'headbar'>
+                            <h1 id = 'logo'>TATABOX</h1>
+                            <div id = 'menu'>
+                                <Button
+                                    id = 'menu_button'
+                                    buttonRef={node => {
+                                    this.anchorEl = node;
+                                    }}
+                                    aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={this.handleToggle}
+                                >
+                                <img
+                                id = "menu-img"
+                                src = {require('../images/menu.png')}
+                                >
+                                </img>
+                                </Button>
+                                <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
+                                    {({ TransitionProps, placement }) => (
+                                    <Grow
+                                        {...TransitionProps}
+                                        id="menu-list-grow"
+                                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                    >
+                                        <Paper>
+                                        <ClickAwayListener onClickAway={this.handleClose}>
+                                            <MenuList>
+                                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                        </Paper>
+                                    </Grow>
+                                    )}
+                                </Popper>
+                            </div>
+                            <h3 id = 'userid'>{this.state.user_name}</h3>
+                            <div id = 'img_cropper'>
+                            {$profileImg}
+                            </div>
+                        </div>
+                        
+                        <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
+                            <h4 className = 'titleT'>Today's class</h4>
+                            <Classblock datas = {datas} handleClick = {this.handleClick}>
+                            </Classblock>
+                            <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
+                            <AddIcon id = 'large' />
+                            </Fab>
+                            
+                            <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
+                            <OutLinedTextFields Firebase={this.firebaseO}></OutLinedTextFields>
+                            </Modal>
+                            
+                        </div>
+                        <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>
+                            <h4 class = 'titleT' style={{marginLeft:"10px"}}>Notifications</h4>
+                            <Paper id = 'info_container' className={this.props.root} elevation={1}>
+                            </Paper>
+                        </div>
+                    </body>
+                </section>
+            );            
+        }
     }
 }
 MakeClass.propTypes = {

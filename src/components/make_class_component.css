@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     font-family: 'Raleway';
-
 }
 
 #full{
@@ -147,4 +146,107 @@
     justify-content: center;
     align-items: center;
     border-collapse: collapse;
+}
+
+
+/*--------for made--------------*/
+
+/* height: 90% of screen */
+#makeclass2{
+    float: left;
+    min-height: 80vh;
+    min-width: 550px;
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    text-align: left;
+}
+#plus2{
+    background-color: rgb(149, 181, 101);
+    color: white;
+    position: fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    left:40px;
+    border-radius:50px;
+    text-align:center;
+}
+
+
+#notify{
+    float:left;
+    min-height: 80vh;
+    min-width: 150px;
+    width: 39%;
+    font-size:30px;
+    text-align: left;
+
+}
+
+.titleT{
+    margin-left: 40px;
+    margin-top :20px;
+    margin-bottom: 20px;
+    height: 40px;
+    color: rgb(94, 94, 94);
+}
+
+#class_container{
+    width: auto;
+    height: 15vh;
+    min-height: 100px;
+    margin-bottom: 20px;
+    margin-left:40px;
+    margin-right:15px;
+    border-radius: 15px;
+    background-color:rgba(243, 243, 243, 0.87);
+}
+
+.Class_code{
+    width: 100%;
+    margin: 10px;
+    float: left;
+    font-size:0.8em;
+    color: rgb(65, 65, 65);
+}
+.Class_name{
+    margin-left: 10px;
+    margin-top:5px;
+    float: left;
+    font-size:1.2em;
+    color: rgb(65, 65, 65);
+}
+.roomNprof{
+    float: right;
+    padding-top: 15px;
+    width: 30%;
+    color: rgb(129, 129, 129)
+}
+.Class_room{
+    margin-top:0px;
+    margin-bottom: 0px;
+    float: right;
+    width: 100%;
+    text-align: right;
+    font-weight: 200;
+    font-size:0.8em;
+}
+.Class_prof{
+    float: right;
+    margin: 0px;
+    padding:0px;
+    font-weight: 200;
+    font-size:0.5em;
+}
+
+#info_container{
+    width: auto;
+    height: calc(90vh - 102px);
+    margin-left:10px;
+    margin-right:10px;
+    padding:0px;
+    border-radius: 20px;
+    background-color:rgba(243, 243, 243, 0.87);
 }

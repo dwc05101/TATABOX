@@ -19,7 +19,7 @@ class MakeClass extends Component {
 
     constructor(props) {
         super(props);
-        this.closeModal = React.createRef;
+        this.closeModal =this.closeModal.bind(this);
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
         this.state = {
@@ -167,7 +167,7 @@ class MakeClass extends Component {
                         <AddIcon id = 'large' />
                     </Fab>
                     <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                        <OutLinedTextFields Firebase={fireb}></OutLinedTextFields>
+                        <OutLinedTextFields Firebase={fireb} closeModal={this.closeModal}></OutLinedTextFields>
                     </Modal>
                 </div>
             </body>

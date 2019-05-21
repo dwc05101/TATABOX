@@ -349,7 +349,7 @@ class OutlinedTextFields extends React.Component {
                 </div>
               </div>
               <div id="buttondiv" style={{width: "50%", height: "10vh", position: 'absolute' ,bottom:0}}>
-                <Button variant="contained" color="secondary" onClick={this.cancel} className={classes.margin}>
+                <Button variant="contained" color="secondary" onClick={this.props.closeModal} className={classes.margin}>
                     Cancel
                 </Button>
                 <Button variant="contained" color="primary" onClick={this.moveStep}  className={classes.margin}>

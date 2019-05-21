@@ -36,29 +36,6 @@ const styles = theme => ({
     },
   });
   
-const buildings = [
-  {
-    value: 'N1',
-    label: 'N1 (김병호 김삼열 IT융합빌딩)',
-  },
-  {
-    value: 'N4',
-    label: 'N4 (인문사회과학동)',
-  },
-  {
-    value: 'E11',
-    label: 'E11 (창의학습관)',
-  },
-  {
-    value: 'E2-2',
-    label: 'E2-2 (산업경영학동)',
-  },
-  {
-    value: 'E6-5',
-    label: 'E6-5 (궁리실험관)',
-  },
-];
-
 class ClassMade extends Component {
 
     constructor(props) {
@@ -81,9 +58,12 @@ class ClassMade extends Component {
           loading:true,
       }
       this.handleClick = this.handleClick.bind(this);
+      this.gotoManage = this.gotoManage.bind(this);
+      this.delete = this.delete.bind(this);
       this.firebaseO = this.props.Firebase;
       this.firebase = this.firebaseO.fb; 
       this.componentDidMount = this.componentDidMount.bind(this);
+      this.closeModal = this.closeModal.bind(this);
       
     };
 
@@ -136,14 +116,21 @@ class ClassMade extends Component {
             visible : true
         });
     }
+    //click delete button
+    delete(){
+      //TODO
+      alert("Are you sure to delete class?");
+    }
 
-    handleClick(e) {
+    //click check button
+    handleClick(i) {
       var index = 0;
       var classname = '';
       var classname_ = '';
       let that = this;
       new Promise(function(resolve, reject) {
-        index = e.target.getAttribute("data-index")
+        //index = e.target.getAttribute("data-index")
+        index = i
         classname = that.state.datas[index].name
         resolve()
       }).then(function(result) {
@@ -157,16 +144,28 @@ class ClassMade extends Component {
       })
     }
 
-    mapBuildings(){
-      return buildings.map(option => {
-        return(
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        )
+    //click management button
+    gotoManage(i) {
+      var index = 0;
+      var classname = '';
+      var classname_ = '';
+      let that = this;
+      new Promise(function(resolve, reject) {
+        //index = e.target.getAttribute("data-index")
+        index = i;
+        classname = that.state.datas[index].name
+        resolve()
+      }).then(function(result) {
+        that.setState({
+          slected: index,
+          classname: classname
+        })
+        classname_ = that.state.classname;
+      }).then(function(result) {
+        window.location.pathname = 'TATABOX/management/'+classname_;
       })
     }
- 
+
     closeModal() {
         this.setState({
             visible : false
@@ -196,7 +195,7 @@ class ClassMade extends Component {
         console.log("loading..");
         return null;
       }
-
+      console.log(`hover`,this.state.hover);
       const { classes } = this.props;
       let datas = this.state.datas;
 
@@ -257,21 +256,16 @@ class ClassMade extends Component {
                   
                   <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                       <h4 className = 'titleT'>Today's class</h4>
-                        <Classblock datas = {datas} handleClick = {this.handleClick}>
+                        <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete}>
                         </Classblock>
                       <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                         <AddIcon id = 'large' />
                       </Fab>
                       
                       <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                        <OutLinedTextFields Firebase={this.firebaseO}></OutLinedTextFields>
+                        <OutLinedTextFields Firebase={this.firebaseO} closeModal={this.closeModal}></OutLinedTextFields>
                       </Modal>
                       
-                  </div>
-                  <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>
-                      <h4 class = 'titleT' style={{marginLeft:"10px"}}>Notifications</h4>
-                      <Paper id = 'info_container' className={classes.root} elevation={1}>
-                      </Paper>
                   </div>
               </body>
           </section>

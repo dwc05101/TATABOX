@@ -283,6 +283,10 @@ NavTabs.propTypes = {
 
 NavTabs = withStyles(styles)(NavTabs);
 /*----------------------for tabs-----------------------*/
+
+var classInfo;
+var classKey;
+
 class AttendanceCheck extends Component{
   constructor(props) {
     super(props);
@@ -308,6 +312,8 @@ class AttendanceCheck extends Component{
         date : date,
         link : link,
         firebase : props.Firebase.fb,
+        init : false,
+        checkDone : false
         //classname: match.params.classname,
     }
     
@@ -340,31 +346,22 @@ class AttendanceCheck extends Component{
   }
 
   componentDidMount(){
-    var null_array = [];
-    for(var i = 1; i<15; i++){
-      null_array.push({
-        seat : i,
-        sid : "",
-        name : ""
-      });
-    }
-    var layout_structure = {
-      A : null_array,
-      B : null_array,
-      C : null_array,
-      D : null_array,
-      E : null_array,
-      F : null_array,
-    }
     var classname = this.state.classname;
-    var date = this.state.date;
-    var attendanceData = {
-      classname : classname,
-      date : date,
-      attendance : layout_structure
-    }
-    this.state.firebase.database().ref("/attendance/"+classname+"/"+date).push(attendanceData);
-
+    this.state.firebase.database().ref("/classInfo").once("value").then(function(snapshot){
+        snapshot.forEach(function(child){
+            if(child.val().name === classname){
+                classInfo = child.val();
+                classKey = child.key;
+            }
+        })
+    })
+    .then(
+      ()=>{
+        this.setState({
+          init : true
+        })
+      }
+    );
   }
 
   

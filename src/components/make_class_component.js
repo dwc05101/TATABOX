@@ -19,7 +19,6 @@ import TextField from '@material-ui/core/TextField';
 import { resolveCname } from 'dns';
 
 
-
 const styles = theme => ({
     container: {
       display: 'flex',
@@ -111,17 +110,11 @@ class MakeClass extends Component {
                             snapshot.forEach(function(childSnapshot){
                                 classes.forEach(function(classname){
                                     if(classname == childSnapshot.val().code){
-                                    that.state.datas.push(
-                                        {
-                                            bd:childSnapshot.val().bd, 
-                                            code: childSnapshot.val().code, 
-                                            name:childSnapshot.val().name,
-                                            prof:childSnapshot.val().prof,
-                                            room: childSnapshot.val().room,
-                                            students: childSnapshot.val().students
-                                        }
-                                    )
-                                    
+                                    that.state.datas.push({bd:childSnapshot.val().bd, 
+                                        code: childSnapshot.val().code, 
+                                        name:childSnapshot.val().name,
+                                        prof:childSnapshot.val().prof,
+                                        room: childSnapshot.val().room})
                                     }
                                 })
                                 })

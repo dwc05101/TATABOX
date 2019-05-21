@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import './step_component.css';
 import { darkBlack } from 'material-ui/styles/colors';
 import user from '../images/user_white.png';
-import students from '../data/student_pairs';
 
 const styles = theme => ({
   margin: {
@@ -210,7 +209,6 @@ class OutlinedTextFields extends React.Component {
       prof : this.state.prof,
       bd : this.state.bd,
       room : this.state.room,
-      students: students
     });
     
     //user info update

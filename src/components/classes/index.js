@@ -29,8 +29,6 @@ function MakeBlock(props, i){
     const {classes} = props;
     var datas = props.datas;
     return (
-        //manage button onClick = {props.gotoManage}
-        //check button onClick = {props.handleClick}
         <div onMouseEnter={() => makeVisible(i)} onMouseLeave={() => makeInvisible(i)}>
             <Paper id = 'class_container' className={classes.root} data-index={i} elevation={1}>
                 <div>

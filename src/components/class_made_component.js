@@ -66,7 +66,7 @@ class ClassMade extends Component {
       this.closeModal = this.closeModal.bind(this);
       
     };
-
+//
     componentDidMount() {
       // this simulates an async action, after which the component will render the content
       let that = this;

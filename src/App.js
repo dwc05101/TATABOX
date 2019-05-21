@@ -5,6 +5,7 @@ import Main from "./components/main_component";
 import MakeClass from "./components/make_class_component";
 import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
+import ClassMade from './components/class_made_component'
 import AttendanceCheck from './components/attendance_check';
 import GradeReport from "./components/grade_report_component";
 import StudentSide from "./components/student_side";
@@ -33,6 +34,9 @@ class App extends Component{
         ></Route>
         <Route path="/management/:classname"
           component = {props=><Management Firebase={fb} students={students} {...props}/>}
+        ></Route>
+        <Route path="/made"
+          render = {props => <ClassMade Firebase = {fb} />}
         ></Route>
         <Route path="/check/:classname"
           component = {props => <AttendanceCheck Firebase = {fb} {...props}/>}

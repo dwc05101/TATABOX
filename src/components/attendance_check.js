@@ -165,7 +165,6 @@ class NavTabs extends React.Component {
         'Accept': 'application.json'
       }
     })
-    // ax.get("tabtest.json")
     .then(response => {
       return response.json();
     })
@@ -182,6 +181,7 @@ class NavTabs extends React.Component {
       var absentIndents = [];
       var reportInfo = [];
       var absentInfo = [];
+
       // dictionary data form
       for (var i=0;i<Object.keys(reportedStudents).length;i++) {
         reportIndents.push(

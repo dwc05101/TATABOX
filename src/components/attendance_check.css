@@ -61,7 +61,6 @@
 
 #button-container{
     height: 100%;
-    width: height;
     float: right;
 }
 
@@ -86,6 +85,7 @@
 
 #timer-layout{
     width: 56%;
+    height: 100%;
 }
 
 #timer{

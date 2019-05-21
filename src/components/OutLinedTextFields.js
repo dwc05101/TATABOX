@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import Select from 'react-select';
-import MakeClass from './make_class_component.js'
 import Typography from '@material-ui/core/Typography';
 import './step_component.css';
-import { darkBlack } from 'material-ui/styles/colors';
 import user from '../images/user_white.png';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import {purple} from '@material-ui/core/colors'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+  },
+});
 
 const styles = theme => ({
   margin: {
@@ -244,6 +249,11 @@ class OutlinedTextFields extends React.Component {
       this.setState({step : 0,});
     }
   }
+
+  gotoCustom() {
+    window.location.pathname = "/TATABOX/custom"
+  }
+
   errorhandle(){
     if(this.state.code==''){
       this.state.error=true;
@@ -341,11 +351,19 @@ class OutlinedTextFields extends React.Component {
               </form>
             </div>
             <div id = "seatbox">
-              <div id="seatlay" style={{width: "100%"}}>
-                Preview for Seat
-                <div>{ this.state.isVisible ? (
+              <div id="seatlay" style={{width: "100%", alignItems: "center"}}>
+                <text>Preview for Seat</text>
+                
+                {/* <div>{ this.state.isVisible ? (
                   <img id = 'seat' src = {prev} style={{marginTop:30}}/>
                 ) : null }
+                </div> */}
+                <div style={{height: "42vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                  <MuiThemeProvider theme={theme}>
+                    <Button variant="contained" color="primary" onClick={this.gotoCustom}>
+                        Customize Seat!
+                    </Button>
+                  </MuiThemeProvider>
                 </div>
               </div>
               <div id="buttondiv" style={{width: "50%", height: "10vh", position: 'absolute' ,bottom:0}}>

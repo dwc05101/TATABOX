@@ -159,24 +159,22 @@ class NavTabs extends React.Component {
   };
 
   componentWillMount() {
-    fetch("tabtest.json", {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application.json'
-      }
-    })
-    // ax.get("tabtest.json")
-    .then(response => {
-      return response.json();
-    })
-    .then(json => {
-      this.setState({
-        reported: json.reported,
-        absent: json.absent,
-      })
 
-      const reportedStudents = json.reported;
-      const absentStudents = json.absent;
+    this.setState({
+      reported: {
+        "studentC": "student1",
+        "studentD": "student2",
+        "student3": "student4"
+    },
+      absent: ["studentA", "studentB"],
+    })
+
+      const reportedStudents = {
+        "studentC": "student1",
+        "studentD": "student2",
+        "student3": "student4"
+    };
+      const absentStudents = ["studentA", "studentB"];
 
       var reportIndents = [];
       var absentIndents = [];
@@ -208,7 +206,7 @@ class NavTabs extends React.Component {
         reportInfo: reportInfo,
         absentInfo: absentInfo
       })
-    })
+    
   }
 
   handleClick(e) {

@@ -39,7 +39,6 @@ class Management extends Component{
             synch: false,
             userID: '',
             classname: '',
-
             search_value: "",
             firebase : props.Firebase.fb,
         }

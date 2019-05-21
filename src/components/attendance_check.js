@@ -470,7 +470,7 @@ class AttendanceCheck extends Component{
               </div>
               
             </div>
-            <div id = "content">
+            <div id = "content" style={{backgroundColor:"#ffffff"}}>
               <div id = "timer-layout">
                 <div id = "link">
                       <h3>URL : </h3>

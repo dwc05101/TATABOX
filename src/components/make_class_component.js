@@ -39,6 +39,9 @@ const styles = theme => ({
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
     },
+    margin: {
+        margin: theme.spacing.unit,
+    },
   });
 
 
@@ -49,6 +52,7 @@ class MakeClass extends Component {
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
         this.state = {
+            tryDelete: false,
             visible : false,
             code: '',
             name: '',
@@ -72,6 +76,8 @@ class MakeClass extends Component {
         this.delete = this.delete.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
+        this.openCaution = this.openCaution.bind(this);
+        this.closeCaution = this.closeCaution.bind(this);
         //this.componentDidMount = this.componentDidMount.bind(this);
 
         let that = this;
@@ -135,6 +141,18 @@ class MakeClass extends Component {
         });
     }
 
+    openCaution(){
+        this.setState({
+            tryDelete: true,
+            overflow:"visible"
+        })
+    }
+    closeCaution(){
+        this.setState({
+            tryDelete:false,
+        });
+    }
+
     handleChange = name => event => {
         this.setState({
           [name]: event.target.value,
@@ -148,7 +166,7 @@ class MakeClass extends Component {
     //click delete button
     delete(){
         //TODO
-        alert("Are you sure to delete class?");
+        
     }
 
     //click check button
@@ -334,7 +352,7 @@ class MakeClass extends Component {
                         
                         <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                             <h4 className = 'titleT'>Today's class</h4>
-                            <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete} openModal={this.openModal}>
+                            <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete} openCaution={this.openCaution} closeCaution={this.closeCaution} tryDelete={this.state.tryDelete}>
                             </Classblock>
                             <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                             <AddIcon id = 'large' />
@@ -345,6 +363,16 @@ class MakeClass extends Component {
                             </Modal>
                             
                         </div>
+                        <Modal visible={this.state.tryDelete} width="350" height="200" effect="fadeInUp" onClickAway={this.closeCaution} >
+                            <div style={{textAlign:'center', marginTop:'20px'}}>
+                                
+                                    <p>Are you sure to delete class?</p>
+                                    <p>You Cannot restore deleted class.</p>
+                                    <Button variant="contained" onClick={this.delete} color="secondary" className={classes.margin}>Delete</Button>
+                                    <Button variant="contained" onClick={this.closeCaution} color="primary" className={classes.margin} > Cancel</Button>
+                                
+                            </div>
+                        </Modal>
                     </body>
                 </section>
             );            
@@ -355,4 +383,4 @@ MakeClass.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-export default MakeClass;
+export default withStyles(styles)(MakeClass);

@@ -197,7 +197,7 @@ class Management extends Component{
                     if(checkedList[i]===e.target.name){
                         checkedList.splice(i,1);
                     }
-                }
+                } 
             }
         }
     }

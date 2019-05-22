@@ -50,10 +50,6 @@ class MakeClass extends Component {
 
     constructor(props) {
         super(props);
-<<<<<<< HEAD
-        this.closeModal =this.closeModal.bind(this);
-=======
->>>>>>> cfcf3c865bc6b64d0df957895fbea5f31105ddb9
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
         this.state = {
@@ -296,25 +292,6 @@ class MakeClass extends Component {
                         <div id = 'img_cropper'>
                             {$profileImg}
                         </div>
-<<<<<<< HEAD
-                        </div>
-                        <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
-                            <p id = 'clicktext1'>
-                                You don't have any class yet.
-                            </p>
-                            <p id = 'clicktext2'>
-                                Click here to create new class.
-                            </p>
-                            <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
-                                <AddIcon id = 'large' />
-                            </Fab>
-                            <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                                <OutLinedTextFields Firebase={fireb} closeModal={this.closeModal}></OutLinedTextFields>
-                            </Modal>
-                        </div>
-                    </body>
-                );
-=======
                     </div>
                     <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
                         <p id = 'clicktext1'>
@@ -332,7 +309,6 @@ class MakeClass extends Component {
                     </div>
                 </body>
             );
->>>>>>> cfcf3c865bc6b64d0df957895fbea5f31105ddb9
         }else {
             return (
                 <section>

@@ -3,10 +3,7 @@ import { withStyles } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-<<<<<<< HEAD
-=======
 import Modal from 'react-awesome-modal';
->>>>>>> cfcf3c865bc6b64d0df957895fbea5f31105ddb9
 
 
 
@@ -47,16 +44,10 @@ function MakeBlock(props, i){
                 <div class = 'buttonSection' id={i} style={{visibility:'hidden'}} >
                     <Button id='gotoCheck' variant="contained" size="medium" color="secondary" className={classes.margin} onClick={() => props.handleClick(i)} data-index={i} elevation={1}>Check</Button>
                     <Button id='gotoMana' variant="contained" size="medium" color="primary" className={classes.margin} onClick={() => props.gotoManage(i)} data-index={i} elevation={1}>Manage</Button>
-<<<<<<< HEAD
-                    <IconButton className={classes.margin} onClick={props.delete} aria-label="Delete"><img src = {require('../../images/garbage.png')} style={{width:'20px',heigth:'auto',cursor:'pointer'}} /></IconButton>
-                </div>
-                </div>
-=======
                     <IconButton className={classes.margin} onClick={props.openCaution} aria-label="Delete"><img src = {require('../../images/garbage.png')} style={{width:'20px',heigth:'auto',cursor:'pointer'}} /></IconButton>
                 </div>
                 </div>
                 
->>>>>>> cfcf3c865bc6b64d0df957895fbea5f31105ddb9
             </Paper>
         </div>
     )

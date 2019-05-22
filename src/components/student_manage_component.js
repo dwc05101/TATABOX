@@ -25,6 +25,9 @@ var checkedList;
 var pos_count;
 var backup = [];
 
+var classInfo;
+var classKey;
+
 class Management extends Component{
     constructor(props){
         super(props)
@@ -37,8 +40,7 @@ class Management extends Component{
             modal_visible: false,
             synch: false,
             userID: '',
-            classname: '',
-
+            classname: props.match.params.classname,
             search_value: "",
             firebase : props.Firebase.fb,
         }
@@ -78,9 +80,14 @@ class Management extends Component{
 
     componentDidMount(){
         var students = [];
-        this.state.firebase.database().ref("/students").once("value").then(function(snapshot){
+        var classname = this.state.classname;
+        this.state.firebase.database().ref("/classInfo").once("value").then(function(snapshot){
             snapshot.forEach(function(child){
-                students.push(child.val());
+                if(child.val().name === classname){
+                    students = child.val().students;
+                    classInfo = child.val();
+                    classKey = child.key;
+                }
             })
         })
         .then(()=>{
@@ -167,9 +174,17 @@ class Management extends Component{
         }
 
         checkedList=[];
-        this.setState({
-            students: std_list
-        });
+
+        classInfo.students = std_list;
+
+        this.state.firebase.database().ref("/classInfo/"+classKey).set(classInfo)
+        .then(
+            ()=>{
+                this.setState({
+                    students: std_list
+                });
+            }
+        )
     }
 
     checkBoxClick(e){
@@ -182,7 +197,7 @@ class Management extends Component{
                     if(checkedList[i]===e.target.name){
                         checkedList.splice(i,1);
                     }
-                }
+                } 
             }
         }
     }

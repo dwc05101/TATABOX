@@ -283,10 +283,17 @@ NavTabs.propTypes = {
 
 NavTabs = withStyles(styles)(NavTabs);
 /*----------------------for tabs-----------------------*/
+
+var classInfo;
+var classKey;
+
 class AttendanceCheck extends Component{
   constructor(props) {
     super(props);
 
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var link = "https://dwc05101.github.io/TATABOX/student/"+props.match.params.classname+"/"+date;
     this.state = {
         visible : false,
         code: '',
@@ -301,7 +308,12 @@ class AttendanceCheck extends Component{
         absent: '',
         reported: '',
         synch: false,
-        classname: '',
+        classname: props.match.params.classname,
+        date : date,
+        link : link,
+        firebase : props.Firebase.fb,
+        init : false,
+        checkDone : false
         //classname: match.params.classname,
     }
     
@@ -333,6 +345,24 @@ class AttendanceCheck extends Component{
     })
   }
 
+  componentDidMount(){
+    var classname = this.state.classname;
+    this.state.firebase.database().ref("/classInfo").once("value").then(function(snapshot){
+        snapshot.forEach(function(child){
+            if(child.val().name === classname){
+                classInfo = child.val();
+                classKey = child.key;
+            }
+        })
+    })
+    .then(
+      ()=>{
+        this.setState({
+          init : true
+        })
+      }
+    );
+  }
 
   
   openModal() {
@@ -439,6 +469,10 @@ class AttendanceCheck extends Component{
             </div>
             <div id = "content" style={{backgroundColor:"#ffffff"}}>
               <div id = "timer-layout">
+                <div id = "link">
+                      <h3>URL : </h3>
+                      <u style={{color:'#0040a8'}}>{this.state.link}</u>
+                </div>
                 <div id = "timer">
                   <Timer />
                 </div>
@@ -492,33 +526,33 @@ class AttendanceCheck extends Component{
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}>A</Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -529,33 +563,33 @@ class AttendanceCheck extends Component{
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}>B</Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -566,33 +600,33 @@ class AttendanceCheck extends Component{
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}>C</Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -603,33 +637,33 @@ class AttendanceCheck extends Component{
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}>D</Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -640,33 +674,33 @@ class AttendanceCheck extends Component{
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}>E</Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -677,33 +711,33 @@ class AttendanceCheck extends Component{
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}>F</Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
                             <Grid item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={3}>
                           <Grid container spacing={24}>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
-                            <Grid className="box" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
+                            <Grid className="absent" item xs={3}></Grid>
                           </Grid>
                         </Grid>
                       </Grid>

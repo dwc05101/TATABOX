@@ -1,19 +1,57 @@
+#headbar {
+    height: 90px;
+    width: 100%;
+    background-color: #7eab54;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#title {
+    height: 10vh;
+    margin :0px;
+    padding-top: 15px;
+    padding-left: 15px;
+    color: white;
+    font-size: 40px;
+
+}
+
 #main {
-    height: 100vh;
-    width: 100vw;
     background-color: white;
     display: flex;
+    width: 100%;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #functions {
-    height: 100%;
-    width: 10%;
+    height: 10vh;
+    width: 100%;
+    background-color: lightgray;
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #preview {
-    height: 100%;
-    width: 90%;
+    height: 80vh;
+    width: 100%;
     border: 1px solid black;
 
+}
+
+@font-face {
+    font-family: 'Raleway', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    src: local('Raleway'), url(../fonts/Raleway/Raleway-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Alba';
+    src: local('Alba'), url(../fonts/alba/ALBA____.TTF) format('truetype');
 }

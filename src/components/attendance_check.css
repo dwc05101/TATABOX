@@ -81,6 +81,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: hidden;
 }
 
 #timer-layout{
@@ -89,19 +90,38 @@
 }
 
 #timer{
-    height: 15vh;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#link{
+    height: 5vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.box{
+
+.absent{
     border: 1px solid black;
     height: 48px;
 }
 
+.present{
+    border: 1px solid black;
+    height: 48px;
+    background-color: #779ECB;
+}
+
+.reported{
+    border: 1px solid black;
+    height: 48px;
+    background-color: #ff6666;
+}
+
 #layout{
-    height: 75vh;
+    height: 65vh;
 }
 
 #report-tab{

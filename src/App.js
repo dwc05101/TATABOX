@@ -7,7 +7,11 @@ import Outline from './components/OutLinedTextFields'
 import Management from './components/student_manage_component';
 import AttendanceCheck from './components/attendance_check';
 import GradeReport from "./components/grade_report_component";
+<<<<<<< HEAD
 import Custom from "./components/customize_seat"
+=======
+import StudentSide from "./components/student_side";
+>>>>>>> d76a5f6364577b53abd56d6403a81bdc703d39fe
 
 import students from "./data/student_pairs";
 import Firebase from './firebase';
@@ -42,6 +46,9 @@ class App extends Component{
         ></Route>
         <Route path="/grade/:classname"
           component={props => <GradeReport Firebase={fb} students={students} {...props}/>}
+        ></Route>
+        <Route path="/student/:classname/:date"
+          component={props => <StudentSide Firebase={fb} {...props}/>}
         ></Route>
       </Router>
     );

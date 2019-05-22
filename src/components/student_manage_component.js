@@ -331,7 +331,7 @@ class Management extends Component{
                         </Grid>                
                     </Grid>
                 </div>
-                <div id = 'body2' onClick={this.checkBoxClick}>
+                <div id = 'body2' style={{backgroundColor:'#ffffff'}} onClick={this.checkBoxClick}>
                     <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
                         {this.makeStudentList()}
                     </ReactGridLayout>

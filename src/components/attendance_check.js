@@ -313,7 +313,11 @@ class AttendanceCheck extends Component{
         link : link,
         firebase : props.Firebase.fb,
         init : false,
-        checkDone : false
+        checkDone : false,
+        seatlist :[],
+        absentlist :[],
+        reportedlist : [],
+        DataIndex: 0
         //classname: match.params.classname,
     }
     
@@ -322,7 +326,8 @@ class AttendanceCheck extends Component{
     let {match} = this.props;
 
     this.firebaseO = this.props.Firebase;
-    this.firebase = this.firebaseO.fb; 
+    this.firebase = this.firebaseO.fb;
+
 
     let that = this;
 
@@ -347,11 +352,20 @@ class AttendanceCheck extends Component{
 
   componentDidMount(){
     var classname = this.state.classname;
+    let that = this.state;
     this.state.firebase.database().ref("/classInfo").once("value").then(function(snapshot){
         snapshot.forEach(function(child){
             if(child.val().name === classname){
-                classInfo = child.val();
-                classKey = child.key;
+              that.DataIndex = child.val().students[0].attendance.length;
+              // set after timer is set
+              classInfo = child.val();
+              classKey = child.key;
+              classInfo.students.forEach(function(student){
+                if(student.attendance[that.DateIndex] != null){
+                  if(student.attendance[that.DateIndex].attend == "reported")that.reportedlist.push(student);
+                  that.seatlist[student.attendance[that.DateIndex].seat] = student;
+                }else that.absentlist.push(student);
+              })
             }
         })
     })
@@ -398,7 +412,7 @@ class AttendanceCheck extends Component{
   }
 
   gotoMade() {
-    window.location.pathname="TATABOX/made"
+    window.location.pathname="TATABOX/class"
   }
 
   render() {
@@ -418,7 +432,7 @@ class AttendanceCheck extends Component{
         <body id = 'full2'>
             <div id = 'headbar2'>
               <h1 id = 'logo'style={{marginTop:"5px", cursor: "pointer"}} onClick={this.gotoMade}>TATABOX</h1>
-              
+
               <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
 
 
@@ -474,7 +488,7 @@ class AttendanceCheck extends Component{
                       <u style={{color:'#0040a8'}}>{this.state.link}</u>
                 </div>
                 <div id = "timer">
-                  <Timer />
+                  <Timer onChange = {console.log("change")} />
                 </div>
                 <div id = "layout" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
                   <Grid container spacing={24} style={{width:"100%"}}>

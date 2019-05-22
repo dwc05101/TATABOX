@@ -40,39 +40,24 @@ const styles = theme => ({
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
     },
+    margin: {
+        margin: theme.spacing.unit,
+    },
   });
 
-const buildings = [
-    {
-      value: 'N1',
-      label: 'N1 (김병호 김삼열 IT융합빌딩)',
-    },
-    {
-      value: 'N4',
-      label: 'N4 (인문사회과학동)',
-    },
-    {
-      value: 'E11',
-      label: 'E11 (창의학습관)',
-    },
-    {
-      value: 'E2-2',
-      label: 'E2-2 (산업경영학동)',
-    },
-    {
-      value: 'E6-5',
-      label: 'E6-5 (궁리실험관)',
-    },
-  ];
 
 class MakeClass extends Component {
 
     constructor(props) {
         super(props);
+<<<<<<< HEAD
         this.closeModal =this.closeModal.bind(this);
+=======
+>>>>>>> cfcf3c865bc6b64d0df957895fbea5f31105ddb9
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
         this.state = {
+            tryDelete: false,
             visible : false,
             code: '',
             name: '',
@@ -92,6 +77,12 @@ class MakeClass extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
+        this.gotoManage = this.gotoManage.bind(this);
+        this.delete = this.delete.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.openCaution = this.openCaution.bind(this);
+        this.closeCaution = this.closeCaution.bind(this);
         //this.componentDidMount = this.componentDidMount.bind(this);
 
         let that = this;
@@ -161,6 +152,18 @@ class MakeClass extends Component {
         });
     }
 
+    openCaution(){
+        this.setState({
+            tryDelete: true,
+            overflow:"visible"
+        })
+    }
+    closeCaution(){
+        this.setState({
+            tryDelete:false,
+        });
+    }
+
     handleChange = name => event => {
         this.setState({
           [name]: event.target.value,
@@ -171,13 +174,21 @@ class MakeClass extends Component {
         this.setState(state => ({ open: !state.open }));
     };
 
-    handleClick(e) {
+    //click delete button
+    delete(){
+        //TODO
+        
+    }
+
+    //click check button
+    handleClick(i) {
         var index = 0;
         var classname = '';
         var classname_ = '';
         let that = this;
         new Promise(function(resolve, reject) {
-          index = e.target.getAttribute("data-index")
+          //index = e.target.getAttribute("data-index")
+          index = i
           classname = that.state.datas[index].name
           resolve()
         }).then(function(result) {
@@ -189,7 +200,29 @@ class MakeClass extends Component {
         }).then(function(result) {
           window.location.pathname = 'TATABOX/check/'+classname_;
         })
-    }
+      }
+  
+      //click management button
+      gotoManage(i) {
+        var index = 0;
+        var classname = '';
+        var classname_ = '';
+        let that = this;
+        new Promise(function(resolve, reject) {
+          //index = e.target.getAttribute("data-index")
+          index = i;
+          classname = that.state.datas[index].name
+          resolve()
+        }).then(function(result) {
+          that.setState({
+            slected: index,
+            classname: classname
+          })
+          classname_ = that.state.classname;
+        }).then(function(result) {
+          window.location.pathname = 'TATABOX/management/'+classname_;
+        })
+      }
   
     handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
@@ -198,17 +231,6 @@ class MakeClass extends Component {
       this.setState({ open: false });
     };
 
-    mapBuildings(){
-        return buildings.map(option => {
-          return(
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          )
-        })
-      }
-
- 
     render() {
         if (!this.state.synch) return null;
         if(this.state.loading) {
@@ -274,6 +296,7 @@ class MakeClass extends Component {
                         <div id = 'img_cropper'>
                             {$profileImg}
                         </div>
+<<<<<<< HEAD
                         </div>
                         <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
                             <p id = 'clicktext1'>
@@ -291,6 +314,25 @@ class MakeClass extends Component {
                         </div>
                     </body>
                 );
+=======
+                    </div>
+                    <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
+                        <p id = 'clicktext1'>
+                            You don't have any class yet.
+                        </p>
+                        <p id = 'clicktext2'>
+                            Click here to create new class.
+                        </p>
+                        <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
+                            <AddIcon id = 'large' />
+                        </Fab>
+                        <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
+                            <OutLinedTextFields Firebase={fireb} closeModal={this.closeModal}></OutLinedTextFields>
+                        </Modal>
+                    </div>
+                </body>
+            );
+>>>>>>> cfcf3c865bc6b64d0df957895fbea5f31105ddb9
         }else {
             return (
                 <section>
@@ -341,22 +383,27 @@ class MakeClass extends Component {
                         
                         <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                             <h4 className = 'titleT'>Today's class</h4>
-                            <Classblock datas = {datas} handleClick = {this.handleClick}>
+                            <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete} openCaution={this.openCaution} closeCaution={this.closeCaution} tryDelete={this.state.tryDelete}>
                             </Classblock>
                             <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                             <AddIcon id = 'large' />
                             </Fab>
                             
                             <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                            <OutLinedTextFields Firebase={this.firebaseO}></OutLinedTextFields>
+                            <OutLinedTextFields Firebase={this.firebaseO} closeModal={this.closeModal}/>
                             </Modal>
                             
                         </div>
-                        <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>
-                            <h4 class = 'titleT' style={{marginLeft:"10px"}}>Notifications</h4>
-                            <Paper id = 'info_container' className={this.props.root} elevation={1}>
-                            </Paper>
-                        </div>
+                        <Modal visible={this.state.tryDelete} width="350" height="200" effect="fadeInUp" onClickAway={this.closeCaution} >
+                            <div style={{textAlign:'center', marginTop:'20px'}}>
+                                
+                                    <p>Are you sure to delete class?</p>
+                                    <p>You Cannot restore deleted class.</p>
+                                    <Button variant="contained" onClick={this.delete} color="secondary" className={classes.margin}>Delete</Button>
+                                    <Button variant="contained" onClick={this.closeCaution} color="primary" className={classes.margin} > Cancel</Button>
+                                
+                            </div>
+                        </Modal>
                     </body>
                 </section>
             );            
@@ -368,4 +415,4 @@ MakeClass.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-export default MakeClass;
+export default withStyles(styles)(MakeClass);

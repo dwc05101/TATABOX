@@ -57,7 +57,7 @@ max-height: 100%;
 max-width: 100%;
 float: left; 
 width: 35%;
-background-color: rgba(241, 255, 227, 0.692);
+background-color: #F5FEEB;
 }
 
 .edge{
@@ -245,6 +245,11 @@ font-family: 'Raleway';
 font-style: normal;
 font-weight: bold;
 src: local('Raleway-Bold'), local('Raleway Bold') url(../fonts/Raleway/Raleway-Black.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Dellmonte';
+    src: local('Dellmonte'), url(../fonts/Dellmonte/Dellmonte-Sans.otf) format('truetype');
 }
 
 @font-face {

@@ -276,6 +276,7 @@ class OutlinedTextFields extends React.Component {
       prev = require('../images/seat.png');
     }
     let step;
+    //STEP1
     if (this.state.step==0) {
       step =
         <div>
@@ -361,7 +362,7 @@ class OutlinedTextFields extends React.Component {
             </div>
           </div>
       </div>
-    }else{
+    }else{ //STEP2
       step = 
       <div>
         <img id="step" src = {require('../images/step2.png')} style={{width:'100%'}}/>

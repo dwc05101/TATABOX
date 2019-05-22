@@ -82,6 +82,9 @@
     width:60px;
 }
 
+#class_container:hover {
+    background-color:#bfbfbf;
+}
 
 /*----------------------*/
 

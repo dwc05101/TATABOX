@@ -71,6 +71,7 @@ class MakeClass extends Component {
         this.gotoManage = this.gotoManage.bind(this);
         this.delete = this.delete.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
         //this.componentDidMount = this.componentDidMount.bind(this);
 
         let that = this;
@@ -148,7 +149,7 @@ class MakeClass extends Component {
     delete(){
         //TODO
         alert("Are you sure to delete class?");
-      }
+    }
 
     //click check button
     handleClick(i) {
@@ -333,7 +334,7 @@ class MakeClass extends Component {
                         
                         <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                             <h4 className = 'titleT'>Today's class</h4>
-                            <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete}>
+                            <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete} openModal={this.openModal}>
                             </Classblock>
                             <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                             <AddIcon id = 'large' />

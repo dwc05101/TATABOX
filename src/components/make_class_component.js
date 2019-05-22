@@ -68,6 +68,8 @@ class MakeClass extends Component {
             selected: 0,
             classname: '',
             loading:true,
+            deleteindex:-1,
+            classlst:[],
         }
         this.handleClick = this.handleClick.bind(this);
         this.firebaseO = this.props.Firebase;
@@ -78,8 +80,10 @@ class MakeClass extends Component {
         this.openModal = this.openModal.bind(this);
         this.openCaution = this.openCaution.bind(this);
         this.closeCaution = this.closeCaution.bind(this);
-        //this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
 
+    }
+    componentDidMount(){
         let that = this;
         new Promise(function(resolve, reject){
             that.firebase.auth().onAuthStateChanged(function(user) {
@@ -89,7 +93,9 @@ class MakeClass extends Component {
                     var classes = [];
                     that.firebase.database().ref('/AUTH/'+user.uid+'/clas').once('value').then(function(snapshot){
                         var userclass = snapshot.val();
-                        if(userclass != null)classes = userclass.split(',');
+                        if(userclass != null) classes = JSON.parse(userclass);
+                        that.setState({classlst:classes});
+                        //classes = userclass.split(',');
                     })
 
                     if(classes != []){
@@ -101,7 +107,9 @@ class MakeClass extends Component {
                                         code: childSnapshot.val().code, 
                                         name:childSnapshot.val().name,
                                         prof:childSnapshot.val().prof,
-                                        room: childSnapshot.val().room})
+                                        room: childSnapshot.val().room,
+                                        key: childSnapshot.key
+                                    })
                                     }
                                 })
                                 })
@@ -121,7 +129,6 @@ class MakeClass extends Component {
             });
         }).then(() => this.setState({ loading: false }));
     }
-
     handlelogin = user =>{
         this.setState({
             user_name : user.displayName,
@@ -141,15 +148,17 @@ class MakeClass extends Component {
         });
     }
 
-    openCaution(){
+    openCaution(i){
         this.setState({
             tryDelete: true,
-            overflow:"visible"
+            overflow:"visible",
+            deleteindex:i,
         })
     }
     closeCaution(){
         this.setState({
             tryDelete:false,
+            deleteindex:-1,
         });
     }
 
@@ -166,6 +175,24 @@ class MakeClass extends Component {
     //click delete button
     delete(){
         //TODO
+        let lst = this.state.classlst;
+        let index = this.state.deleteindex;
+        console.log(`delete index`,index);
+        console.log(`before delete`,lst);
+        lst.splice(index,1);
+        console.log(`after delete`,lst);
+
+        let newstring = JSON.stringify(lst);
+        console.log(`newstring`,newstring);
+        //user info update
+        
+        var updates = {};
+        updates['/AUTH/' + this.state.userID+'/clas'] = newstring;
+        this.firebase.database().ref().update(updates);
+        let selected = this.state.datas[index];
+        console.log(`classuid`, selected.key);
+        this.firebase.database().ref('/classInfo/'+selected.key).remove();
+        window.location.pathname = "TATABOX/class";
         
     }
 
@@ -191,8 +218,8 @@ class MakeClass extends Component {
         })
       }
   
-      //click management button
-      gotoManage(i) {
+    //click management button
+    gotoManage(i) {
         var index = 0;
         var classname = '';
         var classname_ = '';
@@ -226,6 +253,7 @@ class MakeClass extends Component {
           console.log("loading..");
           return null;
         }
+        console.log(`class list`,this.state.classlst);
 
         const { classes } = this.props;
         var fireb =this.firebaseO;

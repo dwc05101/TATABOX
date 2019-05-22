@@ -90,11 +90,10 @@ class OutlinedTextFields extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.moveStep = this.moveStep.bind(this);
     this.buildingchange = this.buildingchange.bind(this);
-    this.cancel = this.cancel.bind(this);
     this.roomchange = this.roomchange.bind(this);
-    this.errorhandle = this.errorhandle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.firebase = this.props.Firebase.fb;
+    this.componentDidMount = this.componentDidMount.bind(this);
 
     this.state = {
       code: '',
@@ -112,12 +111,14 @@ class OutlinedTextFields extends React.Component {
       userName:'',
       userDept:'',
       userSchl:'',
-      userClas:'hi',
+      userClas:[],
       userImgs:'',
-      synch:false
+      synch:false,
+      message:'',
+      test:false,
     }
-
-
+  }
+  componentDidMount(){
     let that = this;
     new Promise(function(resolve, reject){
       that.firebase.auth().onAuthStateChanged(function(user) {
@@ -134,18 +135,14 @@ class OutlinedTextFields extends React.Component {
     })
     .then(function(result) {
       that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
-      // console.log(`snapshot`,snapshot.val());
+      var lst = [];
+      var mtjson = JSON.stringify(lst);
       var username = (snapshot.val() && snapshot.val().name) || 'Anonymous';
       var userdept = (snapshot.val() && snapshot.val().dept) || 'Anonymous';
       var userschl = (snapshot.val() && snapshot.val().schl) || 'Anonymous';
-      var userclas = (snapshot.val() && snapshot.val().clas) || '';
+      var userclas = (snapshot.val() && snapshot.val().clas) || mtjson;
       // added
       var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
-      // console.log(`name`,username);
-      // console.log(`dept`,userdept);
-      // console.log(`schl`,userschl);
-      // console.log(`clas`,userclas);
-      // console.log(`imgs`,userimgs);
       that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas, userImgs: userimgs, synch: true});
     });
     })
@@ -157,11 +154,6 @@ class OutlinedTextFields extends React.Component {
     });
     this.isFull();
   };
-
-  cancel(){
-    window.location.pathname = "TATABOX/make";
-    this.setState(initialState);
-  }
 
   roomchange = event => {
     if (this.state.bd=='E11' && event.target.value=='311') {
@@ -199,8 +191,9 @@ class OutlinedTextFields extends React.Component {
 
   onSubmit(){
     let that = this;
-    console.log(`onSubmit`);
-    let newcode = this.state.userClas +","+this.state.code;
+    let newcode = JSON.parse(this.state.userClas);
+    newcode.push(this.state.code);
+    var stringJson = JSON.stringify(newcode);
 
     //class Info sending..
     this.firebase.database().ref('/classInfo/').push({
@@ -216,12 +209,12 @@ class OutlinedTextFields extends React.Component {
       name : that.state.userName,
       dept : that.state.userDept,
       schl : that.state.userSchl,
-      clas : newcode,
+      clas : stringJson,//newcode,
       imgs : that.state.userImgs
     });
     this.moveStep();
     this.setState(initialState);
-    window.location.pathname = "TATABOX/make";
+    window.location.pathname = "TATABOX/class";
   }
 
   isFull(){
@@ -229,38 +222,54 @@ class OutlinedTextFields extends React.Component {
       this.setState({error : false});
     }
   }
+  cancel(){
+    this.setState(initialState);
+  }
 
   moveStep(){
     console.log(`this.state.userID`,this.state.userID);
     if(this.state.step==0){
-      this.errorhandle();
-      if(!this.state.error){
-        this.setState({step : 1,});
-      }
-      else{
-        this.setState({step : 0});
-      }
-    }else{
-      this.setState({step : 0,});
+      let that = this;
+      let bool;
+      if(that.state.code=='' || that.state.name=='' || that.state.prof=='' || that.state.bd=='' || that.state.room==''){
+        that.state.error=true;
+        that.state.message='You have to enter all information.'
+        that.state.test=true;
+        
+      }else{
+        new Promise(function(resolve, reject){
+          let code = that.state.code
+          that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot){
+            snapshot.forEach(function(childSnapshot){
+              let curr = childSnapshot.val().code
+              if(code==curr){
+                bool=true;
+                resolve();
+              }
+            })
+          resolve();
+        })
+        .then(function(result) {
+          console.log(`touch this`)
+          if(bool){
+            that.state.error=true;
+            that.state.message='This class already exists.'
+            
+            that.setState({step : 0});
+          }
+          else{
+            that.state.error=false;
+            that.setState({step : 1,});
+          }
+         })
+      })
     }
+  }else{
+    this.setState({step : 0});
   }
-  errorhandle(){
-    if(this.state.code==''){
-      this.state.error=true;
-    }
-    if(this.state.name==''){
-      this.state.error=true;
-    }
-    if(this.state.prof==''){
-      this.state.error=true;
-    }
-    if(this.state.bd==''){
-      this.state.error=true;
-    }
-    if(this.state.room==''){
-      this.state.error=true;
-    }
   }
+
+ 
 
   render() {
     if(!this.state.synch) return null;
@@ -335,7 +344,7 @@ class OutlinedTextFields extends React.Component {
                   variant="outlined"
                 />
                 { this.state.error ? (
-                  <p style={{color:'red', fontSize:'20px'}}>You have to enter all information !</p>
+                  <p style={{color:'red', fontSize:'20px'}}>{this.state.message}</p>
                 ) : null }
                 </div>
                 

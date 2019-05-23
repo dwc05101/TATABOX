@@ -23,15 +23,18 @@
     "react-data-grid": "^6.1.0",
     "react-dom": "^16.8.6",
     "react-exif-orientation-img": "^0.1.5",
+    "react-file-reader": "^1.1.4",
     "react-grid-layout": "^0.16.6",
     "react-modal": "^3.8.1",
+    "react-native-fs": "^2.13.3",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-select": "^2.4.3",
     "react-tabs": "^3.0.0",
     "react-textfit": "^1.1.0",
     "react-z-index": "^3.0.0",
-    "typeface-roboto": "0.0.54"
+    "typeface-roboto": "0.0.54",
+    "xlsx": "^0.14.3"
   },
   "scripts": {
     "start": "react-scripts start",

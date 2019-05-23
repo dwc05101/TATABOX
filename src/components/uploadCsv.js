@@ -4,6 +4,26 @@ import XLSX from 'xlsx';
 import ReactFileReader from 'react-file-reader'
 import { arrayExpression } from '@babel/types';
 
+const styles = theme => ({
+    margin: {
+      margin: theme.spacing.unit,
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
+    dense: {
+      marginTop: 16,
+    },
+    menu: {
+      width: 200,
+    },
+  });
+
 export default class UploadCsv extends React.Component {
     constructor(props){
         super(props);
@@ -44,15 +64,19 @@ export default class UploadCsv extends React.Component {
     }
     
     render(){
+        const { classes } = this.props;
         return(
             <div>
-                <Button><a href ='https://firebasestorage.googleapis.com/v0/b/tatabox-c2abe.appspot.com/o/students.csv?alt=media&token=3067cf63-d54c-4429-a08b-62ad62cad434' style={{textDecoration:'none', color:'black'}}>download link</a></Button>
+                <p>양식을 다운받아서 학생 명단을 작성한 뒤 업로드해주세요</p>
+                <Button><a href ='https://firebasestorage.googleapis.com/v0/b/tatabox-c2abe.appspot.com/o/students.csv?alt=media&token=3067cf63-d54c-4429-a08b-62ad62cad434' style={{textDecoration:'none', color:'black'}}>download format</a></Button>
                 
                 <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
                     <Button>Upload</Button>
                 </ReactFileReader>
-
-                <Button onClick={()=>this.props.onSubmit(this.state.students)}>onSubmit</Button>
+                <Button variant="contained" color="secondary" onClick={this.props.moveStep}>
+                    Back
+                </Button>
+                <Button variant="contained" color="primary" onClick={()=>this.props.onSubmit(this.state.students)}>onSubmit</Button>
             </div>
         )
     }

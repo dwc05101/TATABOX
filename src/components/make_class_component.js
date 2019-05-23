@@ -94,9 +94,9 @@ class MakeClass extends Component {
                     var classes = [];
                     that.firebase.database().ref('/AUTH/'+user.uid+'/clas').once('value').then(function(snapshot){
                         var userclass = snapshot.val();
+                        console.log(userclass);
                         if(userclass != null) classes = JSON.parse(userclass);
                         that.setState({classlst:classes});
-                        //classes = userclass.split(',');
                     })
 
                     if(classes != []){

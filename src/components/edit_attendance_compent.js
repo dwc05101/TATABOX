@@ -7,6 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Modal from 'react-awesome-modal';
 
+import alphabet from '../data/alphabet';
+
 import user from '../images/user_white.png';
 import './make_class_component.css';
 import { isFlowBaseAnnotation } from '@babel/types';
@@ -44,7 +46,9 @@ class EditAttendance extends Component{
             editSeat : "",
             editReporter : "",
             ReporterEditable : false,
-            seatEditable : false
+            seatEditable : false,
+            rowParser : [],
+            seatNum : []
         }
 
         let that = this;
@@ -90,7 +94,20 @@ class EditAttendance extends Component{
             })
         })
         .then(()=>{
+            var rows = [];
+            for(var i = 0; i<classInfo.numRow; i++){
+                rows.push({
+                    num : i,
+                    label : alphabet[i]
+                });
+            }
+            var seats = [];
+            for(var i = 0; i<classInfo.numSeat; i++){
+                seats.push(i);
+            }
             this.setState({
+                seatNum : seats,
+                rowParser : rows,
                 init : true
             })
         })
@@ -165,6 +182,10 @@ class EditAttendance extends Component{
         });
     }
 
+    parseRow(row){
+        return (this.state.rowParser[row]===undefined) ? "" : this.state.rowParser[row].label;
+    }
+
     update(){
         console.log(classInfo);
         for(var i = 0; i<classInfo.students.length; i++){
@@ -176,7 +197,7 @@ class EditAttendance extends Component{
                         console.log(classInfo.students[i].attendance[j].attend);
                         classInfo.students[i].attendance[j].attend = this.state.editAttend;
                         classInfo.students[i].attendance[j].row = this.state.editRow;
-                        classInfo.students[i].attendance[j].seat = this.state.editSeat;
+                        classInfo.students[i].attendance[j].seat = this.parseRow(this.state.editSeat);
                         classInfo.students[i].attendance[j].reporter = this.state.editReporter;
                         break;
                     }
@@ -195,7 +216,8 @@ class EditAttendance extends Component{
 
     makeAttendance(){
         return(target.attendance.map(attendance=>{
-            var seat = (attendance.attend === "absent") ? "" : attendance.row + attendance.seat.toString();
+            var seatNum = parseInt(attendance.seat) + 1;
+            var seat = (attendance.attend === "absent") ? "" : this.parseRow(attendance.row) + seatNum.toString();
             var reporter = (attendance.attend === "reported") ? attendance.reporter : "";
             var attend = (attendance.attend === "attend") ? "O": "X";
 
@@ -262,17 +284,29 @@ class EditAttendance extends Component{
     EditRow(){
         if(this.state.seatEditable){
             return(
-                <input value={this.state.editRow} onChange={this.handleChange("editRow")}/>
+                <select value={this.state.editRow} onChange={this.handleChange("editRow")}>
+                    {this.state.rowParser.map(row=>{
+                        return(
+                            <option value={row.num}>{row.label}</option>
+                        )
+                    })}
+                </select>
             )
         }
         else{
-            return this.state.editRow;
+            return this.parseRow(this.state.editRow);
         }
     }
     EditSeat(){
         if(this.state.seatEditable){
             return(
-                <input value={this.state.editSeat} onChange={this.handleChange("editSeat")}/>
+                <select value={this.state.editSeat} onChange={this.handleChange("editSeat")}>
+                    {this.state.seatNum.map(seat=>{
+                        return(
+                            <option value={seat}>{seat+1}</option>
+                        )
+                    })}
+                </select>
             )
         }
         else{

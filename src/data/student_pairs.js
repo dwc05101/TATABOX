@@ -9,35 +9,35 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "A",
+                "row" : 0,
                 "seat" : 3,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "attend",
-                "row" : "A",
+                "row" : 0,
                 "seat" : 3,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "A",
+                "row" : 0,
                 "seat" : 3,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "A",
+                "row" : 0,
                 "seat" : 3,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "A",
+                "row" : 0,
                 "seat" : 3,
                 "reporter" : null
             },
@@ -60,42 +60,42 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "B",
+                "row" : 1,
                 "seat" : 2,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "attend",
-                "row" : "B",
+                "row" : 1,
                 "seat" : 2,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "B",
+                "row" : 1,
                 "seat" : 2,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "reported",
-                "row" : "B",
+                "row" : 1,
                 "seat" : 2,
                 "reporter" : "20160372"
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "B",
+                "row" : 1,
                 "seat" : 2,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-27",
                 "attend" : "reported",
-                "row" : "B",
+                "row" : 1,
                 "seat" : 2,
                 "reporter" : "20160372"
             },
@@ -111,14 +111,14 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 5,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 5,
                 "reporter" : null
             },
@@ -132,21 +132,21 @@ var students = [
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 5,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 5,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-27",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 5,
                 "reporter" : null
             }
@@ -162,35 +162,35 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 10,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "reported",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 10,
                 "reporter" : "20160034"
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 10,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 10,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 10,
                 "reporter" : null
             },
@@ -213,42 +213,42 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "D",
+                "row" : 3,
                 "seat" : 8,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "attend",
-                "row" : "D",
+                "row" : 3,
                 "seat" : 8,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "D",
+                "row" : 3,
                 "seat" : 8,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "d",
+                "row" : 3,
                 "seat" : 8,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "D",
+                "row" : 3,
                 "seat" : 8,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-27",
                 "attend" : "attend",
-                "row" : "D",
+                "row" : 3,
                 "seat" : 8,
                 "reporter" : null
             }
@@ -264,35 +264,35 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 3,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "reported",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 3,
                 "reporter" : "20160696"
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 3,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "reported",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 3,
                 "reporter" : 20160696
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 3,
                 "reporter" : null
             },
@@ -322,7 +322,7 @@ var students = [
             {
                 "date" : "2019-3-13",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 9,
                 "reporter" : null
             },
@@ -336,14 +336,14 @@ var students = [
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 9,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "C",
+                "row" : 2,
                 "seat" : 9,
                 "reporter" : null
             },
@@ -366,35 +366,35 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 4,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "reported",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 4,
                 "reporter" : "20170124"
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 4,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 4,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "E",
+                "row" : 4,
                 "seat" : 4,
                 "reporter" : null
             },
@@ -417,14 +417,14 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 2 ,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "reported",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 2,
                 "reporter" : "20140796"
             },
@@ -438,21 +438,21 @@ var students = [
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 2,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "reported",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 2,
                 "reporter" : "20140796"
             },
             {
                 "date" : "2019-3-27",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 2,
                 "reporter" : null
             }
@@ -468,35 +468,35 @@ var students = [
             {
                 "date" : "2019-3-11",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 7 ,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-13",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 7,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-18",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 7,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-20",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 7,
                 "reporter" : null
             },
             {
                 "date" : "2019-3-25",
                 "attend" : "attend",
-                "row" : "F",
+                "row" : 5,
                 "seat" : 7,
                 "reporter" : null
             },

@@ -128,7 +128,8 @@ class NavTabs extends React.Component {
       loading: '',
       reportedmodalOn: false,
       absentmodalOn: false,
-      modalIndex: 0,
+      reportedmodalIndex: 0,
+      absentmodalIndex: 0,
       timerstate: this.props.timerstate,
     };
     this.reportList = [];
@@ -201,7 +202,7 @@ class NavTabs extends React.Component {
       // dictionary data form
       for (var i=0;i<Object.keys(reportedStudents).length;i++) {
         reportIndents.push(
-          <div style = {reportedStyle} data-index={i} onClick={this.openreportedModal}>
+          <div style = {reportedStyle} data-r-index={i} data-a-index={0} onClick={this.openreportedModal}>
             <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[i]}</text>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; reported by &nbsp; </text>
@@ -210,11 +211,11 @@ class NavTabs extends React.Component {
           </div>
         )
         reportIndents.push(<div style = {{height: "3%"}}></div>)
-        reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i]])
+        reportInfo.push([Object.keys(reportedStudents)[i] + " " + nextProps.reportedList[i].name, " reported by ", Object.values(reportedStudents)[i], nextProps.reportedList[i].email])
       }
       if(reportInfo.length == 0){
         reportIndents.push(
-          <div style = {reportedStyle} data-index={0}>
+          <div style = {reportedStyle} data-r-index={0} data-a-index={0}>
             <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; No Reported Student &nbsp; </text>
@@ -226,15 +227,14 @@ class NavTabs extends React.Component {
         reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i]])
       }
       // list data form
-      console.log(absentStudents);
       for (var i=0;i<absentStudents.length;i++) {
-        absentIndents.push(<div style = {absentStyle} data-index={i} onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
+        absentIndents.push(<div style = {absentStyle} data-a-index={i} data-r-index={0}  onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
-        absentInfo.push(absentStudents[i])
+        absentInfo.push([nextProps.absentList[i].sid , nextProps.absentList[i].name, nextProps.absentList[i].email])
       }
-      console.log(absentInfo);
+
       if(absentIndents.length == 0){
-        absentIndents.push(<div style = {noabsentStyle} data-index={0} > No Absent Student </div>)
+        absentIndents.push(<div style = {noabsentStyle} data-a-index={0} data-r-index={0}> No Absent Student </div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
       }
 
@@ -272,7 +272,7 @@ class NavTabs extends React.Component {
     // dictionary data form
     if(reportInfo.length == 0){
       reportIndents.push(
-        <div style = {reportedStyle} data-index={0}>
+        <div style = {reportedStyle} data-a-index = {0} data-r-index={0}>
           <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
             <text style = {{pointerEvents: "none"}}></text>
             <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
@@ -281,11 +281,12 @@ class NavTabs extends React.Component {
         </div>
       )
       reportIndents.push(<div style = {{height: "3%"}}></div>)
-      reportInfo.push([Object.keys(reportedStudents)[0], " reported by ", Object.values(reportedStudents)[0]])
+      reportInfo.push([0,0,0,0])
     }
     if(absentIndents.length == 0){
-      absentIndents.push(<div style = {noabsentStyle} data-index={0} > No Yet Started </div>)
+      absentIndents.push(<div style = {noabsentStyle} data-r-index={0} data-a-index={0} > No Yet Started </div>)
       absentIndents.push(<div style = {{height: "3%"}}></div>)
+      absentInfo.push([0,0,0])
     }
 
     this.reportList = reportIndents;
@@ -295,9 +296,11 @@ class NavTabs extends React.Component {
   }
 
   handleClick(e) {
-    var index = e.target.getAttribute("data-index")
+    var rindex = e.target.getAttribute("data-r-index");
+    var aindex = e.target.getAttribute("data-a-index");   
     this.setState({
-      modalIndex: index,
+      reportedmodalIndex: rindex,
+      absentmodalIndex: aindex
     });
   }
   
@@ -333,9 +336,10 @@ class NavTabs extends React.Component {
                   <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
                     <br/>
-                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.reportInfo[this.state.modalIndex][0]}</text>
-                    <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.reportInfo[this.state.modalIndex][1]}</text>
-                    <text style = {{color: "blue", fontSize: "30px"}}>{this.reportInfo[this.state.modalIndex][2]}</text>
+                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][0]}</text>
+                    <text style = {{color: "gray", fontWeight: "light", marginBottom:"20px", fontSize: "15px"}}> {this.reportInfo[this.state.reportedmodalIndex][3]}</text>
+                    <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][1]}</text>
+                    <text style = {{color: "blue", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][2]}</text>
                   </div>
                 </div>
               </div>
@@ -350,7 +354,8 @@ class NavTabs extends React.Component {
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Absent</text>
-                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.absentInfo[this.state.modalIndex]}</text>
+                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.absentInfo[this.state.absentmodalIndex][0]} {this.absentInfo[this.state.absentmodalIndex][1]}</text>
+                    <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.absentInfo[this.state.absentmodalIndex][2]}</text>
                   </div>
                 </div>
               </div>
@@ -444,11 +449,9 @@ class AttendanceCheck extends Component{
                 classInfo = child.val();
                 classKey = child.key;
 
-
                 var sub_reportedlist = [];
                 var sub_absentlist = [];
 
-                
                 classInfo.students.forEach(function(student){
                   if(student.attendance[DateIndex] != null){
                     if(student.attendance[DateIndex].attend == "reported")sub_reportedlist.push(student);

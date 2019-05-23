@@ -376,16 +376,7 @@ class OutlinedTextFields extends React.Component {
       step = 
       <div>
         <img id="step" src = {require('../images/step2.png')} style={{width:'100%'}}/>
-        <UploadCsv onSubmit={this.onSubmit}/>
-        <div style={{height:"20%"}}>
-            <Button variant="contained" color="secondary" onClick={this.moveStep} className={classes.margin}>
-                            Back
-                        </Button>
-            <Button variant="contained" color='primary' onClick={this.onSubmit} className={classes.margin}>
-                            Done!
-                        </Button>
-            
-        </div>
+        <UploadCsv onSubmit={this.onSubmit} moveStep={this.moveStep}/>
       </div>
     }
     return (<div style={{textAlign: "center"}}>

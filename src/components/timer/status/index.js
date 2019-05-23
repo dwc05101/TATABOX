@@ -1,4 +1,5 @@
 import React from 'react';
+import { isProperty } from '@babel/types';
 
 const checkonStyle = {
     height: "50%",
@@ -57,6 +58,7 @@ function Status(props) {
     const label = props.timingEvents.length
 
     if (label == 0) {
+        
         return (
             <div className = "timer-status">
                 <div className = "status_up" style = {statusupStyle}>

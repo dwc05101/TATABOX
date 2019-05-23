@@ -59,6 +59,8 @@ const styles = theme => ({
   },
 });
 
+var DateIndex = -1;
+
 /*----------------------for tabs-----------------------*/
 
 function LinkTab(props) {
@@ -98,6 +100,19 @@ const absentStyle = {
   color: "black"
 }
 
+const noabsentStyle = {
+  height: "8%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "10px 10px 10px 10px",
+  backgroundColor: "white",
+  zIndex: "1400",
+  fontWeight: "lighter",
+  fontSize: "16px",
+  color: "gray"
+}
+
 /* let axios = require('axios');
 const ax = axios.create({
   baseURL: 'http://localhost:3000/TATABOX'
@@ -114,12 +129,13 @@ class NavTabs extends React.Component {
       reportedmodalOn: false,
       absentmodalOn: false,
       modalIndex: 0,
-      reportList: [],
-      absentList: [],
-      reportInfo: ["","",""],
-      absentInfo: [""],
-      
+      timerstate: this.props.timerstate,
     };
+    this.reportList = [];
+    this.absentList = [];
+    this.reportInfo = ["","",""];
+    this.absentInfo = [""];
+
     this.openreportedModal = this.openreportedModal.bind(this);
     this.closereportedModal = this.closereportedModal.bind(this);
     this.openabsentModal = this.openabsentModal.bind(this);
@@ -158,26 +174,26 @@ class NavTabs extends React.Component {
     this.setState({value});
   };
 
-  componentWillMount() {
-    fetch("tabtest.json", {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application.json'
-      }
-    })
-    // ax.get("tabtest.json")
-    .then(response => {
-      return response.json();
-    })
-    .then(json => {
-      this.setState({
-        reported: json.reported,
-        absent: json.absent,
-      })
-
-      const reportedStudents = json.reported;
-      const absentStudents = json.absent;
-
+  shouldComponentUpdate(nextProps, nextState){
+    console.log(nextProps);
+    console.log(this.props);
+    if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
+      var reportedMap = {};
+      var absentMap = [];
+      /* set reported person*/
+      nextProps.reportedList.forEach(function(student){
+        reportedMap.set(student.sid, student.attendance[DateIndex].reporter);
+      });
+      /* set absent person*/
+      nextProps.absentList.forEach(function(student){
+        absentMap.push(student.sid);
+      });
+  
+      const reportedStudents = reportedMap;
+      const absentStudents = absentMap;
+  
+      console.log(nextProps.absentList);
+  
       var reportIndents = [];
       var absentIndents = [];
       var reportInfo = [];
@@ -196,19 +212,84 @@ class NavTabs extends React.Component {
         reportIndents.push(<div style = {{height: "3%"}}></div>)
         reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i]])
       }
+      if(reportInfo.length == 0){
+        reportIndents.push(
+          <div style = {reportedStyle} data-index={0}>
+            <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
+              <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
+              <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; No Reported Student &nbsp; </text>
+              <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
+            </Textfit>
+          </div>
+        )
+        reportIndents.push(<div style = {{height: "3%"}}></div>)
+        reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i]])
+      }
       // list data form
       for (var i=0;i<absentStudents.length;i++) {
         absentIndents.push(<div style = {absentStyle} data-index={i} onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push(absentStudents[i])
       }
-      this.setState({
-        reportList: reportIndents,
-        absentList: absentIndents,
-        reportInfo: reportInfo,
-        absentInfo: absentInfo
-      })
-    })
+      if(absentIndents.length == 0){
+        absentIndents.push(<div style = {noabsentStyle} data-index={0} > No Absent Student </div>)
+        absentIndents.push(<div style = {{height: "3%"}}></div>)
+      }
+
+      this.reportList = reportIndents;
+      this.absentList = absentIndents;
+      this.reportInfo = reportInfo;
+      this.absentInfo = absentInfo;
+      return true
+    }
+    return true
+  }
+
+  componentWillMount() {
+    var reportedMap = {};
+    var absentMap = [];
+
+    /* set reported person*/
+    this.props.reportedList.forEach(function(student){
+      reportedMap.set(student.sid, student.attendance[DateIndex].reporter);
+    });
+    /* set absent person*/
+    this.props.absentList.forEach(function(student){
+      absentMap.push(student.sid);
+    });
+
+    const reportedStudents = reportedMap;
+    const absentStudents = absentMap;
+
+    console.log(this.props.reportedList);
+
+    var reportIndents = [];
+    var absentIndents = [];
+    var reportInfo = [];
+    var absentInfo = [];
+    // dictionary data form
+    if(reportInfo.length == 0){
+      reportIndents.push(
+        <div style = {reportedStyle} data-index={0}>
+          <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
+            <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
+            <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
+            <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
+          </Textfit>
+        </div>
+      )
+      reportIndents.push(<div style = {{height: "3%"}}></div>)
+      reportInfo.push([Object.keys(reportedStudents)[0], " reported by ", Object.values(reportedStudents)[0]])
+    }
+    if(absentIndents.length == 0){
+      absentIndents.push(<div style = {noabsentStyle} data-index={0} > No Yet Started </div>)
+      absentIndents.push(<div style = {{height: "3%"}}></div>)
+    }
+
+    this.reportList = reportIndents;
+    this.absentList = absentIndents;
+    this.reportInfo = reportInfo;
+    this.absentInfo = absentInfo;
   }
 
   handleClick(e) {
@@ -219,6 +300,7 @@ class NavTabs extends React.Component {
   }
   
   render() {
+    console.log(this.props.absentList);
     const {classes} = this.props;
     const {value} = this.state;
     return (
@@ -233,11 +315,11 @@ class NavTabs extends React.Component {
             </AppBar>
             {value === 0 && 
             <Typography component = "div" style = {{ padding: 8*3, backgroundColor: "#ef9a9a", height: "90%"}}>
-              {this.props.children}{this.state.reportList}
+              {this.props.children}{this.reportList}
             </Typography>}
             {value === 1 && 
             <Typography component = "div" style = {{ padding: 8*3, backgroundColor: "#9e9e9e", height: "90%"}}>
-              {this.props.children}{this.state.absentList}
+              {this.props.children}{this.absentList}
             </Typography>}
           </div>
             <Modal open={this.state.reportedmodalOn} onClose={this.closereportedModal}>
@@ -249,9 +331,9 @@ class NavTabs extends React.Component {
                   <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
                     <br/>
-                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.state.reportInfo[this.state.modalIndex][0]}</text>
-                    <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.state.reportInfo[this.state.modalIndex][1]}</text>
-                    <text style = {{color: "blue", fontSize: "30px"}}>{this.state.reportInfo[this.state.modalIndex][2]}</text>
+                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.reportInfo[this.state.modalIndex][0]}</text>
+                    <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.reportInfo[this.state.modalIndex][1]}</text>
+                    <text style = {{color: "blue", fontSize: "30px"}}>{this.reportInfo[this.state.modalIndex][2]}</text>
                   </div>
                 </div>
               </div>
@@ -266,7 +348,7 @@ class NavTabs extends React.Component {
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Absent</text>
-                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.state.absentInfo[this.state.modalIndex]}</text>
+                    <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.absentInfo[this.state.modalIndex]}</text>
                   </div>
                 </div>
               </div>
@@ -296,6 +378,10 @@ class AttendanceCheck extends Component{
     var link = "https://dwc05101.github.io/TATABOX/student/"+props.match.params.classname+"/"+date;
     this.state = {
         visible : false,
+        init : false,
+        synch: false,
+        checkDone : false,
+        open: false,
         code: '',
         name: '',
         prof: '',
@@ -304,20 +390,18 @@ class AttendanceCheck extends Component{
         username: '...',
         userID: '',
         user_img: user,
-        open: false,
         absent: '',
         reported: '',
-        synch: false,
         classname: props.match.params.classname,
         date : date,
         link : link,
         firebase : props.Firebase.fb,
-        init : false,
-        checkDone : false,
+        dataindex: 0,
         seatlist :[],
         absentlist :[],
         reportedlist : [],
-        DataIndex: 0
+        timerstate: "begin",
+        renderupdater: 0
         //classname: match.params.classname,
     }
     
@@ -343,42 +427,56 @@ class AttendanceCheck extends Component{
         }
       });
     }).then(function(result) {
-        that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
+      that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
         var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
-        that.setState({user_img: userimgs, synch: true, classname: match.params.classname});
+        that.setState({user_img: userimgs, classname: match.params.classname});
       });
-    })
+    }).then(function(result){
+      var classname = that.state.classname;
+      that.state.firebase.database().ref("/classInfo").on("value", function(snapshot){
+          snapshot.forEach(function(child){
+              if(child.val().name === classname){
+                // first, set DateIndex
+                if(DateIndex == -1)DateIndex = child.val().students[0].attendance.length;
+                console.log(DateIndex);
+                classInfo = child.val();
+                classKey = child.key;
+
+                that.setState({
+                  reportedlist: [],
+                  absentlist: []
+                });
+                
+                classInfo.students.forEach(function(student){
+                  if(student.attendance[DateIndex] != null){
+                    if(student.attendance[DateIndex].attend == "reported")that.state.reportedlist.push(student);
+                    that.state.seatlist[student.attendance[DateIndex].seat] = student;
+                  }else that.state.absentlist.push(student);
+                })
+
+                that.setState({
+                  renderupdater: that.state.renderupdater
+                })
+              }
+          })
+
+          /* allow render after synch is set*/
+          that.setState({synch: true});
+      });
+    });
   }
 
-  componentDidMount(){
-    var classname = this.state.classname;
-    let that = this.state;
-    this.state.firebase.database().ref("/classInfo").once("value").then(function(snapshot){
-        snapshot.forEach(function(child){
-            if(child.val().name === classname){
-              that.DataIndex = child.val().students[0].attendance.length;
-              // set after timer is set
-              classInfo = child.val();
-              classKey = child.key;
-              classInfo.students.forEach(function(student){
-                if(student.attendance[that.DateIndex] != null){
-                  if(student.attendance[that.DateIndex].attend == "reported")that.reportedlist.push(student);
-                  that.seatlist[student.attendance[that.DateIndex].seat] = student;
-                }else that.absentlist.push(student);
-              })
-            }
-        })
-    })
-    .then(
-      ()=>{
-        this.setState({
-          init : true
-        })
-      }
-    );
-  }
 
+  changeState = state =>{
+    this.setState({
+      timerstate: state
+    });
+  }
   
+  getState = () => {
+    return this.state.timerstate;
+  }
+
   openModal() {
     this.setState({
         visible : true
@@ -408,7 +506,7 @@ class AttendanceCheck extends Component{
 
   gotoManagement() {
     let classname_ = this.state.classname;
-    window.location.pathname = "TATABOX/management/" + classname_
+    window.location.pathname = "TATABOX/management/" + classname_;
   }
 
   gotoMade() {
@@ -422,11 +520,12 @@ class AttendanceCheck extends Component{
 
     let $profileImg = null;
     if (this.state.synch) {
-        console.log(this.state.user_img);
         $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
     } else {
         $profileImg = (<img src={user} id = 'user_img'/>);
     }
+
+    console.log(this.state.absentlist);
 
     return(
         <body id = 'full2'>
@@ -488,7 +587,7 @@ class AttendanceCheck extends Component{
                       <u style={{color:'#0040a8'}}>{this.state.link}</u>
                 </div>
                 <div id = "timer">
-                  <Timer onChange = {console.log("change")} />
+                  <Timer setTState = {this.changeState} getTState = {this.state.timerstate}  />
                 </div>
                 <div id = "layout" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
                   <Grid container spacing={24} style={{width:"100%"}}>
@@ -571,7 +670,6 @@ class AttendanceCheck extends Component{
                         </Grid>
                       </Grid>
                   </Grid>
-
                   <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
                       <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
                         <Grid item xs={3}>
@@ -608,7 +706,6 @@ class AttendanceCheck extends Component{
                         </Grid>
                       </Grid>
                   </Grid>
-
                   <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
                       <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
                         <Grid item xs={3}>
@@ -645,7 +742,6 @@ class AttendanceCheck extends Component{
                         </Grid>
                       </Grid>
                   </Grid>
-
                   <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
                       <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
                         <Grid item xs={3}>
@@ -682,7 +778,6 @@ class AttendanceCheck extends Component{
                         </Grid>
                       </Grid>
                   </Grid>
-
                   <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
                       <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
                         <Grid item xs={3}>
@@ -719,7 +814,6 @@ class AttendanceCheck extends Component{
                         </Grid>
                       </Grid>
                   </Grid>
-
                   <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
                       <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
                         <Grid item xs={3}>
@@ -757,11 +851,10 @@ class AttendanceCheck extends Component{
                       </Grid>
                   </Grid>
 
-
                 </div>
               </div>
               <div id = "report-tab">
-                <NavTabs styles = {{height: "100%"}}></NavTabs>
+                <NavTabs styles = {{height: "100%"}} renderupdater = {this.state.renderupdater} timerstate = {this.state.timerstate} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist}  ></NavTabs>
               </div>
             </div>
         </body>

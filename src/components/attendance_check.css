@@ -1,3 +1,7 @@
+:root{
+    --seat-size:10;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -75,6 +79,40 @@
     height: 60px;
     width:60px;
 }
+/* -------------class layout---------------*/
+.wrapper{
+    display: grid;
+    grid-template-columns: 15px repeat(var(--seat-size), 1fr);
+    grid-template-rows: 40px 10px repeat(var(--seat-size),1fr);
+}
+
+.screen{
+    border: 1px solid brown;
+    margin: 1px;
+    margin-bottom: 8px;
+    text-align: center;
+    grid-row: 1;
+    grid-column-start: 1; 
+    grid-column-end: -1; 
+}
+
+.none-seat{
+    margin: 1px;
+    text-align: center;
+}
+
+.alphabet-seat{
+    margin: 1px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.seat{
+    border: 1px solid black;
+    margin: 1px;
+
+}
+
 
 #content{
     width: 100%;

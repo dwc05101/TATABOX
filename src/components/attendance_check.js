@@ -23,6 +23,7 @@ import { Textfit } from 'react-textfit';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
 import user from '../images/user_white.png';
+import { AvRepeat } from 'material-ui/svg-icons';
 
 const styles = theme => ({
   container: {
@@ -403,25 +404,26 @@ class AttendanceCheck extends Component{
         date : date,
         link : link,
         firebase : props.Firebase.fb,
+        /*----- student attendance------*/
         dataindex: 0,
         seatlist :[],
         absentlist :[],
         reportedlist : [],
         timerstate: "begin",
-        renderupdater: 0
+        Seats : [],
+        seat_size: 10
         //classname: match.params.classname,
     }
     
     this.gotoManagement = this.gotoManagement.bind(this)
-
     let {match} = this.props;
 
     this.firebaseO = this.props.Firebase;
     this.firebase = this.firebaseO.fb;
-
+    this.indentw = 1;
+    this.indenth = 1;
 
     let that = this;
-
     new Promise(function(resolve, reject) {
       that.firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -434,11 +436,82 @@ class AttendanceCheck extends Component{
         }
       });
     }).then(function(result) {
+      /* get user img*/
       that.firebase.database().ref('/AUTH/'+that.state.userID).once('value').then(function(snapshot) {
         var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
         that.setState({user_img: userimgs, classname: match.params.classname});
       });
+    }).then(function(result) {
+      /* get&set seat layout*/
+      that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot) {
+        snapshot.forEach(function(child){
+          if(child.val().name === that.state.classname){
+            // first, set DateIndex
+            var seat_array = child.val().class_layout;
+            var w = seat_array[0].length;
+            var h = seat_array.length;
+            var seat_size;
+
+            if(w > h){
+              seat_size = w;
+              that.indenth = Math.floor((w-h)/2)+1;
+            }
+            else if (w%2 === h%2){
+              seat_size = h;
+              that.indentw = Math.floor((h-w)/2)+1;
+            }else{
+              seat_size = h;
+              that.indentw = Math.floor((h-w+1)/2)+1;
+            }
+
+            //screen & numbers
+            that.state.Seats.push(
+              <div class = "screen" >screen</div>
+            )
+            that.state.Seats.push(
+              <div class = "none-seat" ></div>
+            )
+
+            for(var i = 1; i< seat_size+1; i++){
+              that.state.Seats.push(
+                <div class = "none-seat" >{i}</div>
+              )
+            }
+
+
+            for(var i = 1; i< seat_size; i++){
+              if(i >= that.indenth && i<that.indenth+h){
+                that.state.Seats.push(
+                  <div class = "alphabet-seat" >{String.fromCharCode(64+i-that.indenth+1)}</div>
+                )
+              }else{
+                that.state.Seats.push(
+                  <div class = "none-seat" ></div>
+                )
+              }
+              for(var j = 1; j < seat_size+1; j ++){
+                if(i<that.indenth|| j<that.indentw|| i >= h+that.indenth || j >= w + that.indentw ){
+                  that.state.Seats.push(
+                    <div class = "none-seat"></div>
+                  )
+                }else if( seat_array[i-that.indenth][j-that.indentw] === 1){
+                  that.state.Seats.push(
+                    <div class = "seat" hindex={i-that.indenth} windex={j-that.indentw}></div>
+                  )
+                }else if( seat_array[i-that.indenth][j-that.indentw] === 0){
+                  that.state.Seats.push(
+                    <div class = "none-seat"></div>
+                  )
+                }
+              }
+            }
+            that.setState({seat_size: seat_size});
+          }
+      })
+      /* allow render after synch is set*/
+      });
     }).then(function(result){
+      /* get class students & mount listener to FB*/
       var classname = that.state.classname;
       that.state.firebase.database().ref("/classInfo").on("value", function(snapshot){
           snapshot.forEach(function(child){
@@ -459,10 +532,11 @@ class AttendanceCheck extends Component{
                   }else sub_absentlist.push(student);
                 })
 
+
+
                 that.setState({
                   reportedlist: sub_reportedlist,
                   absentlist: sub_absentlist,
-                  renderupdater: that.state.renderupdater
                 })
               }
           })
@@ -472,6 +546,7 @@ class AttendanceCheck extends Component{
       });
     });
   }
+
 
 
   changeState = state =>{
@@ -536,7 +611,14 @@ class AttendanceCheck extends Component{
         $profileImg = (<img src={user} id = 'user_img'/>);
     }
 
-    console.log(this.state.absentlist);
+    this.state.seatlist.forEach(function(){
+      
+    })
+
+    
+    document.documentElement.style.setProperty('--seat-size', this.state.seat_size);
+
+    
 
     return(
         <body id = 'full2'>
@@ -600,268 +682,8 @@ class AttendanceCheck extends Component{
                 <div id = "timer">
                   <Timer setTState = {this.changeState} getTState = {this.state.timerstate}  />
                 </div>
-                <div id = "layout" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
-                  <Grid container spacing={24} style={{width:"100%"}}>
-                    <Grid item xs={4}></Grid>
-                    <Grid item xs={4} style={{border:"1px solid black",textAlign:"center",fontSize:"4vh"}}>
-                      Screen
-                    </Grid>
-                    <Grid item xs={4}></Grid>
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid item xs={3}>1</Grid>
-                            <Grid item xs={3}>2</Grid>
-                            <Grid item xs={3}>3</Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>4</Grid>
-                            <Grid item xs={3}>5</Grid>
-                            <Grid item xs={3}>6</Grid>
-                            <Grid item xs={3}>7</Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid item xs={3}>8</Grid>
-                            <Grid item xs={3}>9</Grid>
-                            <Grid item xs={3}>10</Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>11</Grid>
-                            <Grid item xs={3}>12</Grid>
-                            <Grid item xs={3}>13</Grid>
-                            <Grid item xs={3}>14</Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>A</Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>B</Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>C</Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>D</Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>E</Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                  </Grid>
-                  <Grid container spacing={24} style={{width:"100%",marginTop:"5%"}}>
-                      <Grid container spacing={24} style={{fontSize:"3vh",textAlign:"center"}}>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}>F</Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Grid container spacing={24}>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                            <Grid className="absent" item xs={3}></Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                  </Grid>
-
+                <div id = "layout" class = "wrapper" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
+                      {this.state.Seats}
                 </div>
               </div>
               <div id = "report-tab">

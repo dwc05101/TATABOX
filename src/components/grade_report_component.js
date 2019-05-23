@@ -14,12 +14,14 @@ class GradeReport extends Component{
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
         this.state={
-            students : props.students,
+            students : [],
             user_name: '...',
             userID: '',
             user_img: user,
             synch: false,
-            classname: ''
+            firebase : props.Firebase.fb,
+            classname: props.match.params.classname,
+            init : false
         };
 
         let {match} = this.props;
@@ -47,6 +49,24 @@ class GradeReport extends Component{
         })
     }
 
+    componentDidMount(){
+        var classname = this.state.classname;
+        var students = [];
+        this.state.firebase.database().ref("/classInfo").once("value").then(function(snapshot){
+            snapshot.forEach(function(child){
+                if(child.val().name === classname){     
+                    students = child.val().students;
+                }
+            })
+        })
+        .then(()=>{
+            this.setState({
+                students : students,
+                init : true
+            })
+        })
+    }
+
     makeTable(){
         return(this.state.students.map(student=>{
             var attendanceString = this.getAttendanceString(student.attendance);
@@ -67,7 +87,7 @@ class GradeReport extends Component{
         var count = 0;
         var attendanceString = "";
         for(var i = 0; i<target.length; i++){
-            if(target[i]===1){
+            if(target[i].attend==="attend"){
                 count++;
             }
         }
@@ -82,7 +102,7 @@ class GradeReport extends Component{
         var count = 0;
         var precision = Math.pow(10,2);
         for(var i = 0; i<target.length; i++){
-            if(target[i]===1){
+            if(target[i].attend==="attend"){
                 count++;
             }
         }
@@ -96,7 +116,7 @@ class GradeReport extends Component{
     }
 
     gotoMade() {
-        window.location.pathname="TATABOX/made"
+        window.location.pathname="TATABOX/class";
     }
 
     render(){
@@ -109,6 +129,8 @@ class GradeReport extends Component{
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
+
+        if(this.state.init){
 
         return(
             <div id = 'full'>
@@ -129,7 +151,7 @@ class GradeReport extends Component{
                 <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
                     <h1 style={{marginLeft:"1.5%",whiteSpace:"nowrap"}}>Grade Report</h1>
                 </div>
-                <div id = 'body2'>
+                <div id = 'body2' style={{backgroundColor:"#FFFFFF"}}>
                     <Table>
                         <TableHead>
                             <TableRow style={{backgroundColor:"#7eab54"}}>
@@ -146,6 +168,11 @@ class GradeReport extends Component{
                 </div>
             </div>
         )
+    }else{
+        return(
+            <div></div>
+        )
+    }
     }
 
 }

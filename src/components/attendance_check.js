@@ -411,10 +411,14 @@ class AttendanceCheck extends Component{
         reportedlist : [],
         timerstate: "begin",
         Seats : [],
-        seat_size: 10
+        seat_size: 10,
+        /*---- modal state-------*/
+        attendmodalOn: false,
         //classname: match.params.classname,
     }
-    
+
+    this.openattendModal = this.openattendModal.bind(this);
+    this.closeattendModal = this.closeattendModal.bind(this);
     this.gotoManagement = this.gotoManagement.bind(this)
     let {match} = this.props;
 
@@ -460,7 +464,7 @@ class AttendanceCheck extends Component{
               seat_size = h;
               that.indentw = Math.floor((h-w)/2)+1;
             }else{
-              seat_size = h;
+              seat_size = h+1;
               that.indentw = Math.floor((h-w+1)/2)+1;
             }
 
@@ -474,7 +478,7 @@ class AttendanceCheck extends Component{
 
             for(var i = 1; i< seat_size+1; i++){
               that.state.Seats.push(
-                <div class = "none-seat" >{i}</div>
+                <div class = "number-seat" >{i}</div>
               )
             }
 
@@ -496,16 +500,18 @@ class AttendanceCheck extends Component{
                   )
                 }else if( seat_array[i-that.indenth][j-that.indentw] === 1){
                   that.state.Seats.push(
-                    <div class = "seat" hindex={i-that.indenth} windex={j-that.indentw}></div>
+                    <div class = "seat" id = { (i-that.indenth) + "-" + (j-that.indentw)} hindex={i-that.indenth} windex={j-that.indentw} onClick = {that.openattendModal}></div>
                   )
                 }else if( seat_array[i-that.indenth][j-that.indentw] === 0){
                   that.state.Seats.push(
                     <div class = "none-seat"></div>
                   )
                 }
+
+                console.log(that.state.Seats);
               }
             }
-            that.setState({seat_size: seat_size});
+            that.setState({seat_size: seat_size, init:true});
           }
       })
       /* allow render after synch is set*/
@@ -528,11 +534,21 @@ class AttendanceCheck extends Component{
                 classInfo.students.forEach(function(student){
                   if(student.attendance[DateIndex] != null){
                     if(student.attendance[DateIndex].attend == "reported")sub_reportedlist.push(student);
-                    that.state.seatlist[student.attendance[DateIndex].seat] = student;
+                    that.state.seatlist.push(student);
                   }else sub_absentlist.push(student);
                 })
 
-
+                that.state.seatlist.forEach(function(student){
+                  var today = student.attendance[DateIndex];
+                  var square = document.getElementById((today.row+1)+ "-"+(today.seat+1));
+                  if(square != null){
+                    if(today.attend == "attend"){
+                      square.style.backgroundColor = "green";
+                    }else if(today.attend == "reported"){
+                      square.style.backgroundColor = "red";
+                    }
+                  }
+                })
 
                 that.setState({
                   reportedlist: sub_reportedlist,
@@ -559,37 +575,30 @@ class AttendanceCheck extends Component{
     return this.state.timerstate;
   }
 
-  openModal() {
+  openattendModal(e){
     this.setState({
-        visible : true
-    });
+      attendmodalOn: true
+    })
+    this.handleClick(e)
+  }
+  closeattendModal() {
+    this.setState({
+      attendmodalOn: false
+    })
   }
 
-  closeModal() {
-      this.setState({
-          visible : false
-      });
-  }
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  }
   handleToggle = () => {
     this.setState(state => ({ open: !state.open }));
   };
-
   handleClose = event => {
   if (this.anchorEl.contains(event.target)) {
     return;
   }
     this.setState({ open: false });
   };
-
   handleClick(e){
     console.log(e.target);
   }
-
   gotoManagement() {
     let classname_ = this.state.classname;
     window.location.pathname = "TATABOX/management/" + classname_;
@@ -601,6 +610,7 @@ class AttendanceCheck extends Component{
 
   render() {
     if (!this.state.synch) return null;
+    if (!this.state.init) return null;
 
     let {match} = this.props;
 
@@ -611,14 +621,9 @@ class AttendanceCheck extends Component{
         $profileImg = (<img src={user} id = 'user_img'/>);
     }
 
-    this.state.seatlist.forEach(function(){
-      
-    })
+    let that = this;
 
-    
     document.documentElement.style.setProperty('--seat-size', this.state.seat_size);
-
-    
 
     return(
         <body id = 'full2'>
@@ -685,6 +690,19 @@ class AttendanceCheck extends Component{
                 <div id = "layout" class = "wrapper" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
                       {this.state.Seats}
                 </div>
+                <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
+                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+                      <div onClick={this.closeattendModal} style = {{top: "0"}}>
+                          <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                      </div>
+                      <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                        <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
+                        <br/>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
               </div>
               <div id = "report-tab">
                 <NavTabs styles = {{height: "100%"}} renderupdater = {this.state.renderupdater} timerstate = {this.state.timerstate} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist}  ></NavTabs>

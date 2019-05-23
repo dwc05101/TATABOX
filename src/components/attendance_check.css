@@ -83,13 +83,12 @@
 .wrapper{
     display: grid;
     grid-template-columns: 15px repeat(var(--seat-size), 1fr);
-    grid-template-rows: 40px 10px repeat(var(--seat-size),1fr);
+    grid-template-rows: 40px 25px repeat(var(--seat-size),1fr);
 }
 
 .screen{
     border: 1px solid brown;
     margin: 1px;
-    margin-bottom: 8px;
     text-align: center;
     grid-row: 1;
     grid-column-start: 1; 
@@ -101,10 +100,15 @@
     text-align: center;
 }
 
+.number-seat{
+    margin: 1px;
+    text-align: center;
+}
+
 .alphabet-seat{
     margin: 1px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 4px;
 }
 
 .seat{

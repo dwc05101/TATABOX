@@ -182,7 +182,7 @@ class NavTabs extends React.Component {
       var absentMap = [];
       /* set reported person*/
       nextProps.reportedList.forEach(function(student){
-        reportedMap.set(student.sid, student.attendance[DateIndex].reporter);
+        reportedMap[student.sid] = student.attendance[DateIndex].reporter;
       });
       /* set absent person*/
       nextProps.absentList.forEach(function(student){
@@ -226,11 +226,13 @@ class NavTabs extends React.Component {
         reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i]])
       }
       // list data form
+      console.log(absentStudents);
       for (var i=0;i<absentStudents.length;i++) {
         absentIndents.push(<div style = {absentStyle} data-index={i} onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push(absentStudents[i])
       }
+      console.log(absentInfo);
       if(absentIndents.length == 0){
         absentIndents.push(<div style = {noabsentStyle} data-index={0} > No Absent Student </div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
@@ -251,7 +253,7 @@ class NavTabs extends React.Component {
 
     /* set reported person*/
     this.props.reportedList.forEach(function(student){
-      reportedMap.set(student.sid, student.attendance[DateIndex].reporter);
+      reportedMap[student.sid] = student.attendance[DateIndex].reporter;
     });
     /* set absent person*/
     this.props.absentList.forEach(function(student){
@@ -272,9 +274,9 @@ class NavTabs extends React.Component {
       reportIndents.push(
         <div style = {reportedStyle} data-index={0}>
           <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
-            <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
+            <text style = {{pointerEvents: "none"}}></text>
             <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
-            <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
+            <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}></text>
           </Textfit>
         </div>
       )
@@ -442,19 +444,21 @@ class AttendanceCheck extends Component{
                 classInfo = child.val();
                 classKey = child.key;
 
-                that.setState({
-                  reportedlist: [],
-                  absentlist: []
-                });
+
+                var sub_reportedlist = [];
+                var sub_absentlist = [];
+
                 
                 classInfo.students.forEach(function(student){
                   if(student.attendance[DateIndex] != null){
-                    if(student.attendance[DateIndex].attend == "reported")that.state.reportedlist.push(student);
+                    if(student.attendance[DateIndex].attend == "reported")sub_reportedlist.push(student);
                     that.state.seatlist[student.attendance[DateIndex].seat] = student;
-                  }else that.state.absentlist.push(student);
+                  }else sub_absentlist.push(student);
                 })
 
                 that.setState({
+                  reportedlist: sub_reportedlist,
+                  absentlist: sub_absentlist,
                   renderupdater: that.state.renderupdater
                 })
               }

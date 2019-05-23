@@ -16,6 +16,11 @@
     overflow: hidden;
 }
 
+.designer{
+    width: 100%;
+    height: 100vh;
+}
+
 #logo{
     float: left;
     height: 10vh;
@@ -127,7 +132,7 @@
 }
 
 #body2{
-    width:100%;
+    width: 100%;
     height: calc(90vh - 90px);
     position: relative;
     scroll-behavior: smooth;

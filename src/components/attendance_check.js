@@ -398,7 +398,7 @@ class AttendanceCheck extends Component{
   }
 
   gotoMade() {
-    window.location.pathname="TATABOX/made"
+    window.location.pathname="TATABOX/class"
   }
 
   render() {

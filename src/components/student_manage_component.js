@@ -43,6 +43,7 @@ class Management extends Component{
             classname: props.match.params.classname,
             search_value: "",
             firebase : props.Firebase.fb,
+            init : false
         }
 
         let {match} = this.props;
@@ -96,12 +97,14 @@ class Management extends Component{
             pos_count = 0;
             backup = students;
             this.setState({
+                init : true,
                 students : students
             });
         });
     }
 
     makeStudentList(){
+        var classname = this.state.classname;
         return(this.state.students.map(student=>{
             var layout_component = {
                 i: student.name,
@@ -111,11 +114,12 @@ class Management extends Component{
                 h: 4,
                 isResizable : false
             }
+            var link = "/TATABOX/management/"+classname+"/"+student.sid;
             layout.push(layout_component);
             pos_count += 4;
             return(
                 <div key={student.name}>
-                    <StudentItem student={student}/>
+                    <StudentItem student={student} classname={this.state.classname}/>
                 </div>
             )
         })
@@ -135,7 +139,7 @@ class Management extends Component{
     }
 
     gotoMade() {
-        window.location.pathname="TATABOX/made"
+        window.location.pathname="TATABOX/class";
     }
 
     handleToggle = () => {
@@ -261,6 +265,8 @@ class Management extends Component{
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
 
+        if(this.state.init){
+
         return(
             <div id = 'full'>
                 <div id = 'headbar'>
@@ -363,6 +369,12 @@ class Management extends Component{
                 </Modal>
             </div>
         );
+    }
+    else{
+        return(
+            <div></div>
+        )
+    }
     }
 
 }

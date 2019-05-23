@@ -20,14 +20,14 @@ class StudentItem extends Component{
         var bottom = [];
         for(var i = 0 ; i<dates.length; i+=2){
             if(student.attendance[i]===undefined){
-                upper.push(-2);
+                upper.push("vacant");
             }else{
                 upper.push(student.attendance[i]);
             }
         }
         for(var j = 1 ; j<dates.length; j+=2){
             if(student.attendance[j]===undefined){
-                bottom.push(-2);
+                bottom.push("vacant");
             }else{
                 bottom.push(student.attendance[j]);
             }
@@ -38,6 +38,7 @@ class StudentItem extends Component{
             checked : false,
             upper : upper,
             bottom : bottom,
+            classname : props.classname
         }
         
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -77,38 +78,38 @@ class StudentItem extends Component{
                 this.state.upper.map(
                     value => {
                         dateCount+=2;
-                        if(value===1){
-                            return(
-                                <td>
-                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
-                                        {dates[dateCount]}
-                                    </div>
-                                </td>
-                            )
-                        }
-                        if(value===0){
-                            return(
-                                <td>
-                                    <div className="box" style={{backgroundColor:"#A9A9A9"}}>
-                                        {dates[dateCount]}
-                                    </div>
-                                </td>
-                            )
-                        }
-                        if(value===-1){
-                            return(
-                                <td>
-                                    <div className="box" style={{backgroundColor:"#ff6666"}}>
-                                        {dates[dateCount]}
-                                    </div>
-                                </td>
-                            )
-                        }
-                        if(value===-2){
+                        if(value==="vacant"){
                             return(
                                 <td>
                                     <div className="box">
-                                        {dates[dateCount]}
+                                    </div>
+                                </td>
+                            )
+                        }
+                        var date = value.date.split("-");
+                        if(value.attend==="attend"){
+                            return(
+                                <td>
+                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
+                                        {date[1]+"/"+date[2]}
+                                    </div>
+                                </td>
+                            )
+                        }
+                        if(value.attend==="absent"){
+                            return(      
+                                <td>
+                                    <div className="box" style={{backgroundColor:"#A9A9A9"}}>
+                                        {date[1]+"/"+date[2]}
+                                    </div>
+                                </td>
+                            )
+                        }
+                        if(value.attend==="reported"){
+                            return(
+                                <td>
+                                    <div className="box" style={{backgroundColor:"#ff6666"}}>
+                                        {date[1]+"/"+date[2]}
                                     </div>
                                 </td>
                             )
@@ -123,38 +124,38 @@ class StudentItem extends Component{
                 this.state.bottom.map(
                     value => {
                         dateCount+=2;
-                        if(value===1){
-                            return(
-                                <td>
-                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
-                                        {dates[dateCount]}
-                                    </div>
-                                </td>
-                            )
-                        }
-                        if(value===0){
-                            return(
-                                <td>
-                                    <div className="box" style={{backgroundColor:"#A9A9A9"}}>
-                                        {dates[dateCount]}
-                                    </div>
-                                </td>
-                            )
-                        }
-                        if(value===-1){
-                            return(
-                                <td>
-                                    <div className="box" style={{backgroundColor:"#ff6666"}}>
-                                        {dates[dateCount]}
-                                    </div>
-                                </td>
-                            )
-                        }
-                        if(value===-2){
+                        if(value==="vacant"){
                             return(
                                 <td>
                                     <div className="box">
-                                        {dates[dateCount]}
+                                    </div>
+                                </td>
+                            )
+                        }
+                        var date = value.date.split("-");
+                        if(value.attend==="attend"){
+                            return(
+                                <td>
+                                    <div className="box" style={{backgroundColor:"#779ECB"}}>
+                                        {date[1]+"/"+date[2]}
+                                    </div>
+                                </td>
+                            )
+                        }
+                        if(value.attend==="absent"){
+                            return(
+                                <td>
+                                    <div className="box" style={{backgroundColor:"#A9A9A9"}}>
+                                        {date[1]+"/"+date[2]}
+                                    </div>
+                                </td>
+                            )
+                        }
+                        if(value.attend==="reported"){
+                            return(
+                                <td>
+                                    <div className="box" style={{backgroundColor:"#ff6666"}}>
+                                        {date[1]+"/"+date[2]}
                                     </div>
                                 </td>
                             )
@@ -163,20 +164,10 @@ class StudentItem extends Component{
                 )
             )
         }
-        for(var i = start; i<dates.length; i+=2){
-            if(this.state.student.attendance[i]===1){
-                return(
-                    <td>
-                        <div className="box" style={{backgroundColor:"#779ECB"}}>
-                            {dates[i]}
-                        </div>
-                    </td>
-                )
-            }
-        }
     }
 
     render(){
+        var link = "/TATABOX/management/"+this.state.classname+"/"+this.state.student.sid;
         return(
             <Paper className="center">
                 <Grid container className="center" spacing = {24}>
@@ -188,7 +179,9 @@ class StudentItem extends Component{
                             checked={this.state.checked}
                             onChange={this.handleCheckbox}/>
                     </Grid>
-                    <Grid item xs={11}>
+                    <Grid item xs={11} onClick={()=>{
+                        window.location.pathname= link;
+                        }}>
                         <Grid container className="center" spacing={24}>
                             <Grid item xs={1} style={{padding:"0px"}}>
                                 {this.setProfile()}

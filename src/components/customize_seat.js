@@ -78,6 +78,7 @@ class Custom extends Component{
             userClas: '',
             first: true,
             loading: "initial",
+            update: false,
         }
 
         this.firebase = this.props.Firebase.fb;
@@ -123,7 +124,7 @@ class Custom extends Component{
         if(!this.props.enabled || e.button === 2 || e.nativeEvent.which === 2) {
             return;
         }
-        let nextState = {};
+        let nextState = {update: false};
         let startPoint = {
             x: e.pageX,
             y: e.pageY
@@ -137,6 +138,19 @@ class Custom extends Component{
     }
 
     onMouseUp = e => {
+        window.document.removeEventListener('mousemove', this.onMouseMove);
+        window.document.removeEventListener('mouseup', this.onMouseUp);
+        this.setState({
+            mouseDown: false,
+            startPoint: null,
+            endPoint: null,
+            selectionBox: null,
+            update: true,
+        })
+    }
+
+    onMouseMove = e => {
+        e.preventDefault();
         if (this.state.mouseDown) {
             var endPoint = {
                 x: e.pageX,
@@ -147,19 +161,6 @@ class Custom extends Component{
             endPoint: endPoint,
             selectionBox: this.calculateSelectionBox(this.state.startPoint, endPoint)
         })
-
-        window.document.removeEventListener('mousemove', this.onMouseMove);
-        window.document.removeEventListener('mouseup', this.onMouseUp);
-        this.setState({
-            mouseDown: false,
-            startPoint: null,
-            endPoint: null,
-            selectionBox: null,
-        })
-    }
-
-    onMouseMove = e => {
-        e.preventDefault();
     }
 
     calculateSelectionBox(startPoint, endPoint) {
@@ -178,7 +179,7 @@ class Custom extends Component{
             width: width,
             height: height,
             position: "absolute",
-            backgroundColor: "None",
+            backgroundColor: "blue",
             border: "1px dotted black"
         })
     }
@@ -219,8 +220,18 @@ class Custom extends Component{
     }
 
     componentDidUpdate() {
-        if(this.state.mouseDown && !_.isNull(this.state.selectionBox)) {
-            this.updateCollidingChildren(this.state.selectionBox);
+        if (this.state.update) {
+            if(this.state.mouseDown && !_.isNull(this.state.selectionBox)) {
+                this.updateCollidingChildren(this.state.selectionBox);
+            }
+        }
+
+    }
+    
+    componentWillUpdate() {
+        console.log(this.state.update);
+        if (!this.state.update) {
+            return false;
         }
     }
 

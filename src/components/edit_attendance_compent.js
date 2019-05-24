@@ -323,7 +323,7 @@ class EditAttendance extends Component{
         }
         return(
             <div id = 'full'>
-                <div id = 'headbar'>
+                <div id = 'headbar3'>
                     <h1 id = 'logo'style={{marginTop:"5px", cursor:"pointer"}} onClick={this.gotoMade}>TATABOX</h1>
                     <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{this.state.classname}</h2>
                     <div id = 'menu'>

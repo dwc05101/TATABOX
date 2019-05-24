@@ -373,7 +373,7 @@ class MakeClass extends Component {
             return (
                 <section>
                     <body id = 'full'>
-                        <div id = 'headbar'>
+                        <div id = 'headbar3'>
                             <h1 id = 'logo'>TATABOX</h1>
                             <div id = 'menu'>
                                 <Button

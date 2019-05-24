@@ -56,9 +56,6 @@ var students = [
         "sid" : 20170223,
         "dept" : "Department of Chemistry",
         "email" : "msk1241234@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, 1, 1, -1, 1, -1]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -103,7 +100,6 @@ var students = [
                 "reporter" : "20160372"
             },
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -111,9 +107,6 @@ var students = [
         "sid" : 20160034,
         "dept" : "School of Computing",
         "email" : "dwc05101@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, 1, 0, 1, 1, 1]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -158,7 +151,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -166,9 +158,6 @@ var students = [
         "sid" : 20160696,
         "dept" : "School of Computing",
         "email" : "hbbr@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, -1, 1, 1, 1, 0]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -213,7 +202,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -221,9 +209,6 @@ var students = [
         "sid" : 20160454,
         "dept" : "School of Computing",
         "email" : "nobleminsu@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, 1, 1, 1, 1, 1]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -268,7 +253,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -276,9 +260,6 @@ var students = [
         "sid" : 20150326,
         "dept" : "Department of Chemical and Biomolecular Engineering",
         "email" : "soodragon@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, -1, 1, -1, 1, 0]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -323,7 +304,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -331,9 +311,6 @@ var students = [
         "sid" : 20170124,
         "dept" : "School of Computing",
         "email" : "kbs@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [0, 1, 0, 1, 1, 0]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -378,7 +355,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -386,9 +362,6 @@ var students = [
         "sid" : 20140796,
         "dept" : "Department of Chemistry",
         "email" : "rim345@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, -1, 1, 1, 1, 0]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -433,7 +406,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -441,9 +413,6 @@ var students = [
         "sid" : 20170934,
         "dept" : "School of Computing",
         "email" : "psh0012@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, -1, 0, 1, -1, 1]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -488,7 +457,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     {
         "imgpath" : "",
@@ -496,9 +464,6 @@ var students = [
         "sid" : 20160784,
         "dept" : "School of Computing",
         "email" : "anglejiwon@kaist.ac.kr",
-<<<<<<< HEAD
-        "attendance" : [1, 1, 1, 1, 1, 0]
-=======
         "attendance" : [
             {
                 "date" : "2019-3-11",
@@ -543,7 +508,6 @@ var students = [
                 "reporter" : null
             }
         ]
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     },
     
 ]

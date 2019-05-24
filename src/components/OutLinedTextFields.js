@@ -9,20 +9,16 @@ import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import './step_component.css';
 import user from '../images/user_white.png';
-<<<<<<< HEAD
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import {purple} from '@material-ui/core/colors'
 import students from '../data/student_pairs';
+import UploadCsv from './uploadCsv.js'
 
 const theme = createMuiTheme({
   palette: {
     primary: purple,
   },
 });
-=======
-import students from '../data/student_pairs';
-import UploadCsv from './uploadCsv.js'
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
 
 const styles = theme => ({
   margin: {
@@ -128,7 +124,6 @@ class OutlinedTextFields extends React.Component {
       synch:false,
       message:'',
       test:false,
-<<<<<<< HEAD
       userSeat: [],
       Seats:[],
       init: false,
@@ -230,10 +225,7 @@ class OutlinedTextFields extends React.Component {
 
   }
 
-=======
-    }
-  }
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
+
   componentDidMount(){
     let that = this;
     new Promise(function(resolve, reject){
@@ -318,12 +310,8 @@ class OutlinedTextFields extends React.Component {
       prof : this.state.prof,
       bd : this.state.bd,
       room : this.state.room,
-<<<<<<< HEAD
-      students: students,
+      students: studentslst,
       layout: this.state.layout
-=======
-      students: studentslst
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     });
     
     //user info update
@@ -332,11 +320,7 @@ class OutlinedTextFields extends React.Component {
       dept : that.state.userDept,
       schl : that.state.userSchl,
       clas : stringJson,//newcode,
-<<<<<<< HEAD
-      imgs : that.state.userImgs,
-=======
       imgs : that.state.userImgs
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
     });
     this.moveStep();
     this.setState(initialState);
@@ -361,11 +345,6 @@ class OutlinedTextFields extends React.Component {
         that.state.error=true;
         that.state.message='You have to enter all information.'
         that.state.test=true;
-<<<<<<< HEAD
-        alert(that.state.message);
-=======
-        
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
       }else{
         new Promise(function(resolve, reject){
           let code = that.state.code
@@ -396,39 +375,13 @@ class OutlinedTextFields extends React.Component {
     }
   }else{
     this.setState({step : 0});
-<<<<<<< HEAD
   }
 }
 
   gotoCustom() {
     window.location.pathname = "/TATABOX/custom"
   }
-
-  errorhandle(){
-    if(this.state.code==''){
-      this.state.error=true;
-    }
-    if(this.state.name==''){
-      this.state.error=true;
-    }
-    if(this.state.prof==''){
-      this.state.error=true;
-    }
-    if(this.state.bd==''){
-      this.state.error=true;
-    }
-    if(this.state.room==''){
-      this.state.error=true;
-    }
-  }
-
   
-=======
-  }
-  }
-
- 
->>>>>>> 8860801b50bb07f7d675fc98979f8f7f352e65bb
 
   render() {
     console.log(this.state.init, this.state.synch);

@@ -35,7 +35,7 @@ class App extends Component{
           component = {props => <Custom Firebase = {fb} {...props}/>}
         ></Route>
         <Route path="/management/:classname"
-          component = {props=><Management Firebase={fb} students={students} {...props}/>}
+          component = {props=><Management Firebase={fb} {...props}/>}
         ></Route>
         <Route path="/management/:classname/:sid"
           component = {props=><EditAttendance Firebase={fb} {...props}/>}

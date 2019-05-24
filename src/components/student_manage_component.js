@@ -76,6 +76,18 @@ class Management extends Component{
         this.closeModal = this.closeModal.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
+
+        this.state.firebase.database().ref("/classInfo").on("value",function(snapshot){
+            snapshot.forEach(function(child){
+                if(child.val().name === that.state.classname){
+                    classInfo = child.val();
+                    classKey = child.key;
+                    that.setState({
+                        students : child.val().students
+                    });
+                }
+            })
+        })
         
     }
 

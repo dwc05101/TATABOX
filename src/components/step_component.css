@@ -77,15 +77,45 @@ text-align: center;
 margin-top: 20%;
 }
 
-.App-link {
-color: #61dafb;
+:root{
+    --seat-size:10;
 }
 
-@keyframes App-logo-spin {
-from {
-    transform: rotate(0deg);
+.wrapper{
+    display: grid;
+    grid-template-columns: 15px repeat(var(--seat-size), 1fr);
+    grid-template-rows: 40px 25px repeat(var(--seat-size),1fr);
 }
-to {
-    transform: rotate(360deg);
+
+.screen{
+    border: 1px solid brown;
+    margin: 1px;
+    text-align: center;
+    grid-row: 1;
+    grid-column-start: 1; 
+    grid-column-end: -1; 
+    font-size: 24px;
 }
+
+.none-seat{
+    margin: 1px;
+    text-align: center;
+}
+
+.number-seat{
+    margin: 1px;
+    text-align: center;
+    font-size: 2px;
+}
+
+.alphabet-seat{
+    margin: 1px;
+    text-align: center;
+    margin-top: 4px;
+    font-size: 2px;
+}
+
+.seat{
+    border: 1px solid black;
+    margin: 1px;
 }

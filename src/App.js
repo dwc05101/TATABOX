@@ -6,6 +6,7 @@ import MakeClass from "./components/make_class_component";
 import Management from './components/student_manage_component';
 import AttendanceCheck from './components/attendance_check';
 import GradeReport from "./components/grade_report_component";
+import Custom from "./components/customize_seat";
 import StudentSide from "./components/student_side";
 import EditAttendance from "./components/edit_attendance_compent";
 import Firebase from './firebase';
@@ -27,6 +28,12 @@ class App extends Component{
           render = {props => <MakeClass Firebase = {fb} />}
         ></Route>
         <Route path="/management/:classname" exact
+          component = {props=><Management Firebase={fb} {...props}/>}
+        ></Route>
+        <Route path="/custom"
+          component = {props => <Custom Firebase = {fb} {...props}/>}
+        ></Route>
+        <Route path="/management/:classname"
           component = {props=><Management Firebase={fb} {...props}/>}
         ></Route>
         <Route path="/management/:classname/:sid"

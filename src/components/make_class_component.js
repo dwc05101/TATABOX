@@ -71,6 +71,7 @@ class MakeClass extends Component {
             loading:true,
             deleteindex:-1,
             classlst:[],
+            Seat: null,
         }
         this.handleClick = this.handleClick.bind(this);
         this.firebaseO = this.props.Firebase;
@@ -83,6 +84,35 @@ class MakeClass extends Component {
         this.closeCaution = this.closeCaution.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
 
+        let that = this;
+        let Seat;
+
+        new Promise(function(resolve, reject){
+            that.firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    that.setState({userID : user.uid});
+                    // console.log(`constructor userid`,user.uid);
+                    resolve();
+                } else {
+                    alert("Oops! you are signed out!");
+                    window.location.pathname = "TATABOX/";
+                }
+            });
+        }).then(function() {
+            that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
+                if (snapshot.val() != null) {
+                    Seat = snapshot.val().seat;
+                }
+            }).then(function() {
+                if (Seat != null) {
+                    that.setState({ Seat: Seat, visible: true})
+                } else {
+                    that.setState({ Seat: Seat})
+                }
+            })
+        })
+
     }
     componentDidMount(){
         let that = this;
@@ -94,9 +124,9 @@ class MakeClass extends Component {
                     var classes = [];
                     that.firebase.database().ref('/AUTH/'+user.uid+'/clas').once('value').then(function(snapshot){
                         var userclass = snapshot.val();
-                        console.log(userclass);
                         if(userclass != null) classes = JSON.parse(userclass);
                         that.setState({classlst:classes});
+                        //classes = userclass.split(',');
                     })
 
                     if(classes != []){
@@ -116,8 +146,6 @@ class MakeClass extends Component {
                                             key: childSnapshot.key
                                         }
                                     )
-                                    
-
                                     }
                                 })
                                 })
@@ -136,7 +164,10 @@ class MakeClass extends Component {
                 that.setState({user_img: userimgs, synch: true});
             });
         }).then(() => this.setState({ loading: false }));
+        
     }
+
+
     handlelogin = user =>{
         this.setState({
             user_name : user.displayName,

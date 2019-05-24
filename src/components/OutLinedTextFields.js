@@ -1,19 +1,24 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import Select from 'react-select';
-import MakeClass from './make_class_component.js'
 import Typography from '@material-ui/core/Typography';
 import './step_component.css';
-import { darkBlack } from 'material-ui/styles/colors';
 import user from '../images/user_white.png';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import {purple} from '@material-ui/core/colors'
 import students from '../data/student_pairs';
 import UploadCsv from './uploadCsv.js'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+  },
+});
 
 const styles = theme => ({
   margin: {
@@ -80,6 +85,7 @@ const initialState = {
   preview: 0, 
   error:false,
   firebase:null,
+  
 };
 
 
@@ -118,8 +124,108 @@ class OutlinedTextFields extends React.Component {
       synch:false,
       message:'',
       test:false,
+      userSeat: [],
+      Seats:[],
+      init: false,
+      layout: {},
     }
+
+    this.indenth = 1;
+    this.indentw = 1;
+
+    let that = this;
+    
+    new Promise(function(resolve, reject) {
+      that.firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+        // User is signed in.
+            that.setState({username : user.displayName, userID: user.uid})
+            resolve();
+        } else {
+          alert("Oops! you are signed out!");
+          window.location.pathname = "TATABOX/";
+        }
+      });
+    }).then(function(result) {
+      /* get&set seat layout*/
+      that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
+        if (snapshot.val() == null) {
+          that.setState({ init: true })
+          return false
+        }
+        // first, set DateIndex
+        let seat = snapshot.val().seat;
+        // console.log(seat);
+        var seat_array = seat;
+        var w = seat_array[0].length;
+        var h = seat_array.length;
+        var seat_size;
+
+        if(w > h){
+          seat_size = w;
+          that.indenth = Math.floor((w-h)/2)+1;
+        }
+        else if (w%2 === h%2){
+          seat_size = h;
+          that.indentw = Math.floor((h-w)/2)+1;
+        }else{
+          seat_size = h+1;
+          that.indentw = Math.floor((h-w+1)/2)+1;
+        }
+
+        //screen & numbers
+        that.state.Seats.push(
+          <div class = "screen" >screen</div>
+        )
+        for(var i = 0; i< seat_size+1; i++){
+          if( i< that.indentw ){
+            that.state.Seats.push(
+              <div class = "none-seat" ></div>
+            )
+          }else if( i >= that.indentw && i < that.indentw+w ){
+            that.state.Seats.push(
+              <div class = "number-seat" >{i-1}</div>
+            )
+          }else{
+            that.state.Seats.push(
+              <div class = "none-seat" ></div>
+            )
+          }
+        }
+
+        for(var i = 1; i< seat_size; i++){
+          if(i >= that.indenth && i<that.indenth+h){
+            that.state.Seats.push(
+              <div class = "alphabet-seat" >{String.fromCharCode(64+i-that.indenth+1)}</div>
+            )
+          }else{
+            that.state.Seats.push(
+              <div class = "none-seat" ></div>
+            )
+          }
+          for(var j = 1; j < seat_size+1; j ++){
+            if(i<that.indenth|| j<that.indentw|| i >= h+that.indenth || j >= w + that.indentw ){
+              that.state.Seats.push(
+                <div class = "none-seat"></div>
+              )
+            }else if( seat_array[i-that.indenth][j-that.indentw] === 1){
+              that.state.Seats.push(
+                <div class = "seat" id = { (i-that.indenth) + "-" + (j-that.indentw)} hindex={i-that.indenth} windex={j-that.indentw} onClick = {that.openattendModal}></div>
+              )
+            }else if( seat_array[i-that.indenth][j-that.indentw] === 0){
+              that.state.Seats.push(
+                <div class = "none-seat"></div>
+              )
+            }
+          }
+        }
+        that.setState({seat_size: seat_size, layout: seat, init: true});
+      });
+    })
+
   }
+
+
   componentDidMount(){
     let that = this;
     new Promise(function(resolve, reject){
@@ -204,7 +310,8 @@ class OutlinedTextFields extends React.Component {
       prof : this.state.prof,
       bd : this.state.bd,
       room : this.state.room,
-      students: studentslst
+      students: studentslst,
+      layout: this.state.layout
     });
     
     //user info update
@@ -238,7 +345,6 @@ class OutlinedTextFields extends React.Component {
         that.state.error=true;
         that.state.message='You have to enter all information.'
         that.state.test=true;
-        
       }else{
         new Promise(function(resolve, reject){
           let code = that.state.code
@@ -270,12 +376,17 @@ class OutlinedTextFields extends React.Component {
   }else{
     this.setState({step : 0});
   }
-  }
+}
 
- 
+  gotoCustom() {
+    window.location.pathname = "/TATABOX/custom"
+  }
+  
 
   render() {
-    if(!this.state.synch) return null;
+    console.log(this.state.init, this.state.synch);
+    if (!this.state.init) return null;
+    if (!this.state.synch) return null;
     // console.log(`outlined firebase`,this.firebase);
     const { classes } = this.props;
     const { selectedOption } = this.state;
@@ -354,14 +465,25 @@ class OutlinedTextFields extends React.Component {
               </form>
             </div>
             <div id = "seatbox">
-              <div id="seatlay" style={{width: "100%"}}>
-                Preview for Seat
-                <div>{ this.state.isVisible ? (
-                  <img id = 'seat' src = {prev} style={{marginTop:30}}/>
-                ) : null }
+              <div id="seatlay" style={{width: "100%", alignItems: "center"}}>
+                <div style={{height: "4vh"}}>
+                  <text>Preview for Seat</text>
+                </div>
+                
+                <div style={{height: "35vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                  <div style={{height: "5vh"}}>
+                    <MuiThemeProvider theme={theme}>
+                      <Button variant="contained" color="primary" onClick={this.gotoCustom}>
+                          Customize Seat!
+                      </Button>
+                    </MuiThemeProvider>
+                  </div>
+                  <div className="wrapper" style={{border: "1px solid black", height:"30vh", width: "100%"}}>
+                    {this.state.Seats}
+                  </div>
                 </div>
               </div>
-              <div id="buttondiv" style={{width: "50%", height: "10vh", position: 'absolute' ,bottom:0}}>
+              <div id="buttondiv" style={{width: "50%", height: "5vh", position: 'absolute' ,bottom:0}}>
                 <Button variant="contained" color="secondary" onClick={this.props.closeModal} className={classes.margin}>
                     Cancel
                 </Button>
@@ -379,9 +501,12 @@ class OutlinedTextFields extends React.Component {
         <UploadCsv onSubmit={this.onSubmit} moveStep={this.moveStep}/>
       </div>
     }
-    return (<div style={{textAlign: "center"}}>
-      {step}
-        </div>);
+    document.documentElement.style.setProperty('--seat-size', this.state.seat_size);
+    return (
+      <div style={{textAlign: "center"}}>
+        {step}
+      </div>
+    );
   }
 }
 

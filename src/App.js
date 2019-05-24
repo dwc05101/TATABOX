@@ -26,7 +26,7 @@ class App extends Component{
         <Route path="/" exact
           render = {props => <Main Firebase = {fb}/>}
         ></Route>
-        <Route path="/make"
+        <Route path="/class"
           render = {props => <MakeClass Firebase = {fb} />}
         ></Route>
         <Route path="/test"

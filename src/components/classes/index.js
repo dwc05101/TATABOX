@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Modal from 'react-awesome-modal';
 
 
 
@@ -43,9 +44,10 @@ function MakeBlock(props, i){
                 <div class = 'buttonSection' id={i} style={{visibility:'hidden'}} >
                     <Button id='gotoCheck' variant="contained" size="medium" color="secondary" className={classes.margin} onClick={() => props.handleClick(i)} data-index={i} elevation={1}>Check</Button>
                     <Button id='gotoMana' variant="contained" size="medium" color="primary" className={classes.margin} onClick={() => props.gotoManage(i)} data-index={i} elevation={1}>Manage</Button>
-                    <IconButton className={classes.margin} onClick={props.delete} aria-label="Delete"><img src = {require('../../images/garbage.png')} style={{width:'20px',heigth:'auto',cursor:'pointer'}} /></IconButton>
+                    <IconButton className={classes.margin} onClick={() => props.openCaution(i)} aria-label="Delete"><img src = {require('../../images/garbage.png')} style={{width:'20px',heigth:'auto',cursor:'pointer'}} /></IconButton>
                 </div>
                 </div>
+                
             </Paper>
         </div>
     )

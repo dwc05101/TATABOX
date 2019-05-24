@@ -19,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import { resolveCname } from 'dns';
 
 
+
 const styles = theme => ({
     container: {
       display: 'flex',
@@ -39,39 +40,20 @@ const styles = theme => ({
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
     },
+    margin: {
+        margin: theme.spacing.unit,
+    },
   });
 
-const buildings = [
-    {
-      value: 'N1',
-      label: 'N1 (김병호 김삼열 IT융합빌딩)',
-    },
-    {
-      value: 'N4',
-      label: 'N4 (인문사회과학동)',
-    },
-    {
-      value: 'E11',
-      label: 'E11 (창의학습관)',
-    },
-    {
-      value: 'E2-2',
-      label: 'E2-2 (산업경영학동)',
-    },
-    {
-      value: 'E6-5',
-      label: 'E6-5 (궁리실험관)',
-    },
-  ];
 
 class MakeClass extends Component {
 
     constructor(props) {
         super(props);
-        this.closeModal =this.closeModal.bind(this);
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
         this.state = {
+            tryDelete: false,
             visible : false,
             code: '',
             name: '',
@@ -87,12 +69,22 @@ class MakeClass extends Component {
             selected: 0,
             classname: '',
             loading:true,
+            deleteindex:-1,
+            classlst:[],
         }
         this.handleClick = this.handleClick.bind(this);
         this.firebaseO = this.props.Firebase;
         this.firebase = this.firebaseO.fb; 
-        //this.componentDidMount = this.componentDidMount.bind(this);
+        this.gotoManage = this.gotoManage.bind(this);
+        this.delete = this.delete.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.openCaution = this.openCaution.bind(this);
+        this.closeCaution = this.closeCaution.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
 
+    }
+    componentDidMount(){
         let that = this;
         new Promise(function(resolve, reject){
             that.firebase.auth().onAuthStateChanged(function(user) {
@@ -102,7 +94,9 @@ class MakeClass extends Component {
                     var classes = [];
                     that.firebase.database().ref('/AUTH/'+user.uid+'/clas').once('value').then(function(snapshot){
                         var userclass = snapshot.val();
-                        if(userclass != null)classes = userclass.split(',');
+                        if(userclass != null) classes = JSON.parse(userclass);
+                        that.setState({classlst:classes});
+                        //classes = userclass.split(',');
                     })
 
                     if(classes != []){
@@ -110,11 +104,20 @@ class MakeClass extends Component {
                             snapshot.forEach(function(childSnapshot){
                                 classes.forEach(function(classname){
                                     if(classname == childSnapshot.val().code){
-                                    that.state.datas.push({bd:childSnapshot.val().bd, 
-                                        code: childSnapshot.val().code, 
-                                        name:childSnapshot.val().name,
-                                        prof:childSnapshot.val().prof,
-                                        room: childSnapshot.val().room})
+
+                                    that.state.datas.push(
+                                        {
+                                            bd:childSnapshot.val().bd, 
+                                            code: childSnapshot.val().code, 
+                                            name:childSnapshot.val().name,
+                                            prof:childSnapshot.val().prof,
+                                            room: childSnapshot.val().room,
+                                            students: childSnapshot.val().students,
+                                            key: childSnapshot.key
+                                        }
+                                    )
+                                    
+
                                     }
                                 })
                                 })
@@ -134,7 +137,6 @@ class MakeClass extends Component {
             });
         }).then(() => this.setState({ loading: false }));
     }
-
     handlelogin = user =>{
         this.setState({
             user_name : user.displayName,
@@ -154,6 +156,20 @@ class MakeClass extends Component {
         });
     }
 
+    openCaution(i){
+        this.setState({
+            tryDelete: true,
+            overflow:"visible",
+            deleteindex:i,
+        })
+    }
+    closeCaution(){
+        this.setState({
+            tryDelete:false,
+            deleteindex:-1,
+        });
+    }
+
     handleChange = name => event => {
         this.setState({
           [name]: event.target.value,
@@ -164,13 +180,39 @@ class MakeClass extends Component {
         this.setState(state => ({ open: !state.open }));
     };
 
-    handleClick(e) {
+    //click delete button
+    delete(){
+        //TODO
+        let lst = this.state.classlst;
+        let index = this.state.deleteindex;
+        console.log(`delete index`,index);
+        console.log(`before delete`,lst);
+        lst.splice(index,1);
+        console.log(`after delete`,lst);
+
+        let newstring = JSON.stringify(lst);
+        console.log(`newstring`,newstring);
+        //user info update
+        
+        var updates = {};
+        updates['/AUTH/' + this.state.userID+'/clas'] = newstring;
+        this.firebase.database().ref().update(updates);
+        let selected = this.state.datas[index];
+        console.log(`classuid`, selected.key);
+        this.firebase.database().ref('/classInfo/'+selected.key).remove();
+        window.location.pathname = "TATABOX/class";
+        
+    }
+
+    //click check button
+    handleClick(i) {
         var index = 0;
         var classname = '';
         var classname_ = '';
         let that = this;
         new Promise(function(resolve, reject) {
-          index = e.target.getAttribute("data-index")
+          //index = e.target.getAttribute("data-index")
+          index = i
           classname = that.state.datas[index].name
           resolve()
         }).then(function(result) {
@@ -182,7 +224,29 @@ class MakeClass extends Component {
         }).then(function(result) {
           window.location.pathname = 'TATABOX/check/'+classname_;
         })
-    }
+      }
+  
+    //click management button
+    gotoManage(i) {
+        var index = 0;
+        var classname = '';
+        var classname_ = '';
+        let that = this;
+        new Promise(function(resolve, reject) {
+          //index = e.target.getAttribute("data-index")
+          index = i;
+          classname = that.state.datas[index].name
+          resolve()
+        }).then(function(result) {
+          that.setState({
+            slected: index,
+            classname: classname
+          })
+          classname_ = that.state.classname;
+        }).then(function(result) {
+          window.location.pathname = 'TATABOX/management/'+classname_;
+        })
+      }
   
     handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
@@ -191,23 +255,13 @@ class MakeClass extends Component {
       this.setState({ open: false });
     };
 
-    mapBuildings(){
-        return buildings.map(option => {
-          return(
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          )
-        })
-      }
-
- 
     render() {
         if (!this.state.synch) return null;
         if(this.state.loading) {
           console.log("loading..");
           return null;
         }
+        console.log(`class list`,this.state.classlst);
 
         const { classes } = this.props;
         var fireb =this.firebaseO;
@@ -267,23 +321,23 @@ class MakeClass extends Component {
                         <div id = 'img_cropper'>
                             {$profileImg}
                         </div>
-                        </div>
-                        <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
-                            <p id = 'clicktext1'>
-                                You don't have any class yet.
-                            </p>
-                            <p id = 'clicktext2'>
-                                Click here to create new class.
-                            </p>
-                            <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
-                                <AddIcon id = 'large' />
-                            </Fab>
-                            <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                                <OutLinedTextFields Firebase={fireb} closeModal={this.closeModal}></OutLinedTextFields>
-                            </Modal>
-                        </div>
-                    </body>
-                );
+                    </div>
+                    <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
+                        <p id = 'clicktext1'>
+                            You don't have any class yet.
+                        </p>
+                        <p id = 'clicktext2'>
+                            Click here to create new class.
+                        </p>
+                        <Fab id = 'plus' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
+                            <AddIcon id = 'large' />
+                        </Fab>
+                        <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
+                            <OutLinedTextFields Firebase={fireb} closeModal={this.closeModal}></OutLinedTextFields>
+                        </Modal>
+                    </div>
+                </body>
+            );
         }else {
             return (
                 <section>
@@ -334,22 +388,27 @@ class MakeClass extends Component {
                         
                         <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>
                             <h4 className = 'titleT'>Today's class</h4>
-                            <Classblock datas = {datas} handleClick = {this.handleClick}>
+                            <Classblock datas = {datas} handleClick = {this.handleClick} gotoManage = {this.gotoManage} delete={this.delete} openCaution={this.openCaution} closeCaution={this.closeCaution} tryDelete={this.state.tryDelete}>
                             </Classblock>
                             <Fab id = 'plus2' aria-label="Add" onClick={() => this.openModal()} size = 'large' >
                             <AddIcon id = 'large' />
                             </Fab>
                             
                             <Modal visible={this.state.visible} width="700" height="500" effect="fadeInUp" >
-                            <OutLinedTextFields Firebase={this.firebaseO}></OutLinedTextFields>
+                            <OutLinedTextFields Firebase={this.firebaseO} closeModal={this.closeModal}/>
                             </Modal>
                             
                         </div>
-                        <div id = 'notify' style={{backgroundColor:"#e5e5e5",height:"88vh",width:"40%"}}>
-                            <h4 class = 'titleT' style={{marginLeft:"10px"}}>Notifications</h4>
-                            <Paper id = 'info_container' className={this.props.root} elevation={1}>
-                            </Paper>
-                        </div>
+                        <Modal visible={this.state.tryDelete} width="350" height="200" effect="fadeInUp" onClickAway={this.closeCaution} >
+                            <div style={{textAlign:'center', marginTop:'20px'}}>
+                                
+                                    <p>Are you sure to delete class?</p>
+                                    <p>You Cannot restore deleted class.</p>
+                                    <Button variant="contained" onClick={this.delete} color="secondary" className={classes.margin}>Delete</Button>
+                                    <Button variant="contained" onClick={this.closeCaution} color="primary" className={classes.margin} > Cancel</Button>
+                                
+                            </div>
+                        </Modal>
                     </body>
                 </section>
             );            
@@ -361,4 +420,4 @@ MakeClass.propTypes = {
     classes: PropTypes.object.isRequired,
   };
   
-export default MakeClass;
+export default withStyles(styles)(MakeClass);

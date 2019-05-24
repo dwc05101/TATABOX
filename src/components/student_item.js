@@ -63,6 +63,11 @@ class StudentItem extends Component{
                 <img src = {require("../images/seokhyun.png")}></img>
             )
         }
+        else{
+            return(
+                <img src = {require("../images/user.png")}></img>
+            )
+        }
     }
 
     makeAttendanceRow(start){

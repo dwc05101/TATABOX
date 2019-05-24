@@ -285,10 +285,6 @@ class MakeClass extends Component {
     }
       this.setState({ open: false });
     };
-    
-
-    componentWillMount() {
-    }
 
     render() {
         if (!this.state.synch) return null;

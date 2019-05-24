@@ -392,13 +392,17 @@ class AttendanceCheck extends Component{
     this.setState({ open: false });
   };
 
+  handleClick(e){
+    console.log(e.target);
+  }
+
   gotoManagement() {
     let classname_ = this.state.classname;
     window.location.pathname = "TATABOX/management/" + classname_
   }
 
   gotoMade() {
-    window.location.pathname="TATABOX/made"
+    window.location.pathname="TATABOX/class"
   }
 
   render() {
@@ -467,7 +471,7 @@ class AttendanceCheck extends Component{
               </div>
               
             </div>
-            <div id = "content" style={{backgroundColor:"#ffffff"}}>
+            <div id = "content" style={{backgroundColor:"#ffffff"}} onClick={this.handleClick}>
               <div id = "timer-layout">
                 <div id = "link">
                       <h3>URL : </h3>

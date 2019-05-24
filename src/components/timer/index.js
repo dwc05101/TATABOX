@@ -47,6 +47,9 @@ class Timer extends React.Component {
     }
 
     render() {
+        if(this.state.timingEvents.length == 0 && this.props.getTState != "begin")this.props.setTState("begin");
+        else if(this.state.timingEvents.length%2 == 1 && this.props.getTState != "run")this.props.setTState("run");
+        else if(this.state.timingEvents.length%2 == 0 && this.state.timingEvents.length != 0 && this.props.getTState != "stop")this.props.setTState("stop");
         return(
             <div className = "timer-container">
                 {/* <div className = "timer-status">

@@ -9,6 +9,7 @@ import GradeReport from "./components/grade_report_component";
 import Custom from "./components/customize_seat";
 import StudentSide from "./components/student_side";
 import EditAttendance from "./components/edit_attendance_compent";
+import StudentReport from "./components/student_report";
 import Firebase from './firebase';
 
 class App extends Component{
@@ -33,9 +34,6 @@ class App extends Component{
         <Route path="/custom"
           component = {props => <Custom Firebase = {fb} {...props}/>}
         ></Route>
-        <Route path="/management/:classname"
-          component = {props=><Management Firebase={fb} {...props}/>}
-        ></Route>
         <Route path="/management/:classname/:sid"
           component = {props=><EditAttendance Firebase={fb} {...props}/>}
         ></Route>
@@ -45,8 +43,11 @@ class App extends Component{
         <Route path="/grade/:classname"
           component={props => <GradeReport Firebase={fb} {...props}/>}
         ></Route>
-        <Route path="/student/:classname/:date"
+        <Route path="/student/:classname/:date" exact
           component={props => <StudentSide Firebase={fb} {...props}/>}
+        ></Route>
+        <Route path="/student/:classname/:date/:sid"
+          component={props => <StudentReport Firebase={fb} {...props}/>}
         ></Route>
       </Router>
     );

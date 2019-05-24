@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Prompt} from 'react-router-dom';
 import './attendance_check.css';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -59,6 +60,17 @@ const styles = theme => ({
     fontWeight: "bold"
   },
 });
+
+function shuffleArray(target) {
+  var array = target
+  for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+  return array;
+}
 
 var DateIndex = -1;
 
@@ -177,8 +189,6 @@ class NavTabs extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log(nextProps);
-    console.log(this.props);
     if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
       var reportedMap = {};
       var absentMap = [];
@@ -193,8 +203,6 @@ class NavTabs extends React.Component {
   
       const reportedStudents = reportedMap;
       const absentStudents = absentMap;
-  
-      console.log(nextProps.absentList);
   
       var reportIndents = [];
       var absentIndents = [];
@@ -215,7 +223,7 @@ class NavTabs extends React.Component {
         reportIndents.push(<div style = {{height: "3%"}}></div>)
         reportInfo.push([Object.keys(reportedStudents)[i] + " " + nextProps.reportedList[i].name, " reported by ", Object.values(reportedStudents)[i], nextProps.reportedList[i].email])
       }
-      if(reportInfo.length == 0){
+      if(reportInfo.length === 0){
         reportIndents.push(
           <div style = {reportedStyle} data-r-index={0} data-a-index={0}>
             <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
@@ -235,7 +243,7 @@ class NavTabs extends React.Component {
         absentInfo.push([nextProps.absentList[i].sid , nextProps.absentList[i].name, nextProps.absentList[i].email])
       }
 
-      if(absentIndents.length == 0){
+      if(absentIndents.length === 0){
         absentIndents.push(<div style = {noabsentStyle} data-a-index={0} data-r-index={0}> No Absent Student </div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push([0,0,0])
@@ -266,14 +274,12 @@ class NavTabs extends React.Component {
     const reportedStudents = reportedMap;
     const absentStudents = absentMap;
 
-    console.log(this.props.reportedList);
-
     var reportIndents = [];
     var absentIndents = [];
     var reportInfo = [];
     var absentInfo = [];
     // dictionary data form
-    if(reportInfo.length == 0){
+    if(reportInfo.length === 0){
       reportIndents.push(
         <div style = {reportedStyle} data-a-index = {0} data-r-index={0}>
           <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
@@ -286,8 +292,8 @@ class NavTabs extends React.Component {
       reportIndents.push(<div style = {{height: "3%"}}></div>)
       reportInfo.push([0,0,0,0])
     }
-    if(absentIndents.length == 0){
-      absentIndents.push(<div style = {noabsentStyle} data-r-index={0} data-a-index={0} > No Yet Started </div>)
+    if(absentIndents.length === 0){
+      absentIndents.push(<div style = {noabsentStyle} data-r-index={0} data-a-index={0} > Not Yet Started </div>)
       absentIndents.push(<div style = {{height: "3%"}}></div>)
       absentInfo.push([0,0,0])
     }
@@ -308,7 +314,6 @@ class NavTabs extends React.Component {
   }
   
   render() {
-    console.log(this.props.absentList);
     const {classes} = this.props;
     const {value} = this.state;
     return (
@@ -376,15 +381,32 @@ NavTabs.propTypes = {
 NavTabs = withStyles(styles)(NavTabs);
 /*----------------------for tabs-----------------------*/
 
+var globalDB;
+var globalDate;
 var classInfo;
 var classKey;
+
+var backup;
+
+var studentInit = false;
+var done = false;
+
+
+
+window.onbeforeunload = function(){
+  if(window.confirm("\0/")){
+    return;
+  }
+};
 
 class AttendanceCheck extends Component{
   constructor(props) {
     super(props);
 
+    globalDB = props.Firebase.fb.database();
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    globalDate = date;
     var link = "https://dwc05101.github.io/TATABOX/student/"+props.match.params.classname+"/"+date;
     this.state = {
         visible : false,
@@ -419,6 +441,7 @@ class AttendanceCheck extends Component{
         windex: 0,
         attendmodalOn: false,
         reportedmodalOn: false,
+        done : "",
         //classname: match.params.classname,
     }
 
@@ -460,6 +483,18 @@ class AttendanceCheck extends Component{
         snapshot.forEach(function(child){
           if(child.val().name === that.state.classname){
             // first, set DateIndex
+            
+            if(child.val().done !== undefined){
+              //This class is done
+              console.log("HEY:"+child.val().done)
+              that.setState({
+                done : child.val().done
+              });
+            }
+
+            backup = child.val();
+            classKey = child.key;
+
             var seat_array = child.val().layout;
             
             var w = seat_array[0].length;
@@ -490,7 +525,7 @@ class AttendanceCheck extends Component{
                 )
               }else if( i >= that.indentw && i < that.indentw+w ){
                 that.state.Seats.push(
-                  <div class = "number-seat" >{i-1}</div>
+                  <div class = "number-seat" >{i}</div>
                 )
               }else{
                 that.state.Seats.push(
@@ -529,68 +564,106 @@ class AttendanceCheck extends Component{
           }
       })
       /* allow render after synch is set*/
-      });
-    }).then(function(result){
-      /* get class students & mount listener to FB*/
-      var classname = that.state.classname;
-      that.state.firebase.database().ref("/classInfo").on("value", function(snapshot){
-          snapshot.forEach(function(child){
-              if(child.val().name === classname){
-                // first, set DateIndex
-                if(child.val().students[0].attendance===undefined){
-                  DateIndex = 0;
-                  that.setState({
-                    reportedlist: [],
-                    absentlist: [],
-                  })
-                }else{
-                  if(DateIndex == -1)DateIndex = child.val().students[0].attendance.length;
-                
-                console.log(DateIndex);
+      })
+      .then(function(result){
+        /* get class students & mount listener to FB*/
+        var classname = that.state.classname;
+        that.state.firebase.database().ref("/classInfo").on("value", function(snapshot){
+            console.log("changed");
+            snapshot.forEach(function(child){
+                if(child.val().name === classname){
+                  classInfo = child.val();
+                  // first, set DateIndex
+                  if(child.val().students[0].attendance===undefined){
+                    DateIndex = 0;
+                    that.setState({
+                      reportedlist: [],
+                      absentlist: [],
+                    })
+                  }else{
+                    if(DateIndex === -1)DateIndex = child.val().students[0].attendance.length-1;
 
-                classInfo = child.val();
-                classKey = child.key;
+                  var sub_reportedlist = [];
+                  var sub_absentlist = [];
 
-                var sub_reportedlist = [];
-                var sub_absentlist = [];
-
-                classInfo.students.forEach(function(student){
-                  if(student.attendance[DateIndex] != undefined){
-                    if(student.attendance[DateIndex].attend == "reported")sub_reportedlist.push(student);
-                    that.state.seatlist.push(student);
-                  }else sub_absentlist.push(student);
-                })
-
-                that.state.seatlist.forEach(function(student){
-                  var today = student.attendance[DateIndex];
-                  var square = document.getElementById((today.row)+ "-"+(today.seat));
-                  if(square != null){
-                    if(today.attend == "attend"){
-                      square.style.backgroundColor = "green";
-                      square.onclick = that.openattendModal;
-                      that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,student.sid + " " + student.name,0,0,0,0];
-                    }else if(today.attend == "reported"){
-                      square.style.backgroundColor = "red";
-                      square.onclick = that.openreportedModal;
-                      that.Info[(today.row)+ "-" +(today.seat)] = ["r", student.name +" "+ student.sid,student.email, "reported by", student.reporter];
+                  child.val().students.forEach(function(student){
+                    if(student.attendance !== undefined){
+                      if(student.attendance[DateIndex].attend === "reported"){
+                        sub_reportedlist.push(student);
+                        that.state.seatlist.push(student);
+                      }
+                      else if(student.attendance[DateIndex].attend === "attend"){
+                        that.state.seatlist.push(student);
+                      }
+                      else if(student.attendance[DateIndex].attend === "absent"){
+                        sub_absentlist.push(student);
+                      }
                     }
+                  })
+
+                  that.state.seatlist.forEach(function(student){
+                    var today = student.attendance[DateIndex];
+                    var square = document.getElementById((today.row)+ "-"+(today.seat));
+                    if(square !== null){
+                      if(today.attend === "attend"){
+                        square.style.backgroundColor = "green";
+                        square.onclick = that.openattendModal;
+                        that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,student.sid + " " + student.name,0,0,0,0];
+                      }else if(today.attend === "reported"){
+                        square.style.backgroundColor = "red";
+                        square.onclick = that.openreportedModal;
+                        that.Info[(today.row)+ "-" +(today.seat)] = ["r", student.name +" "+ student.sid,student.email, "reported by", student.reporter];
+                      }
+                    }
+                  })
+
+                  that.setState({
+                    reportedlist: sub_reportedlist,
+                    absentlist: sub_absentlist,
+                  })
                   }
-                })
-
-                that.setState({
-                  reportedlist: sub_reportedlist,
-                  absentlist: sub_absentlist,
-                })
                 }
-              }
-          })
-
-          /* allow render after synch is set*/
-          that.setState({synch: true});
+            })
+        });
+      })
+      .then(()=>{
+        /* allow render after synch is set*/
+        that.setState({synch: true});
       });
     });
   }
 
+  handleTimerClick(e){
+    if(e.target.innerText === "RESET"){
+      if(window.confirm("This will RESET WHOLE PROCEDURE. Are you sure?"))
+          window.location.reload();
+    }
+    if(e.target.innerText === "START"){
+      classInfo.available = true;
+      if(!studentInit){
+        //Initialize
+        studentInit = true;
+        var defaultStructure = {
+          date : globalDate,
+          attend : "absent"
+        }
+        classInfo.students.map(student=>{
+          if(student.attendance === undefined){
+            var attendanceArray = [];
+            attendanceArray.push(defaultStructure);
+            student.attendance = attendanceArray;
+          }else{
+            student.attendance.push(defaultStructure);
+          }
+        })
+      }
+      globalDB.ref("/classInfo/"+classKey).set(classInfo);
+    }
+    if(e.target.innerText === "STOP"){
+      classInfo.available = false;
+      globalDB.ref("/classInfo/"+classKey).set(classInfo);
+    }
+  }
 
   changeState = state =>{
     this.setState({
@@ -638,6 +711,7 @@ class AttendanceCheck extends Component{
     this.setState({ open: false });
   };
 
+
   handClick(e){
     var hindex = e.target.getAttribute("hindex");
     var windex = e.target.getAttribute("windex");
@@ -656,9 +730,47 @@ class AttendanceCheck extends Component{
     window.location.pathname="TATABOX/class"
   }
 
+  componentDidUpdate(){
+    if(!done){
+      window.onbeforeunload = () => {
+        globalDB.ref("/classInfo/"+classKey).set(backup);
+      };
+    }else{
+      window.onbeforeunload = undefined;
+    }
+  }
+
+  onConfirm(){
+    let that = this;
+    if(window.confirm("You CANNOT CHECK ATTENDACNE after confirm. Are you sure to confirm today's attendance check?")){
+      done = true;
+      classInfo.done = globalDate;
+      var attendanceList = [];
+      for(var i = 0; i<classInfo.students.length; i++){
+          for(var j = 0; j<classInfo.students[i].attendance.length; j++){
+              if(classInfo.students[i].attendance[j].date === globalDate){
+                  if(classInfo.students[i].attendance[j].attend === "attend"){
+                      attendanceList.push({
+                          sid : classInfo.students[i].sid,
+                          row : classInfo.students[i].attendance[j].row,
+                          seat : classInfo.students[i].attendance[j].seat
+                      })
+                  }
+              }
+          }
+      }
+
+      classInfo.report = shuffleArray(attendanceList);
+
+      globalDB.ref("/classInfo/"+classKey).set(classInfo)
+      .then(()=>{
+        window.location.reload();
+      }) 
+    }
+  }
+
   render() {
-    if (!this.state.synch) return null;
-    if (!this.state.init) return null;
+
 
     let {match} = this.props;
 
@@ -673,10 +785,25 @@ class AttendanceCheck extends Component{
 
     document.documentElement.style.setProperty('--seat-size', this.state.seat_size);
 
-    console.log(this.Info);
-    console.log(this.state.windex, this.state.hindex);
+
+    if(this.state.done===this.state.date){
+      if(document.getElementById("timer")!==null){
+        document.getElementById("timer").style.display = "none";
+        document.getElementById("link").style.display = "none"; 
+        document.getElementById("confirm").style.display = "none"; 
+        document.getElementById("done").style.visibility = "visible"; 
+      }
+    }
+
+    if (!this.state.synch) return null;
+    if (!this.state.init) return null;
+
     return(
         <body id = 'full2'>
+          <Prompt
+            when={!done}
+            message={"You have not confirmed your attendance check. Are you sure to leave?"}
+            />
             <div id = 'headbar2'>
               <h1 id = 'logo'style={{marginTop:"5px", cursor: "pointer"}} onClick={this.gotoMade}>TATABOX</h1>
 
@@ -734,11 +861,19 @@ class AttendanceCheck extends Component{
                       <h3>URL : </h3>
                       <u style={{color:'#0040a8'}}>{this.state.link}</u>
                 </div>
-                <div id = "timer">
+                <div id = "timer" onClick={this.handleTimerClick}>
                   <Timer setTState = {this.changeState} getTState = {this.state.timerstate}  />
                 </div>
                 <div id = "layout" class = "wrapper" style={{border:"1px solid black",margin:"1%",padding:"3%"}}>
                       {this.state.Seats}
+                </div>
+                <div id = "confirm" className="center" style={{height:"5vh",width:"100%"}}>
+                  <Button variant="contained" color="secondary" style={{width:"200px"}} onClick={this.onConfirm}>
+                      confirm
+                  </Button>
+                </div>
+                <div id = "done" className="center" style={{width:"100%", height:"5vh",visibility:"hidden"}}>
+                  <h3>You've done today's attendance check!</h3>
                 </div>
                 <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
                   <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>

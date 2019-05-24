@@ -147,18 +147,18 @@ class Management extends Component{
     }
 
     handleClose = event => {
-    if (this.anchorEl.contains(event.target)) {
-        return;
-    }
+        if (this.anchorEl.contains(event.target)) {
+            return;
+        }
         this.setState({ open: false });
     }
 
     handleGrade = event => {
-    if (this.anchorEl.contains(event.target)) {
-        return;
-    }
-    let classname_ = this.state.classname;
-    window.location.pathname = "TATABOX/grade/" + classname_;
+        if (this.anchorEl.contains(event.target)) {
+            return;
+        }
+        let classname_ = this.state.classname;
+        window.location.pathname = "TATABOX/grade/" + classname_;
     }
     handleback(){
         let classname_ = this.state.classname;
@@ -224,7 +224,6 @@ class Management extends Component{
     }
 
     onRequestSearch(){
-        console.log("hi")
 
         var searched = [];
         var trimmed = this.state.search_value.trim();
@@ -266,115 +265,114 @@ class Management extends Component{
         }
 
         if(this.state.init){
-
-        return(
-            <div id = 'full'>
-                <div id = 'headbar'>
-                    <h1 id = 'logo'style={{marginTop:"5px", cursor:"pointer"}} onClick={this.gotoMade}>TATABOX</h1>
-                    <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
-                    <div id = 'menu'>
-                        <Button
-                            className="center"
-                            id = 'menu_button'
-                            buttonRef={node => {
-                            this.anchorEl = node;
-                            }}
-                            aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleToggle}
-                        >
-                        <img
-                            id = "menu-img"
-                            src = {require('../images/menu.png')}
-                        >
-                        </img>
-                        </Button>
-                        <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                            {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                id="menu-list-grow"
-                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+            return(
+                <div id = 'full'>
+                    <div id = 'headbar'>
+                        <h1 id = 'logo'style={{marginTop:"5px", cursor:"pointer"}} onClick={this.gotoMade}>TATABOX</h1>
+                        <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
+                        <div id = 'menu'>
+                            <Button
+                                className="center"
+                                id = 'menu_button'
+                                buttonRef={node => {
+                                this.anchorEl = node;
+                                }}
+                                aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleToggle}
                             >
-                                <Paper>
-                                <ClickAwayListener onClickAway={this.handleClose}>
-                                    <MenuList>
-                                    <MenuItem onClick={this.handleClose}>Export</MenuItem>
-                                    <MenuItem onClick={this.handleGrade}>Grade Report</MenuItem>
-                                    </MenuList>
-                                </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                            )}
-                        </Popper>
+                            <img
+                                id = "menu-img"
+                                src = {require('../images/menu.png')}
+                            >
+                            </img>
+                            </Button>
+                            <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
+                                {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    id="menu-list-grow"
+                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                >
+                                    <Paper>
+                                    <ClickAwayListener onClickAway={this.handleClose}>
+                                        <MenuList>
+                                        <MenuItem onClick={this.handleClose}>Export</MenuItem>
+                                        <MenuItem onClick={this.handleGrade}>Grade Report</MenuItem>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                                )}
+                            </Popper>
+                        </div>
+                            <h3 id = 'userid'>{this.state.user_name}</h3>
+                        <div id = 'img_cropper'>
+                            {$profileImg}
+                        </div>
+                        <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
+                            <h3>Back to Class</h3>
+                        </div>
+                        <div id = 'backtoclass' onClick={this.handleback}>
+                            <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>
+                        </div>
                     </div>
-                        <h3 id = 'userid'>{this.state.user_name}</h3>
-                    <div id = 'img_cropper'>
-                        {$profileImg}
-                    </div>
-                    <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
-                        <h3>Back to Class</h3>
-                    </div>
-                    <div id = 'backtoclass' onClick={this.handleback}>
-                        <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>
-                    </div>
-                </div>
-                <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
-                    <h1 style={{marginLeft:"1.5%", marginTop:"0.5%",whiteSpace:"nowrap"}}>Student Management</h1>
-                    <Grid container spacing={24}>
-                        <Grid item xs={4} style={{marginTop:"1%"}}>
-                            <MuiThemeProvider>
-                                <SearchBar
-                                    ref={(input)=>{
-                                        this.SearchBar = input;
-                                        }}
-                                    onChange={this.onChangeSearch}
-                                    onRequestSearch={this.onRequestSearch}
-                                    style={{marginLeft:"10%",width:"auto"}}
-                                    hintText="Search by Name"    
-                                    />
-                            </MuiThemeProvider>
+                    <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
+                        <h1 style={{marginLeft:"1.5%", marginTop:"0.5%",whiteSpace:"nowrap"}}>Student Management</h1>
+                        <Grid container spacing={24}>
+                            <Grid item xs={4} style={{marginTop:"1%"}}>
+                                <MuiThemeProvider>
+                                    <SearchBar
+                                        ref={(input)=>{
+                                            this.SearchBar = input;
+                                            }}
+                                        onChange={this.onChangeSearch}
+                                        onRequestSearch={this.onRequestSearch}
+                                        style={{marginLeft:"10%",width:"auto"}}
+                                        hintText="Search by Name"    
+                                        />
+                                </MuiThemeProvider>
+                            </Grid>
+                            <Grid item style={{marginTop:"1%"}} xs={3}>
+                                <img style={{width:"auto", height:"40px",paddingTop:"2%",marginLeft:"10%"}} src = {require("../images/color_explanation.png")}/>
+                            </Grid>
+                            <Grid item style={{marginTop:"1%"}} xs={2}>
+                                <Button variant="contained" color="secondary" style={{marginLeft:"75%"}}
+                                onClick={()=>{
+                                    if(window.confirm("Are you sure to delete checked students? This action is not reversible.")){
+                                        this.handleDelete();
+                                    }
+                                }}
+                            >Delete</Button>
+                            </Grid>
+                            <Grid item style={{marginTop:"1%"}} xs={3}>
+                                <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.openModal}>Send Invitation</Button>
+                            </Grid>                
                         </Grid>
-                        <Grid item style={{marginTop:"1%"}} xs={3}>
-                            <img style={{width:"auto", height:"40px",paddingTop:"2%",marginLeft:"10%"}} src = {require("../images/color_explanation.png")}/>
-                        </Grid>
-                        <Grid item style={{marginTop:"1%"}} xs={2}>
-                            <Button variant="contained" color="secondary" style={{marginLeft:"75%"}}
-                            onClick={()=>{
-                                if(window.confirm("Are you sure to delete checked students? This action is not reversible.")){
-                                    this.handleDelete();
-                                }
-                            }}
-                        >Delete</Button>
-                        </Grid>
-                        <Grid item style={{marginTop:"1%"}} xs={3}>
-                            <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.openModal}>Send Invitation</Button>
-                        </Grid>                
-                    </Grid>
+                    </div>
+                    <div id = 'body2' style={{backgroundColor:'#ffffff'}} onClick={this.checkBoxClick}>
+                        <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
+                            {this.makeStudentList()}
+                        </ReactGridLayout>
+                    </div>
+                    <Modal
+                        visible={this.state.modal_visible} 
+                        width="600" 
+                        height="300" 
+                        effect="fadeInUp" 
+                        onClickAway={this.closeModal}>
+                        <p style={{marginTop:"10vh",fontSize:'25px'}}><b>Send Invitation Link to Students</b></p><br/>
+                        <p>Invitation link : <u style={{color:'#0040a8'}}>https://tatabox.com/happyta</u></p><br/>
+                        <Button variant="contained" color="primary" onClick={this.closeModal} >Copy</Button>
+                    </Modal>
                 </div>
-                <div id = 'body2' style={{backgroundColor:'#ffffff'}} onClick={this.checkBoxClick}>
-                    <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
-                        {this.makeStudentList()}
-                    </ReactGridLayout>
-                </div>
-                <Modal
-                    visible={this.state.modal_visible} 
-                    width="600" 
-                    height="300" 
-                    effect="fadeInUp" 
-                    onClickAway={this.closeModal}>
-                    <p style={{marginTop:"10vh",fontSize:'25px'}}><b>Send Invitation Link to Students</b></p><br/>
-                    <p>Invitation link : <u style={{color:'#0040a8'}}>https://tatabox.com/happyta</u></p><br/>
-                    <Button variant="contained" color="primary" onClick={this.closeModal} >Copy</Button>
-                </Modal>
-            </div>
-        );
-    }
-    else{
-        return(
-            <div></div>
-        )
-    }
+            );
+        }
+        else{
+            return(
+                <div></div>
+            )
+        }
     }
 
 }

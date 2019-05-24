@@ -135,8 +135,8 @@ class NavTabs extends React.Component {
     };
     this.reportList = [];
     this.absentList = [];
-    this.reportInfo = ["","",""];
-    this.absentInfo = [""];
+    this.reportInfo = [];
+    this.absentInfo = [];
 
     this.openreportedModal = this.openreportedModal.bind(this);
     this.closereportedModal = this.closereportedModal.bind(this);
@@ -226,7 +226,7 @@ class NavTabs extends React.Component {
           </div>
         )
         reportIndents.push(<div style = {{height: "3%"}}></div>)
-        reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i]])
+        reportInfo.push([0,0,0,0])
       }
       // list data form
       for (var i=0;i<absentStudents.length;i++) {
@@ -238,6 +238,7 @@ class NavTabs extends React.Component {
       if(absentIndents.length == 0){
         absentIndents.push(<div style = {noabsentStyle} data-a-index={0} data-r-index={0}> No Absent Student </div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
+        absentInfo.push([0,0,0])
       }
 
       this.reportList = reportIndents;
@@ -459,7 +460,7 @@ class AttendanceCheck extends Component{
         snapshot.forEach(function(child){
           if(child.val().name === that.state.classname){
             // first, set DateIndex
-            var seat_array = child.val().class_layout;
+            var seat_array = child.val().layout;
             var w = seat_array[0].length;
             var h = seat_array.length;
             var seat_size;
@@ -536,8 +537,17 @@ class AttendanceCheck extends Component{
           snapshot.forEach(function(child){
               if(child.val().name === classname){
                 // first, set DateIndex
-                if(DateIndex == -1)DateIndex = child.val().students[0].attendance.length;
+                if(child.val().students[0].attendance===undefined){
+                  DateIndex = 0;
+                  that.setState({
+                    reportedlist: [],
+                    absentlist: [],
+                  })
+                }else{
+                  if(DateIndex == -1)DateIndex = child.val().students[0].attendance.length;
+                
                 console.log(DateIndex);
+
                 classInfo = child.val();
                 classKey = child.key;
 
@@ -571,6 +581,7 @@ class AttendanceCheck extends Component{
                   reportedlist: sub_reportedlist,
                   absentlist: sub_absentlist,
                 })
+                }
               }
           })
 

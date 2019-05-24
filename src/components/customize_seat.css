@@ -8,13 +8,9 @@
 }
 
 #title {
-    height: 10vh;
     margin :0px;
-    padding-top: 15px;
-    padding-left: 15px;
     color: white;
     font-size: 40px;
-
 }
 
 #main {
@@ -30,18 +26,18 @@
 #functions {
     height: 10vh;
     width: 100%;
-    background-color: lightgray;
-    border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #preview {
-    height: 80vh;
-    width: 100%;
-    border: 1px solid black;
+    height: 56vw;
+    width: 84vw;
+}
 
+.seat:hover {
+    background-color: #ffd54f;
 }
 
 @font-face {

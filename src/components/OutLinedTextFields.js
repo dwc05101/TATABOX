@@ -14,6 +14,7 @@ import { darkBlack } from 'material-ui/styles/colors';
 import user from '../images/user_white.png';
 import students from '../data/student_pairs';
 import UploadCsv from './uploadCsv.js'
+import firebase from '@firebase/app';
 
 const styles = theme => ({
   margin: {
@@ -96,6 +97,7 @@ class OutlinedTextFields extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.firebase = this.props.Firebase.fb;
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.cancel = this.cancel.bind(this);
 
     this.state = {
       code: '',
@@ -191,7 +193,7 @@ class OutlinedTextFields extends React.Component {
     this.isFull();
   }
 
-  onSubmit(studentslst){
+  onSubmit(studentslst,imgfiles){
     let that = this;
     let newcode = JSON.parse(this.state.userClas);
     newcode.push(this.state.code);
@@ -215,9 +217,52 @@ class OutlinedTextFields extends React.Component {
       clas : stringJson,//newcode,
       imgs : that.state.userImgs
     });
-    this.moveStep();
-    this.setState(initialState);
-    window.location.pathname = "TATABOX/class";
+
+    
+    
+
+
+    
+    new Promise(function(resolve, reject){
+      //upload students images
+      for(var i =0; i<imgfiles.length; i++){
+        let file = imgfiles[i];
+        const storage = that.firebase.storage();
+        const storageRef = storage.ref();
+        var uploadTask = storageRef.child('images/' + file.name).put(file);
+
+        uploadTask.on('state_changed', function(snapshot){
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+          // Handle unsuccessful uploads
+        }, function() {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
+          });
+        });
+    }
+      resolve();
+    })
+    .then(function(result) {
+      that.moveStep();
+      that.setState(initialState);
+      window.location.pathname = "TATABOX/class";
+     })
+  
+
   }
 
   isFull(){
@@ -227,6 +272,7 @@ class OutlinedTextFields extends React.Component {
   }
   cancel(){
     this.setState(initialState);
+    this.props.closeModal();
   }
 
   moveStep(){
@@ -362,7 +408,7 @@ class OutlinedTextFields extends React.Component {
                 </div>
               </div>
               <div id="buttondiv" style={{width: "50%", height: "10vh", position: 'absolute' ,bottom:0}}>
-                <Button variant="contained" color="secondary" onClick={this.props.closeModal} className={classes.margin}>
+                <Button variant="contained" color="secondary" onClick={this.cancel} className={classes.margin}>
                     Cancel
                 </Button>
                 <Button variant="contained" color="primary" onClick={this.moveStep}  className={classes.margin}>

@@ -402,6 +402,22 @@ class Main extends Component{
                         </div>
                         <div className = "signup-button-container">
                             <MuiThemeProvider theme={theme}>
+                                <Button className = "cancel-signup"
+                                        variant="contained" 
+                                        color="secondary" 
+                                        onClick={this.closeUp} 
+                                        style={{
+                                            width:"25%",
+                                            borderRadius: 10,
+                                            color: "white",
+                                            fontSize: "20px",
+                                            marginLeft: "5%"
+                                        }}
+                                >
+                                    Cancel
+                                </Button>
+                            </MuiThemeProvider>
+                            <MuiThemeProvider theme={theme}>
                                 <Button className = "signup-button" 
                                         variant="contained" 
                                         color="primary" 
@@ -416,22 +432,6 @@ class Main extends Component{
                                 >
                                     {/*padding: "18px 36px", */}
                                     Sign Up
-                                </Button>
-                            </MuiThemeProvider>
-                            <MuiThemeProvider theme={theme}>
-                                <Button className = "cancel-signup"
-                                        variant="contained" 
-                                        color="secondary" 
-                                        onClick={this.closeUp} 
-                                        style={{
-                                            width:"25%",
-                                            borderRadius: 10,
-                                            color: "white",
-                                            fontSize: "20px",
-                                            marginLeft: "5%"
-                                        }}
-                                >
-                                    Cancel
                                 </Button>
                             </MuiThemeProvider>
                         </div>

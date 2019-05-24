@@ -413,12 +413,18 @@ class AttendanceCheck extends Component{
         Seats : [],
         seat_size: 10,
         /*---- modal state-------*/
+        hindex: 0,
+        windex: 0,
         attendmodalOn: false,
+        reportedmodalOn: false,
         //classname: match.params.classname,
     }
 
+    this.openreportedModal = this.openreportedModal.bind(this);
+    this.closereportedModal = this.closereportedModal.bind(this);
     this.openattendModal = this.openattendModal.bind(this);
     this.closeattendModal = this.closeattendModal.bind(this);
+    this.handClick = this.handClick.bind(this);
     this.gotoManagement = this.gotoManagement.bind(this)
     let {match} = this.props;
 
@@ -426,6 +432,7 @@ class AttendanceCheck extends Component{
     this.firebase = this.firebaseO.fb;
     this.indentw = 1;
     this.indenth = 1;
+    this.Info = {"0-0": [0,0,0,0,0,0]};
 
     let that = this;
     new Promise(function(resolve, reject) {
@@ -472,16 +479,21 @@ class AttendanceCheck extends Component{
             that.state.Seats.push(
               <div class = "screen" >screen</div>
             )
-            that.state.Seats.push(
-              <div class = "none-seat" ></div>
-            )
-
-            for(var i = 1; i< seat_size+1; i++){
-              that.state.Seats.push(
-                <div class = "number-seat" >{i}</div>
-              )
+            for(var i = 0; i< seat_size+1; i++){
+              if( i< that.indentw ){
+                that.state.Seats.push(
+                  <div class = "none-seat" ></div>
+                )
+              }else if( i >= that.indentw && i < that.indentw+w ){
+                that.state.Seats.push(
+                  <div class = "number-seat" >{i-1}</div>
+                )
+              }else{
+                that.state.Seats.push(
+                  <div class = "none-seat" ></div>
+                )
+              }
             }
-
 
             for(var i = 1; i< seat_size; i++){
               if(i >= that.indenth && i<that.indenth+h){
@@ -500,7 +512,7 @@ class AttendanceCheck extends Component{
                   )
                 }else if( seat_array[i-that.indenth][j-that.indentw] === 1){
                   that.state.Seats.push(
-                    <div class = "seat" id = { (i-that.indenth) + "-" + (j-that.indentw)} hindex={i-that.indenth} windex={j-that.indentw} onClick = {that.openattendModal}></div>
+                    <div class = "seat" id = { (i-that.indenth) + "-" + (j-that.indentw)} hindex={i-that.indenth} windex={j-that.indentw}></div>
                   )
                 }else if( seat_array[i-that.indenth][j-that.indentw] === 0){
                   that.state.Seats.push(
@@ -540,12 +552,16 @@ class AttendanceCheck extends Component{
 
                 that.state.seatlist.forEach(function(student){
                   var today = student.attendance[DateIndex];
-                  var square = document.getElementById((today.row+1)+ "-"+(today.seat+1));
+                  var square = document.getElementById((today.row)+ "-"+(today.seat));
                   if(square != null){
                     if(today.attend == "attend"){
                       square.style.backgroundColor = "green";
+                      square.onclick = that.openattendModal;
+                      that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,student.sid + " " + student.name,0,0,0,0];
                     }else if(today.attend == "reported"){
                       square.style.backgroundColor = "red";
+                      square.onclick = that.openreportedModal;
+                      that.Info[(today.row)+ "-" +(today.seat)] = ["r", student.name +" "+ student.sid,student.email, "reported by", student.reporter];
                     }
                   }
                 })
@@ -564,7 +580,6 @@ class AttendanceCheck extends Component{
   }
 
 
-
   changeState = state =>{
     this.setState({
       timerstate: state
@@ -579,7 +594,7 @@ class AttendanceCheck extends Component{
     this.setState({
       attendmodalOn: true
     })
-    this.handleClick(e)
+    this.handClick(e)
   }
   closeattendModal() {
     this.setState({
@@ -587,18 +602,39 @@ class AttendanceCheck extends Component{
     })
   }
 
+  openreportedModal(e){
+    this.setState({
+      reportedmodalOn : true
+    })
+    this.handClick(e)
+  };
+
+  closereportedModal(){
+    this.setState({
+      reportedmodalOn : false
+    })
+  };
+
   handleToggle = () => {
     this.setState(state => ({ open: !state.open }));
   };
+
   handleClose = event => {
   if (this.anchorEl.contains(event.target)) {
     return;
   }
     this.setState({ open: false });
   };
-  handleClick(e){
-    console.log(e.target);
+
+  handClick(e){
+    var hindex = e.target.getAttribute("hindex");
+    var windex = e.target.getAttribute("windex");
+    this.setState({
+      hindex: hindex,
+      windex: windex
+    });
   }
+
   gotoManagement() {
     let classname_ = this.state.classname;
     window.location.pathname = "TATABOX/management/" + classname_;
@@ -625,6 +661,8 @@ class AttendanceCheck extends Component{
 
     document.documentElement.style.setProperty('--seat-size', this.state.seat_size);
 
+    console.log(this.Info);
+    console.log(this.state.windex, this.state.hindex);
     return(
         <body id = 'full2'>
             <div id = 'headbar2'>
@@ -699,6 +737,24 @@ class AttendanceCheck extends Component{
                       <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                         <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
                         <br/>
+                        <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
+                <Modal open={this.state.reportedmodalOn} onClose={this.closereportedModal}>
+                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+                      <div onClick={this.closereportedModal} style = {{top: "0"}}>
+                          <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                      </div>
+                      <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                        <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
+                        <br/>
+                        <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
+                        <text style = {{color: "gray", fontWeight: "light", marginBottom:"15px", fontSize: "15px"}}> {this.Info[(this.state.hindex) + "-" + (this.state.windex)][2]}</text>
+                        <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][3]}</text>
+                        <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
                       </div>
                     </div>
                   </div>

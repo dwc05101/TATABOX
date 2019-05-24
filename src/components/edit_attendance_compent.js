@@ -85,7 +85,7 @@ class EditAttendance extends Component{
                     classInfo = child.val();
                     targetKey = child.key;
                     for(var i = 0; i < child.val().students.length; i++){
-                        if(child.val().students[i].sid===parseInt(sid)){
+                        if(child.val().students[i].sid===sid){
                             target = child.val().students[i];
                             break;
                         }
@@ -187,14 +187,10 @@ class EditAttendance extends Component{
     }
 
     update(){
-        console.log(classInfo);
         for(var i = 0; i<classInfo.students.length; i++){
             if(classInfo.students[i].sid === parseInt(this.state.sid)){
-                console.log("Student Found");
-                console.log(classInfo.students[i].attendance);
                 for(var j = 0; j<classInfo.students[i].attendance.length; j++){
                     if(classInfo.students[i].attendance[j].date === this.state.editDate){
-                        console.log(classInfo.students[i].attendance[j].attend);
                         classInfo.students[i].attendance[j].attend = this.state.editAttend;
                         classInfo.students[i].attendance[j].row = this.state.editRow;
                         classInfo.students[i].attendance[j].seat = this.parseRow(this.state.editSeat);
@@ -215,6 +211,7 @@ class EditAttendance extends Component{
 
 
     makeAttendance(){
+        if(target.attendance !== undefined){
         return(target.attendance.map(attendance=>{
             var seatNum = parseInt(attendance.seat) + 1;
             var seat = (attendance.attend === "absent") ? "" : this.parseRow(attendance.row) + seatNum.toString();
@@ -268,6 +265,7 @@ class EditAttendance extends Component{
                 </TableRow>
             )
         }))
+        }
     }
 
     EditReporter(){

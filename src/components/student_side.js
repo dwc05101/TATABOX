@@ -17,8 +17,8 @@ class StudentSide extends Component{
             classname : props.match.params.classname,
             date : props.match.params.date,
             sid : '',
-            row : -1,
-            seat : -1,
+            row : 0,
+            seat : 0,
             rows : [],
             seats : [],
             init : false,
@@ -105,7 +105,7 @@ class StudentSide extends Component{
         }
         event.preventDefault();
         for(var i = 0; i<classInfo.students.length; i++){
-            if(classInfo.students[i].sid === parseInt(this.state.sid)){
+            if(classInfo.students[i].sid === this.state.sid){
                 found = true;
                 target = classInfo.students[i];
                 break;
@@ -117,10 +117,16 @@ class StudentSide extends Component{
             return;
         }
 
+        var attendance = [];
+
+        if(target.attendance === undefined){
+            target.attendance = attendance;
+        }
+
         target.attendance.push(attendanceStructure);
 
         for(var i = 0; i<classInfo.students.length; i++){
-            if(classInfo.students[i].sid === parseInt(this.state.sid)){
+            if(classInfo.students[i].sid === this.state.sid){
                 classInfo.students[i] = target;
                 break;
             }

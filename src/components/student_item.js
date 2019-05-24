@@ -15,18 +15,21 @@ class StudentItem extends Component{
 
         var upper = [];
         var bottom = [];
-        for(var i = 0 ; i<24; i+=2){
-            if(student.attendance[i]===undefined){
-                upper.push("vacant");
-            }else{
-                upper.push(student.attendance[i]);
+
+        if(student.attendance !== undefined){
+            for(var i = 0 ; i<24; i+=2){
+                if(student.attendance[i]===undefined){
+                    upper.push("vacant");
+                }else{
+                    upper.push(student.attendance[i]);
+                }
             }
-        }
-        for(var j = 1 ; j<24; j+=2){
-            if(student.attendance[j]===undefined){
-                bottom.push("vacant");
-            }else{
-                bottom.push(student.attendance[j]);
+            for(var j = 1 ; j<24; j+=2){
+                if(student.attendance[j]===undefined){
+                    bottom.push("vacant");
+                }else{
+                    bottom.push(student.attendance[j]);
+                }
             }
         }
 

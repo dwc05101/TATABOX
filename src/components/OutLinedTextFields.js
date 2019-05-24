@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Modal from 'react-awesome-modal';
@@ -22,9 +22,6 @@ const theme = createMuiTheme({
 });
 
 const styles = theme => ({
-  margin: {
-    margin: theme.spacing.unit,
-  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -50,7 +47,7 @@ const customStyles = {
   }),
 };
 
-const currencies = [
+const buildings = [
   {
     value: 'N1',
     label: 'N1 (김병호 김삼열 IT융합빌딩)',
@@ -73,6 +70,9 @@ const currencies = [
   },
 ];
 
+const values = ({
+  bd: 'E11'
+})
 
 const initialState = {
   code: '',
@@ -86,9 +86,10 @@ const initialState = {
   preview: 0, 
   error:false,
   firebase:null,
-  
-};
+  layout:{},
+  init:false,
 
+};
 
 
 class OutlinedTextFields extends React.Component {
@@ -130,6 +131,7 @@ class OutlinedTextFields extends React.Component {
       Seats:[],
       init: false,
       layout: {},
+      height: 0,
     }
 
     this.indenth = 1;
@@ -144,7 +146,7 @@ class OutlinedTextFields extends React.Component {
             that.setState({username : user.displayName, userID: user.uid})
             resolve();
         } else {
-          alert("Oops! you are signed out!");
+          // alert("Oops! you are signed out!");
           window.location.pathname = "TATABOX/";
         }
       });
@@ -157,7 +159,6 @@ class OutlinedTextFields extends React.Component {
         }
         // first, set DateIndex
         let seat = snapshot.val().seat;
-        // console.log(seat);
         var seat_array = seat;
         var w = seat_array[0].length;
         var h = seat_array.length;
@@ -186,7 +187,7 @@ class OutlinedTextFields extends React.Component {
             )
           }else if( i >= that.indentw && i < that.indentw+w ){
             that.state.Seats.push(
-              <div class = "number-seat" >{i-1}</div>
+              <div class = "number-seat" >{i}</div>
             )
           }else{
             that.state.Seats.push(
@@ -222,23 +223,30 @@ class OutlinedTextFields extends React.Component {
           }
         }
         that.setState({seat_size: seat_size, layout: seat, init: true});
-      });
+      })
+    }).then(function() {
+      that.firebase.database().ref('/AUTH/'+that.state.userID+'/tmpData/').once('value').then(function(snapshot) {
+        if (snapshot.val() == null) {
+          return false
+        }
+        that.setState(snapshot.val().tmpData)
+        console.log(that.state.bd)
+      })
     })
-
   }
 
 
   componentDidMount(){
     let that = this;
+    let height;
     new Promise(function(resolve, reject){
       that.firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // User is signed in.
           that.setState({userID : user.uid});
-          // console.log(`constructor userid`,user.uid);
           resolve();
         } else {
-            alert("Oops! you are signed out!");
+            // alert("Oops! you are signed out!");
             window.location.pathname = "TATABOX/";
         }
       });
@@ -254,6 +262,8 @@ class OutlinedTextFields extends React.Component {
       // added
       var userimgs = (snapshot.val() && snapshot.val().imgs) || user;
       that.setState({userName: username, userDept: userdept, userSchl: userschl, userClas: userclas, userImgs: userimgs, synch: true});
+      height = document.getElementById('step').clientHeight;
+      that.setState({height: height})
     });
     })
   }
@@ -299,6 +309,7 @@ class OutlinedTextFields extends React.Component {
     this.isFull();
   }
 
+
   onSubmit(studentslst,imgfiles){
     let that = this;
     let newcode = JSON.parse(this.state.userClas);
@@ -324,11 +335,6 @@ class OutlinedTextFields extends React.Component {
       clas : stringJson,//newcode,
       imgs : that.state.userImgs
     });
-
-    
-    
-
-
     
     new Promise(function(resolve, reject){
       //upload students images
@@ -377,13 +383,36 @@ class OutlinedTextFields extends React.Component {
       this.setState({error : false});
     }
   }
+
   cancel(){
-    this.setState(initialState);
+    let that = this;
+    new Promise(function(resolve, reject) {
+      that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim/').once('value').then(function(snapshot) {
+        if (snapshot.val() != null) {
+          snapshot.ref.remove();
+        }
+      }).then(function() {
+        that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
+          if (snapshot.val() != null) {
+            snapshot.ref.remove();
+          }
+        }).then(function() {
+          that.firebase.database().ref('/AUTH/'+that.state.userID+'/tmpData').once('value').then(function(snapshot) {
+            if (snapshot.val() != null) {
+              snapshot.ref.remove();
+            }
+          })
+          resolve()
+        })
+      })
+    }).then(function() {
+      that.setState(initialState)
+      that.setState({Seats: [], layout: {}, init: true});
+    })
     this.props.closeModal();
   }
 
   moveStep(){
-    console.log(`this.state.userID`,this.state.userID);
     if(this.state.step==0){
       let that = this;
       let bool;
@@ -405,7 +434,6 @@ class OutlinedTextFields extends React.Component {
           resolve();
         })
         .then(function(result) {
-          console.log(`touch this`)
           if(bool){
             that.state.error=true;
             that.state.message='This class already exists.'
@@ -424,16 +452,50 @@ class OutlinedTextFields extends React.Component {
   }
 }
 
-  gotoCustom() {
-    window.location.pathname = "/TATABOX/custom"
+  gotoCustom = e => {
+    let that = this;
+    let tmpData = {
+      code: this.state.code,
+      name: this.state.name,
+      prof: this.state.prof,
+      bd : this.state.bd,
+      room: this.state.room,
+      selectedOption: this.state.selectedOption
+    }
+    new Promise(function(resolve, reject) {
+      that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
+        if (snapshot.val() == null) {
+          that.setState({ init: true })
+          return false
+        } else {
+          that.setState({ init: false })
+          return false
+        }
+      }).then(function() {
+        console.log(that.state.init);
+        if (that.state.init) {
+          // first time
+          that.firebase.database().ref('/AUTH/'+that.state.userID+'/tmpData/').set({
+            tmpData: tmpData
+          })
+          resolve()
+        } else {
+          that.firebase.database().ref('/AUTH/'+that.state.userID+'/tmpData').set({
+            tmpData: tmpData
+          })
+          resolve()
+        }
+      }).then(function() {
+        window.location.pathname = "/TATABOX/custom"
+      })
+    })
   }
   
 
   render() {
-    console.log(this.state.init, this.state.synch);
     if (!this.state.init) return null;
     if (!this.state.synch) return null;
-    // console.log(`outlined firebase`,this.firebase);
+
     const { classes } = this.props;
     const { selectedOption } = this.state;
     let prev;
@@ -447,8 +509,8 @@ class OutlinedTextFields extends React.Component {
     if (this.state.step==0) {
       step =
         <div>
-          <img id="step" src = {require('../images/step1.png')} style={{width:'100%'}}/>
-          <div id = "fullbox">
+          <img id="step" src = {require('../images/step1.png')} style={{width:'100%', border: "1px solid black"}}/>
+          <div id = "fullbox" style={{height: `calc(100%-${this.state.height})`}}>
             <div id = "infobox">
               <form className={classes.container} noValidate autoComplete="off">
                 <div style={{width: "100%"}}>
@@ -470,7 +532,6 @@ class OutlinedTextFields extends React.Component {
                   margin="normal"
                   variant="outlined"
                 />
-
                 <TextField
                   id="outlined-prof"
                   label="Professor"
@@ -479,14 +540,18 @@ class OutlinedTextFields extends React.Component {
                   onChange={this.handleChange('prof')}
                   margin="normal"
                   variant="outlined"
-                /></div>
+                />
+                </div>
+                <div style={{width: "100%"}}>
+                </div>
                 <div style={{width: "100%", marginTop:12, marginLeft:'10%'}} >
                   <Select
                       placeholder="Building"
                       styles={customStyles}
-                      value={selectedOption}
+                      value={this.state.selectedOption}
                       onChange={this.buildingchange}
-                      options={currencies}
+                      onInputChange={this.handleInputChange}
+                      options={buildings}
                     />
                 </div>
                 <div style={{width: "100%"}}>
@@ -510,30 +575,27 @@ class OutlinedTextFields extends React.Component {
                 
               </form>
             </div>
-            <div id = "seatbox">
-              <div id="seatlay" style={{width: "100%", alignItems: "center"}}>
-                <div style={{height: "4vh"}}>
-                  <text>Preview for Seat</text>
+            <div id = "seatbox" >
+              <div style={{fontSize: "30px"}}>
+                <text>Preview for Seat</text>
+              </div>
+              <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                <div style={{width: "100%", paddingTop: "5px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                  <MuiThemeProvider theme={theme}>
+                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{maxHeight: '30px', minHeight: '30px'}}>
+                        Customize Seat!
+                    </Button>
+                  </MuiThemeProvider>
                 </div>
-                
-                <div style={{height: "35vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                  <div style={{height: "5vh"}}>
-                    <MuiThemeProvider theme={theme}>
-                      <Button variant="contained" color="primary" onClick={this.gotoCustom}>
-                          Customize Seat!
-                      </Button>
-                    </MuiThemeProvider>
-                  </div>
-                  <div className="wrapper" style={{border: "1px solid black", height:"30vh", width: "100%"}}>
-                    {this.state.Seats}
-                  </div>
+                <div className="wrapper" style={{border: "1px solid black", marginTop: "10px", height:"280px", width: "100%"}}>
+                  {this.state.Seats}
                 </div>
               </div>
-              <div id="buttondiv" style={{width: "50%", height: "10vh", position: 'absolute' ,bottom:0}}>
-                <Button variant="contained" color="secondary" onClick={this.cancel} className={classes.margin}>
+              <div id="buttondiv" style={{width: "100%", paddingTop: "10px", display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+                <Button variant="contained" color="secondary" onClick={this.cancel} style={{maxHeight: '30px', minHeight: '30px'}}>
                     Cancel
                 </Button>
-                <Button variant="contained" color="primary" onClick={this.moveStep}  className={classes.margin}>
+                <Button variant="contained" color="primary" onClick={this.moveStep} style={{maxHeight: '30px', minHeight: '30px'}}>
                     Next
                 </Button>
               </div>

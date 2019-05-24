@@ -5,12 +5,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-import Grid from '@material-ui/core/Grid';
-import noop from 'react-props-noop';
-import RootRef from '@material-ui/core/RootRef';
 import ReactDOM from 'react-dom';
 
-import RegionSelect from 'react-region-select';
 var _ = require('lodash');
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
@@ -245,12 +241,7 @@ class Custom extends Component{
     }
 
     savetoDB = e => {
-        /* e.preventDefault();
-        e.stopPropagation();
-        let rowIndex = e.target.getAttribute("data-row");
-        let colIndex = e.target.getAttribute("data-col");
-        let index = Number(30*rowIndex) + Number(colIndex); */
-        
+
         let data = this.selectedChildren;
         let fullData = [];
         let that = this;
@@ -284,14 +275,16 @@ class Custom extends Component{
         })
         .then(function() {
             if (that.state.first) {
+                console.log(fullData);
                 // first time
-                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').push({
+                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').set({
                     seat: seat
                 })
-                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').push({
+                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').set({
                     seatWOtrim: fullData
                 })
             } else {
+                console.log(fullData);
                 // additional customize
                 that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').set({
                     seat: seat

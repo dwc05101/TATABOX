@@ -787,6 +787,7 @@ class AttendanceCheck extends Component{
 
 
     if(this.state.done===this.state.date){
+      done = true;
       if(document.getElementById("timer")!==null){
         document.getElementById("timer").style.display = "none";
         document.getElementById("link").style.display = "none"; 

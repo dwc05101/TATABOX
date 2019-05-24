@@ -95,14 +95,14 @@ class EditAttendance extends Component{
         })
         .then(()=>{
             var rows = [];
-            for(var i = 0; i<classInfo.numRow; i++){
+            for(var i = 0; i<classInfo.layout.length; i++){
                 rows.push({
                     num : i,
                     label : alphabet[i]
                 });
             }
             var seats = [];
-            for(var i = 0; i<classInfo.numSeat; i++){
+            for(var i = 0; i<classInfo.layout[0].length; i++){
                 seats.push(i);
             }
             this.setState({
@@ -188,12 +188,12 @@ class EditAttendance extends Component{
 
     update(){
         for(var i = 0; i<classInfo.students.length; i++){
-            if(classInfo.students[i].sid === parseInt(this.state.sid)){
+            if(classInfo.students[i].sid === this.state.sid ){
                 for(var j = 0; j<classInfo.students[i].attendance.length; j++){
                     if(classInfo.students[i].attendance[j].date === this.state.editDate){
                         classInfo.students[i].attendance[j].attend = this.state.editAttend;
                         classInfo.students[i].attendance[j].row = this.state.editRow;
-                        classInfo.students[i].attendance[j].seat = this.parseRow(this.state.editSeat);
+                        classInfo.students[i].attendance[j].seat = this.state.editSeat;
                         classInfo.students[i].attendance[j].reporter = this.state.editReporter;
                         break;
                     }
@@ -214,7 +214,7 @@ class EditAttendance extends Component{
         if(target.attendance !== undefined){
         return(target.attendance.map(attendance=>{
             var seatNum = parseInt(attendance.seat) + 1;
-            var seat = (attendance.attend === "absent") ? "" : this.parseRow(attendance.row) + seatNum.toString();
+            var seat = (attendance.attend === "absent") ? "" : alphabet[parseInt(attendance.row)] + seatNum.toString();
             var reporter = (attendance.attend === "reported") ? attendance.reporter : "";
             var attend = (attendance.attend === "attend") ? "O": "X";
 
@@ -308,7 +308,7 @@ class EditAttendance extends Component{
             )
         }
         else{
-            return this.state.editSeat;
+            return parseInt(this.state.editSeat)+1;
         }
     }
 

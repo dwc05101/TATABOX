@@ -267,7 +267,7 @@ class Management extends Component{
         if(this.state.init){
             return(
                 <div id = 'full'>
-                    <div id = 'headbar'>
+                    <div id = 'headbar3'>
                         <h1 id = 'logo'style={{marginTop:"5px", cursor:"pointer"}} onClick={this.gotoMade}>TATABOX</h1>
                         <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
                         <div id = 'menu'>

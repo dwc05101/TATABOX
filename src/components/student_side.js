@@ -42,15 +42,25 @@ class StudentSide extends Component{
             })
         })
         .then(()=>{
+
+            
+
             var rows = [];
-            for(var i = 0; i<classInfo.numRow; i++){
+            for(var i = 0; i<classInfo.layout.length; i++){
                 rows.push({
                     num : i,
                     label : alphabet[i]
                 });
             }
+
+            var numSeat = 0;
+            for(var i = 0; i<classInfo.layout[0].length; i++){
+                if(classInfo.layout[0][i]===1)
+                    numSeat++;
+            }
+
             var seats = [];
-            for(var i = 0; i<classInfo.numSeat; i++){
+            for(var i = 0; i<numSeat; i++){
                 seats.push(i);
             }
             this.setState({

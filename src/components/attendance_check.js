@@ -461,8 +461,10 @@ class AttendanceCheck extends Component{
           if(child.val().name === that.state.classname){
             // first, set DateIndex
             var seat_array = child.val().layout;
+            
             var w = seat_array[0].length;
             var h = seat_array.length;
+
             var seat_size;
 
             if(w > h){
@@ -521,8 +523,6 @@ class AttendanceCheck extends Component{
                     <div class = "none-seat"></div>
                   )
                 }
-
-                console.log(that.state.Seats);
               }
             }
             that.setState({seat_size: seat_size, init:true});
@@ -555,7 +555,7 @@ class AttendanceCheck extends Component{
                 var sub_absentlist = [];
 
                 classInfo.students.forEach(function(student){
-                  if(student.attendance[DateIndex] != null){
+                  if(student.attendance[DateIndex] != undefined){
                     if(student.attendance[DateIndex].attend == "reported")sub_reportedlist.push(student);
                     that.state.seatlist.push(student);
                   }else sub_absentlist.push(student);

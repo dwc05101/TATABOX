@@ -587,7 +587,7 @@ class OutlinedTextFields extends React.Component {
                     </Button>
                   </MuiThemeProvider>
                 </div>
-                <div className="wrapper" style={{border: "1px solid black", marginTop: "10px", height:"280px", width: "100%"}}>
+                <div className="wrapper" style={{border: "1px solid black", marginTop: "10px", height:"280px", width: "100%", overflow: "auto"}}>
                   {this.state.Seats}
                 </div>
               </div>

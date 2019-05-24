@@ -10,7 +10,6 @@ import Custom from "./components/customize_seat";
 import StudentSide from "./components/student_side";
 import EditAttendance from "./components/edit_attendance_compent";
 import Firebase from './firebase';
-import UploadCsv from './components/uploadCsv.js';
 
 class App extends Component{
   constructor(props){
@@ -48,9 +47,6 @@ class App extends Component{
         ></Route>
         <Route path="/student/:classname/:date"
           component={props => <StudentSide Firebase={fb} {...props}/>}
-        ></Route>
-        <Route path="/test"
-          component={props => <UploadCsv Firebase={fb} {...props}/>}
         ></Route>
       </Router>
     );

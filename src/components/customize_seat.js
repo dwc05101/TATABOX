@@ -13,6 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
 
 import ReactDOM from 'react-dom';
+import MSL_example from "../images/MSL_example.gif"
 
 var _ = require('lodash');
 
@@ -434,9 +435,13 @@ class Custom extends Component{
                                 <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
                                     <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
                                     <DialogContent>
-                                    <DialogContentText>1. DRAG to select the seat</DialogContentText>
-                                    <DialogContentText>2. Unselect the selected seats by dragging or clicking each of them</DialogContentText>
-                                    <DialogContentText>3. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
+                                    <div style={{height: "250px", width: "400px"}}>
+                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    </div>
+                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    <DialogContentText>3. You can see this window again if you click the GUIDE button at the lefttop side of this page</DialogContentText>
+                                    
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={this.closeDialog} color="primary">

@@ -509,8 +509,8 @@ class OutlinedTextFields extends React.Component {
     var visible = (this.state.Seats.length === 0) ? "hidden" : "visible";
     var button_label = (this.state.Seats.length === 0) ? "Make Seat Layout" : "Modify Seat Layout";
     var button_margin = (this.state.Seats.length === 0) ? "10vh" : "0";
-    var button_size = (this.state.Seats.length === 0) ? "15vh" : "auto";
-    var bottom_margin = (this.state.Seats.length === 0) ? "25vh" : "0";
+    var button_size = (this.state.Seats.length === 0) ? "16vh" : "auto";
+    var bottom_margin = (this.state.Seats.length === 0) ? "18vh" : "0";
 
     let step;
     //STEP1
@@ -592,7 +592,7 @@ class OutlinedTextFields extends React.Component {
               <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "100%", paddingTop: "3px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                   <MuiThemeProvider theme={theme}>
-                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{marginTop:[button_margin],height:[button_size],width:[button_size],minHeight: '30px'}}>
+                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{marginTop:[button_margin],height:[button_size/2],width:[button_size],minHeight: '30px'}}>
                         {button_label}
                     </Button>
                   </MuiThemeProvider>

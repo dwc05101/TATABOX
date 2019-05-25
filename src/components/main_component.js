@@ -8,6 +8,8 @@ import firebase from '@firebase/app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green, red } from '@material-ui/core/colors'
 import loading from "../images/loading.gif"
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const theme = createMuiTheme({
     palette: {
@@ -26,7 +28,6 @@ class Main extends Component{
         user_id : "",
         user_pw : "",
         up_modal : false,
-        find_modal : false,
         sign_up_id : "",
         sign_up_pw : "",
         sign_up_name : "",
@@ -42,8 +43,6 @@ class Main extends Component{
       this.handleChange = this.handleChange.bind(this);
       this.openUp = this.openUp.bind(this);
       this.closeUp = this.closeUp.bind(this);
-      this.openFind = this.openFind.bind(this);
-      this.closeFind = this.closeFind.bind(this);
       //this.onSubmit - this.onSubmit.bind(this);
     }
 
@@ -175,18 +174,6 @@ class Main extends Component{
         })
     };
 
-    openFind= e =>{
-        this.setState({
-            find_modal : true
-        })
-    };
-
-    closeFind(){
-        this.setState({
-            find_modal : false
-        })
-    }
-
     onSubmit = e =>{
         this.setState({
             onProgress : true
@@ -287,18 +274,25 @@ class Main extends Component{
                         style={{width:"70%"}}
                         />
                         <br/>
-                        <Button variant="contained" color="primary" onClick={this.onSubmit} style={{
-                            marginTop:"10%",width:"40%",borderRadius: 10,
-                            backgroundColor: "#4C9900",
-                            padding: "18px 36px",
-                            fontSize: "20px"}}>
-                            Sign In
-                        </Button>
-                        <div style={{color:"#0000FF",textDecorationLine: 'underline', marginTop:"8%"}}>
-                            <text onClick={this.openUp}>Sign Up</text>
-                        </div>
-                        <div style={{color:"#0000FF",textDecorationLine: 'underline', marginTop:"2%"}}>
-                            <text onClick={this.openFind}>Forgot Password?</text>
+                        <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+                            <Button variant="contained" color="primary" onClick={this.onSubmit} style={{
+                                marginTop:"10%",width:"28%",borderRadius: 10,
+                                border: "2px solid #4C9900",
+                                backgroundColor: "#4C9900",
+                                padding: "18px 18px",
+                                fontSize: "20px"}}>
+                                Sign In
+                            </Button>
+
+                            <Button variant="contained" onClick={this.openUp} style={{
+                                marginTop:"10%",width:"28%", borderRadius: 10,
+                                border: "2px solid #4C9900",
+                                background: 'none',
+                                padding: "18px 18px",
+                                fontSize: "20px",
+                                color: "#4C9900"}}>
+                                Sign Up
+                            </Button>
                         </div>
                     </form>
                     <Modal className = "signup-modal" visible={this.state.up_modal} width="600" height="600" effect="fadeInUp" onClickAway={()=> this.closeUp()}>
@@ -447,12 +441,6 @@ class Main extends Component{
                                 </Button>
                             </MuiThemeProvider>
                         </div>
-                    </Modal>
-                    <Modal visible={this.state.find_modal} width="600" height="600" effect="fadeInUp" onClickAway={()=> this.closeFind()}
-
-                            style={{padding: "10"}}
-                    >
-                        This is Find modal.
                     </Modal>
                     <Modal visible={this.state.onProgress} width="400" height="400" effect="fadeInUp"
                             style={{padding: "10"}}

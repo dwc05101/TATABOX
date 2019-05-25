@@ -37,7 +37,7 @@
 }
 
 .seat:hover {
-    background-color: #ffd54f;
+    background-color: #ffd54f!important;
 }
 
 @font-face {

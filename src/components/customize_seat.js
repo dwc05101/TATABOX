@@ -4,12 +4,23 @@ import './customize_seat.css';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import purple from '@material-ui/core/colors/purple';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Zoom from '@material-ui/core/Zoom';
 
 import ReactDOM from 'react-dom';
 
 var _ = require('lodash');
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Zoom ref={ref} {...props} />;
+});
 
 const styles = theme => ({
     container: {
@@ -19,6 +30,10 @@ const styles = theme => ({
     formControl: {
       margin: theme.spacing.unit,
       minWidth: 120,
+    },
+    customGuide: {
+        backgroundColor: purple[500],
+        color: '#FFF'
     },
 });
 
@@ -71,24 +86,26 @@ class Custom extends Component{
             startPoint: null,
             endPoint: null,
             selectionBox: null,
-            selectedItems: {},
             selectedChildren: '',
 
             userID: '',
             userClas: '',
             first: true,
             loading: "initial",
+            // update: false,
+            dialogOn: true,
         }
 
         this.firebase = this.props.Firebase.fb;
 
         let that = this;
+
+        
         new Promise(function(resolve, reject){
             that.firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     // User is signed in.
                     that.setState({userID : user.uid});
-                    // console.log(`constructor userid`,user.uid);
                     resolve();
                 } else {
                     alert("Oops! you are signed out!");
@@ -114,6 +131,13 @@ class Custom extends Component{
                 that.selectionBox = {};
                 if (that.selectedChildren != {}) {
                     that.setState({ loading: "true"})
+                    setTimeout(
+                        function() {
+                            that.setState({dialogOn: false});
+                        }
+                        .bind(that),
+                        7000
+                    );
                 }
             })
         })
@@ -137,17 +161,17 @@ class Custom extends Component{
     }
 
     onMouseUp = e => {
+        var endPoint;
         if (this.state.mouseDown) {
-            var endPoint = {
+            endPoint = {
                 x: e.pageX,
                 y: e.pageY
             };
         }
         this.setState({
             endPoint: endPoint,
-            selectionBox: this.calculateSelectionBox(this.state.startPoint, endPoint)
+            selectionBox: this.calculateSelectionBox(this.state.startPoint, endPoint),
         })
-
         window.document.removeEventListener('mousemove', this.onMouseMove);
         window.document.removeEventListener('mouseup', this.onMouseUp);
         this.setState({
@@ -160,6 +184,8 @@ class Custom extends Component{
 
     onMouseMove = e => {
         e.preventDefault();
+        e.stopPropagation();
+        this.forceUpdate();
     }
 
     calculateSelectionBox(startPoint, endPoint) {
@@ -167,10 +193,12 @@ class Custom extends Component{
             return null;
         }
 
+        
         var left = Math.min(startPoint.x, endPoint.x);
         var top = Math.min(startPoint.y, endPoint.y);
         var width = Math.abs(startPoint.x - endPoint.x);
         var height = Math.abs(startPoint.y - endPoint.y);
+        console.log(left, top, width, height)
 
         return ({
             left: left,
@@ -178,7 +206,7 @@ class Custom extends Component{
             width: width,
             height: height,
             position: "absolute",
-            backgroundColor: "None",
+            backgroundColor: "blue",
             border: "1px dotted black"
         })
     }
@@ -234,10 +262,12 @@ class Custom extends Component{
     }
     
     clearHandler = e => {
-        this.selectedChildren = {};
-        this.setState({
-            datalayout: new Array(20).fill(new Array(30).fill(0))
-        })
+        if(window.confirm("This will RESET WHOLE SEAT LAYOUT. Are you sure?")) {
+            this.selectedChildren = {};
+            this.setState({
+                datalayout: new Array(20).fill(new Array(30).fill(0))
+            })
+        }
     }
 
     savetoDB = e => {
@@ -245,66 +275,69 @@ class Custom extends Component{
         let data = this.selectedChildren;
         let fullData = [];
         let that = this;
-        
-        for (var i=0;i<20;i++) {
-            let subData = [];
-            for (var j=0;j<30;j++) {
-                let pushVal = ((30*i+j) in data) ? 1 : 0
-                subData.push(pushVal)
-            }
-            fullData.push(subData);
-        }
 
-        let seat = trimData(fullData);
-        this.setState({
-            first: false,
-        })
-
-        new Promise(function(resolve, reject){
-            that.firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    // User is signed in.
-                    that.setState({userID : user.uid});
-                    // console.log(`constructor userid`,user.uid);
-                    resolve();
-                } else {
-                    alert("Oops! you are signed out!");
-                    window.location.pathname = "TATABOX/";
+        if(window.confirm("Save SEAT LAYOUT and go back to CLASS MAKING STEP?")) {
+            for (var i=0;i<20;i++) {
+                let subData = [];
+                for (var j=0;j<30;j++) {
+                    let pushVal = ((30*i+j) in data) ? 1 : 0
+                    subData.push(pushVal)
                 }
-            });
-        })
-        .then(function() {
-            if (that.state.first) {
-                console.log(fullData);
-                // first time
-                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').set({
-                    seat: seat
-                })
-                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').set({
-                    seatWOtrim: fullData
-                })
-            } else {
-                console.log(fullData);
-                // additional customize
-                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').set({
-                    seat: seat
-                })
-                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').set({
-                    seatWOtrim: fullData
-                })
+                fullData.push(subData);
             }
-        }).then(function() {
-            window.location.pathname = "TATABOX/class";
-        })
+
+            let seat = trimData(fullData);
+            this.setState({
+                first: false,
+            })
+
+            new Promise(function(resolve, reject){
+                that.firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        // User is signed in.
+                        that.setState({userID : user.uid});
+                        resolve();
+                    } else {
+                        alert("Oops! you are signed out!");
+                        window.location.pathname = "TATABOX/";
+                    }
+                });
+            })
+            .then(function() {
+                if (that.state.first) {
+                    // first time
+                    that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').set({
+                        seat: seat
+                    })
+                    that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').set({
+                        seatWOtrim: fullData
+                    })
+                } else {
+                    // additional customize
+                    that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').set({
+                        seat: seat
+                    })
+                    that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').set({
+                        seatWOtrim: fullData
+                    })
+                }
+            }).then(function() {
+                window.location.pathname = "TATABOX/class";
+            })
+        }
     }
 
     renderChildren() {
-        if (!this.state.loading) {
-            return false
-        }
         let fullDiv = [];
         let selectedDict;
         selectedDict = this.selectedChildren;
+
+        if (this.state.loading === "initial") {
+            fullDiv.push(
+                <div style={{display: "inline-block", fontSize: "40px"}}>Loading SEAT LAYOUT from Database...</div>
+            )
+            return fullDiv;
+        }
 
         for (var i=0;i<20;i++) {
             let rowDiv = [];
@@ -331,7 +364,7 @@ class Custom extends Component{
                     ref={30*i + j}
                     data-col={j}
                     data-row={i}
-                    class="seat"
+                    className="seat"
                     >
                         {alphabet[i]} {j}
                     </div>
@@ -355,7 +388,6 @@ class Custom extends Component{
     }
 
     componentWillMount() {
-        let that = this;
         this.selectedChildren = {};
     }
 
@@ -369,7 +401,21 @@ class Custom extends Component{
         })
     }
 
+    openDialong = e => {
+        this.setState({
+            dialogOn: true
+        })
+    }
+
+    closeDialog = e => {
+        this.setState({
+            dialogOn: false,
+        })
+    }
+
     render() {
+
+        const {classes} = this.props;
 
         return (
             <body>
@@ -383,7 +429,22 @@ class Custom extends Component{
                     id="functions"
                     >
                         <div style={{width: "84vw", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                            <div style={{width:"30vw"}}></div>
+                            <div style={{width:"30vw", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+                                <Button variant="contained" className={classes.customGuide} color="primary" onClick={this.openDialong}>Guide</Button>
+                                <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>1. DRAG to select the seat</DialogContentText>
+                                    <DialogContentText>2. Unselect the selected seats by dragging or clicking each of them</DialogContentText>
+                                    <DialogContentText>3. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.closeDialog} color="primary">
+                                            OK
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </div>
                             <div style={{width:"24vw", display: "flex", justifyContent: "center", alignItems: "center"}}>
                                 <h2 style={{border:"1px solid black", margin: "5px" ,padding: "5px", color: "black", fontSize: "30px"}}>Screen</h2>
                             </div>
@@ -400,6 +461,9 @@ class Custom extends Component{
                     <div
                     id="preview"
                     ref="selectionBox"
+                    style={{
+                        textAlign: "center"
+                    }}
                     >
                         {this.renderSelectionBox()}
                         {this.renderChildren()}

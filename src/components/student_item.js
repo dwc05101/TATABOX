@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+import user from "../images/user.png";
+
 import './make_class_component.css';
 
 var dateCount;
@@ -40,9 +42,12 @@ class StudentItem extends Component{
             bottom : bottom,
             classname : props.classname,
             firebase : props.firebase,
+            user_img : "",
+            init : false,
         }
         
         this.handleCheckbox = this.handleCheckbox.bind(this);
+        this.setProfile = this.setProfile.bind(this);
         console.log(student.name);
         console.log(upper);
         console.log(bottom);
@@ -60,29 +65,32 @@ class StudentItem extends Component{
     setProfile(){
         const storage = this.state.firebase.storage();
         const storageRef = storage.ref();
-        var imgRef = storageRef.child('images/' + this.state.student.sid + ".jpg");
-        imgRef.getDownloadURL().then(url=>{
-            console.log(url)
-        }).catch(err=>{
-            var imgRef2 = storageRef.child('images/' + this.state.student.sid + ".png");
-            imgRef2.getDownloadURL();
-        })
+        let that = this;
+        if(this.state.student.imgpath === ""){
+            this.setState({
+                user_img : user,
+                init : true
+            });
+        }else{
+            var imgRef = storageRef.child('images/' + this.state.student.imgpath);
+            imgRef.getDownloadURL().then(url=>{
+                that.setState({
+                    user_img : url,
+                    init : true
+                });
+                
+            }).catch(err=>{
+                console.log(err);
+                that.setState({
+                    user_img : user,
+                    init : true
+                });
+            })
+        }
+    }
 
-        if(this.state.student.imgpath==="gwangoo.png"){
-            return(
-                <img style={{}} src = {require("../images/gwangoo.png")}></img>
-            )
-        }
-        if(this.state.student.imgpath==="seokhyun.png"){
-            return(
-                <img src = {require("../images/seokhyun.png")}></img>
-            )
-        }
-        else{
-            return(
-                <img src = {require("../images/user.png")}></img>
-            )
-        }
+    componentDidMount(){
+        this.setProfile();
     }
 
     makeAttendanceRow(start){
@@ -178,6 +186,9 @@ class StudentItem extends Component{
 
     render(){
         var link = "/TATABOX/management/"+this.state.classname+"/"+this.state.student.sid;
+        var $profileImg = (<img style={{width:"7vw",height:"14vh"}} src={this.state.user_img} id = 'user_img'/>);
+
+        if(!this.state.init) return null;
         return(
             <Paper className="center">
                 <Grid container className="center" spacing = {24}>
@@ -194,7 +205,7 @@ class StudentItem extends Component{
                         }}>
                         <Grid container className="center" spacing={24}>
                             <Grid item xs={1} style={{padding:"0px"}}>
-                                {this.setProfile()}
+                                {$profileImg}
                             </Grid>
                             <Grid item xs={1}>
                                 <Grid container spacing = {24} style={{height:"100%"}}>

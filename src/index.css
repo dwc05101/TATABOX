@@ -6,8 +6,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: "#e5e5e5";
-  background-image: url( "images/loading.png" );
+  background-attachment: fixed;
+  background-position: center center;
+  background-image: url( "images/loading.gif" );
   z-index: -1;
   background-repeat: no-repeat;
 }

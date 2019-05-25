@@ -348,8 +348,6 @@ class MakeClass extends Component {
                                     <Paper>
                                     <ClickAwayListener onClickAway={this.handleClose}>
                                         <MenuList>
-                                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>My Account</MenuItem>
                                         <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                                         </MenuList>
                                     </ClickAwayListener>

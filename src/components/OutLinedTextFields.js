@@ -24,6 +24,9 @@ const theme = createMuiTheme({
 const styles = theme => ({
   container: {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     flexWrap: 'wrap',
   },
   textField: {
@@ -513,7 +516,7 @@ class OutlinedTextFields extends React.Component {
           <div id = "fullbox" style={{height: `calc(100%-${this.state.height})`}}>
             <div id = "infobox">
               <form className={classes.container} noValidate autoComplete="off">
-                <div style={{width: "100%"}}>
+                <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <TextField
                   id="outlined-code"
                   label="CourseCode"
@@ -523,6 +526,8 @@ class OutlinedTextFields extends React.Component {
                   margin="normal"
                   variant="outlined"
                 />
+                </div>
+                <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <TextField
                   id="outlined-name"
                   label="CourseName"
@@ -532,6 +537,8 @@ class OutlinedTextFields extends React.Component {
                   margin="normal"
                   variant="outlined"
                 />
+                </div>
+                <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <TextField
                   id="outlined-prof"
                   label="Professor"
@@ -542,9 +549,7 @@ class OutlinedTextFields extends React.Component {
                   variant="outlined"
                 />
                 </div>
-                <div style={{width: "100%"}}>
-                </div>
-                <div style={{width: "100%", marginTop:12, marginLeft:'10%'}} >
+                <div style={{width: "100%", marginTop:12, display: "flex", justifyContent: "center", alignItems: "center"}} >
                   <Select
                       placeholder="Building"
                       styles={customStyles}
@@ -554,7 +559,7 @@ class OutlinedTextFields extends React.Component {
                       options={buildings}
                     />
                 </div>
-                <div style={{width: "100%"}}>
+                <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <TextField
                   id="outlined-number"
                   label="Classroom"
@@ -580,22 +585,22 @@ class OutlinedTextFields extends React.Component {
                 <text>Preview for Seat</text>
               </div>
               <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                <div style={{width: "100%", paddingTop: "5px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                <div style={{width: "100%", paddingTop: "3px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                   <MuiThemeProvider theme={theme}>
-                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{maxHeight: '30px', minHeight: '30px'}}>
+                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{minHeight: '30px'}}>
                         Customize Seat!
                     </Button>
                   </MuiThemeProvider>
                 </div>
-                <div className="wrapper" style={{border: "1px solid black", marginTop: "10px", height:"280px", width: "100%", overflow: "auto"}}>
+                <div className="wrapper" style={{border: "1px solid black", marginTop: "5px", height:"280px", width: "100%", overflow: "auto"}}>
                   {this.state.Seats}
                 </div>
               </div>
-              <div id="buttondiv" style={{width: "100%", paddingTop: "10px", display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
-                <Button variant="contained" color="secondary" onClick={this.cancel} style={{maxHeight: '30px', minHeight: '30px'}}>
+              <div id="buttondiv" style={{width: "100%", paddingTop: "5px", display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+                <Button variant="contained" color="secondary" onClick={this.cancel} style={{minHeight: '30px'}}>
                     Cancel
                 </Button>
-                <Button variant="contained" color="primary" onClick={this.moveStep} style={{maxHeight: '30px', minHeight: '30px'}}>
+                <Button variant="contained" color="primary" onClick={this.moveStep} style={{minHeight: '30px'}}>
                     Next
                 </Button>
               </div>

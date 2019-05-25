@@ -799,6 +799,8 @@ class AttendanceCheck extends Component{
     if (!this.state.synch) return null;
     if (!this.state.init) return null;
 
+    console.log(this.Info);
+
     return(
         <body id = 'full2'>
           <Prompt
@@ -837,8 +839,6 @@ class AttendanceCheck extends Component{
                         <Paper>
                         <ClickAwayListener onClickAway={this.handleClose}>
                             <MenuList>
-                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
                             <MenuItem onClick={this.gotoManagement}>Management</MenuItem>
                             </MenuList>
                         </ClickAwayListener>
@@ -882,7 +882,7 @@ class AttendanceCheck extends Component{
                           <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
                       </div>
                       <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                        <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
+                        <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')}></img>
                         <br/>
                         <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
                       </div>
@@ -901,7 +901,7 @@ class AttendanceCheck extends Component{
                         <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
                         <text style = {{color: "gray", fontWeight: "light", marginBottom:"15px", fontSize: "15px"}}> {this.Info[(this.state.hindex) + "-" + (this.state.windex)][2]}</text>
                         <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][3]}</text>
-                        <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
+                        <text style = {{color: "red", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
                       </div>
                     </div>
                   </div>

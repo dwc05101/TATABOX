@@ -391,6 +391,7 @@ var backup;
 var studentInit = false;
 var done = false;
 
+var started = false;
 
 
 window.onbeforeunload = function(){
@@ -635,11 +636,14 @@ class AttendanceCheck extends Component{
 
   handleTimerClick(e){
     if(e.target.innerText === "RESET"){
-      if(window.confirm("This will RESET WHOLE PROCEDURE. Are you sure?"))
-          window.location.reload();
+      if(!started){
+        if(window.confirm("This will RESET WHOLE PROCEDURE. Are you sure?"))
+            window.location.reload();
+      }
     }
     if(e.target.innerText === "START"){
       classInfo.available = true;
+      started = true;
       if(!studentInit){
         //Initialize
         studentInit = true;
@@ -661,6 +665,7 @@ class AttendanceCheck extends Component{
     }
     if(e.target.innerText === "STOP"){
       classInfo.available = false;
+      started = false;
       globalDB.ref("/classInfo/"+classKey).set(classInfo);
     }
   }

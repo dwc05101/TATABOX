@@ -320,7 +320,7 @@ class MakeClass extends Component {
         if(datas.length == 0){
             return (
                 <body id = 'full'>
-                    <div id = 'headbar'>
+                    <div id = 'headbar3'>
                         <h1 id = 'logo'>TATABOX</h1>
                         <div id = 'menu'>
                             <Button

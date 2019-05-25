@@ -83,9 +83,11 @@ class MakeClass extends Component {
         this.openCaution = this.openCaution.bind(this);
         this.closeCaution = this.closeCaution.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
 
         let that = this;
         let Seat;
+        let seatWOtrim;
 
         new Promise(function(resolve, reject){
             that.firebase.auth().onAuthStateChanged(function(user) {
@@ -95,25 +97,31 @@ class MakeClass extends Component {
                     // console.log(`constructor userid`,user.uid);
                     resolve();
                 } else {
-                    alert("Oops! you are signed out!");
+                    // alert("Oops! you are signed out!");
                     window.location.pathname = "TATABOX/";
                 }
             });
         }).then(function() {
-            that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
+            that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim').once('value').then(function(snapshot) {
                 if (snapshot.val() != null) {
-                    Seat = snapshot.val().seat;
+                    seatWOtrim = snapshot.val().seatWOtrim;
                 }
             }).then(function() {
-                if (Seat != null) {
-                    that.setState({ Seat: Seat, visible: true})
-                } else {
-                    that.setState({ Seat: Seat})
-                }
+                that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
+                    if (snapshot.val() != null) {
+                        Seat = snapshot.val().seat;
+                    }
+                }).then(function() {
+                    if (seatWOtrim != null) {
+                        that.setState({ Seat: Seat, visible: true})
+                    } else {
+                        that.setState({ Seat: Seat})
+                    }
+                })
             })
         })
-
     }
+
     componentDidMount(){
         let that = this;
         new Promise(function(resolve, reject){
@@ -154,7 +162,7 @@ class MakeClass extends Component {
 
                     }
                 } else {
-                    alert("Oops! you are signed out!");
+                    // alert("Oops! you are signed out!");
                     window.location.pathname = "TATABOX/";
                 }
             });
@@ -256,6 +264,10 @@ class MakeClass extends Component {
           window.location.pathname = 'TATABOX/check/'+classname_;
         })
       }
+
+    handleLogout() {
+        this.firebase.auth().signOut();
+    }
   
     //click management button
     gotoManage(i) {
@@ -292,7 +304,6 @@ class MakeClass extends Component {
           console.log("loading..");
           return null;
         }
-        console.log(`class list`,this.state.classlst);
 
         const { classes } = this.props;
         var fireb =this.firebaseO;
@@ -301,7 +312,6 @@ class MakeClass extends Component {
 
         let $profileImg = null;
         if (this.state.synch) {
-            console.log(this.state.user_img);
             $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);
@@ -339,8 +349,8 @@ class MakeClass extends Component {
                                     <ClickAwayListener onClickAway={this.handleClose}>
                                         <MenuList>
                                         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>My Accountrewqrrqewrqwxw</MenuItem>
-                                        <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                        <MenuItem onClick={this.handleClose}>My Account</MenuItem>
+                                        <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                                         </MenuList>
                                     </ClickAwayListener>
                                     </Paper>
@@ -373,7 +383,7 @@ class MakeClass extends Component {
             return (
                 <section>
                     <body id = 'full'>
-                        <div id = 'headbar'>
+                        <div id = 'headbar3'>
                             <h1 id = 'logo'>TATABOX</h1>
                             <div id = 'menu'>
                                 <Button
@@ -403,7 +413,7 @@ class MakeClass extends Component {
                                             <MenuList>
                                             <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                                             <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                            <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>
                                         </Paper>

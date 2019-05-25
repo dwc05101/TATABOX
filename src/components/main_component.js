@@ -2,15 +2,9 @@ import React, {Component} from 'react';
 import './main_component.css';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Firebase from '../firebase';
-import {Link} from 'react-router-dom';
-import { func } from 'prop-types';
 import Modal from 'react-awesome-modal';
 import user from '../images/user.png';
-import SelectInput from '@material-ui/core/Select/SelectInput';
-import axios from 'axios';
 import firebase from '@firebase/app';
-import ExifOrientationImg from 'react-exif-orientation-img'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green, red } from '@material-ui/core/colors'
 import loading from "../images/loading.gif"
@@ -87,6 +81,15 @@ class Main extends Component{
         this.setState({
             onProgress : true
         })
+
+        if(that.state.selectedFile === ""){
+            var user = that.firebaseO.createUser(that.state.sign_up_id,
+                that.state.sign_up_pw,
+                that.state.sign_up_name,
+                that.state.sign_up_school,
+                that.state.sign_up_dept,
+                "");
+        }
 
         const file = that.state.selectedFile;
 
@@ -191,14 +194,14 @@ class Main extends Component{
         this.firebaseO.signIn(this.state.user_id,this.state.user_pw);
     }
 
-    signupKeyPress(event) {
+    signUpKeyPress(event) {
         var code = event.keyCode || event.which;
         if (code == 13) {
             this.handleSignup()
         }
     }
 
-    singinKeyPress(event) {
+    signInKeyPress(event) {
         var code = event.keyCode || event.which;
         if (code == 13) {
             this.onSubmit()
@@ -261,7 +264,7 @@ class Main extends Component{
                             id="user_id"
                             value={this.state.user_id}
                             onChange={this.handleChange("user_id")}
-                            onKeyPress={this.singinKeyPress.bind(this)}
+                            onKeyPress={this.signInKeyPress.bind(this)}
                             margin="normal"
                             style={{width:"70%"}}
                             />
@@ -279,7 +282,7 @@ class Main extends Component{
                         value={this.state.user_pw}
                         type="password"
                         onChange={this.handleChange("user_pw")}
-                        onKeyPress={this.singinKeyPress.bind(this)}
+                        onKeyPress={this.signInKeyPress.bind(this)}
                         margin="normal"
                         style={{width:"70%"}}
                         />
@@ -329,7 +332,7 @@ class Main extends Component{
                                         id="user_id"
                                         value={this.state.sign_up_id}
                                         onChange={this.handleChange("sign_up_id")}
-                                        onKeyPress={this.signupKeyPress.bind(this)}
+                                        onKeyPress={this.signUpKeyPress.bind(this)}
                                         margin="normal"
                                         style={{width:"80%"}}
                                         />
@@ -347,7 +350,7 @@ class Main extends Component{
                                         type="password"
                                         value={this.state.sign_up_pw}
                                         onChange={this.handleChange("sign_up_pw")}
-                                        onKeyPress={this.signupKeyPress.bind(this)}
+                                        onKeyPress={this.signUpKeyPress.bind(this)}
                                         margin="normal"
                                         style={{width:"80%"}}
                                         />
@@ -367,7 +370,7 @@ class Main extends Component{
                                         id="user_name"
                                         value={this.state.sign_up_name}
                                         onChange={this.handleChange("sign_up_name")}
-                                        onKeyPress={this.signupKeyPress.bind(this)}
+                                        onKeyPress={this.signUpKeyPress.bind(this)}
                                         margin="normal"
                                         style={{marginLeft: "2.5%", width:"80%"}}
                                         />
@@ -384,7 +387,7 @@ class Main extends Component{
                                         id="user_school"
                                         value={this.state.sign_up_school}
                                         onChange={this.handleChange("sign_up_school")}
-                                        onKeyPress={this.signupKeyPress.bind(this)}
+                                        onKeyPress={this.signUpKeyPress.bind(this)}
                                         margin="normal"
                                         style={{marginRight: "10%", width:"90%"}}
                                         />
@@ -394,7 +397,7 @@ class Main extends Component{
                         <div className = "dept">
                             <div className = "dept-text" align="left" style={{marginLeft: "5%", fontSize: "24px", fontWeight:"bold",color:"#808080"}}>
                                 <label style = {{verticalAlign: "middle"}}>
-                                    Dept/Occupation
+                                    Departure
                                 </label>
                             </div>
                             <div className = "dept-input">
@@ -402,7 +405,7 @@ class Main extends Component{
                                 id="user_dept"
                                 value={this.state.sign_up_dept}
                                 onChange={this.handleChange("sign_up_dept")}
-                                onKeyPress={this.signupKeyPress.bind(this)}
+                                onKeyPress={this.signUpKeyPress.bind(this)}
                                 margin="normal"
                                 style={{width:"90%"}}
                                 />
@@ -419,7 +422,8 @@ class Main extends Component{
                                             borderRadius: 10,
                                             color: "white",
                                             fontSize: "20px",
-                                            marginLeft: "5%"
+                                            marginLeft: "5%",
+                                            marginRight: '10%'
                                         }}
                                 >
                                     Cancel
@@ -435,10 +439,10 @@ class Main extends Component{
                                             borderRadius: 10,
                                             color: "white",
                                             fontSize: "20px",
-                                            marginRight: "5%"
+                                            marginRight: "5%",
+                                            marginLeft: "10%"
                                         }}
                                 >
-                                    {/*padding: "18px 36px", */}
                                     Sign Up
                                 </Button>
                             </MuiThemeProvider>

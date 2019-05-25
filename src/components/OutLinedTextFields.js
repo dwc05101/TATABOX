@@ -505,6 +505,13 @@ class OutlinedTextFields extends React.Component {
     }else{
       prev = require('../images/seat.png');
     }
+
+    var visible = (this.state.Seats.length === 0) ? "hidden" : "visible";
+    var button_label = (this.state.Seats.length === 0) ? "Make Seat Layout" : "Modify Seat Layout";
+    var button_margin = (this.state.Seats.length === 0) ? "10vh" : "0";
+    var button_size = (this.state.Seats.length === 0) ? "15vh" : "auto";
+    var bottom_margin = (this.state.Seats.length === 0) ? "25vh" : "0";
+
     let step;
     //STEP1
     if (this.state.step==0) {
@@ -579,22 +586,22 @@ class OutlinedTextFields extends React.Component {
               </form>
             </div>
             <div id = "seatbox" >
-              <div style={{fontSize: "30px"}}>
+              <div style={{visibility:[visible],fontSize: "30px"}}>
                 <text>Preview for Seat</text>
               </div>
               <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "100%", paddingTop: "3px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                   <MuiThemeProvider theme={theme}>
-                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{minHeight: '30px'}}>
-                        Customize Seat!
+                    <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{marginTop:[button_margin],height:[button_size],width:[button_size],minHeight: '30px'}}>
+                        {button_label}
                     </Button>
                   </MuiThemeProvider>
                 </div>
-                <div className="wrapper" style={{border: "1px solid black", marginTop: "5px", height:"280px", width: "100%", overflow: "auto"}}>
+                <div className="wrapper" style={{visibility: [visible],border: "1px solid black", marginTop: "5px", marginRight:"10px" ,height:"280px", width: "100%", overflow: "auto"}}>
                   {this.state.Seats}
                 </div>
               </div>
-              <div id="buttondiv" style={{width: "100%", paddingTop: "5px", display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+              <div id="buttondiv" style={{marginTop:"-"+[bottom_margin],width: "100%", paddingTop: "5px", display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
                 <Button variant="contained" color="secondary" onClick={this.cancel} style={{minHeight: '30px'}}>
                     Cancel
                 </Button>

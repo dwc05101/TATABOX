@@ -119,7 +119,7 @@ class Management extends Component{
             pos_count += 4;
             return(
                 <div key={student.name}>
-                    <StudentItem student={student} classname={this.state.classname}/>
+                    <StudentItem student={student} firebase={this.state.firebase} classname={this.state.classname}/>
                 </div>
             )
         })

@@ -315,8 +315,7 @@ class EditAttendance extends Component{
     render(){
         if(this.state.init){
         let $profileImg = null;
-        if (this.state.synch) {
-            console.log(this.state.user_img);
+        if (this.state.synch) {;
             $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);

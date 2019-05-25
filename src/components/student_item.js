@@ -38,7 +38,8 @@ class StudentItem extends Component{
             checked : false,
             upper : upper,
             bottom : bottom,
-            classname : props.classname
+            classname : props.classname,
+            firebase : props.firebase,
         }
         
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -57,6 +58,16 @@ class StudentItem extends Component{
     }
 
     setProfile(){
+        const storage = this.state.firebase.storage();
+        const storageRef = storage.ref();
+        var imgRef = storageRef.child('images/' + this.state.student.sid + ".jpg");
+        imgRef.getDownloadURL().then(url=>{
+            console.log(url)
+        }).catch(err=>{
+            var imgRef2 = storageRef.child('images/' + this.state.student.sid + ".png");
+            imgRef2.getDownloadURL();
+        })
+
         if(this.state.student.imgpath==="gwangoo.png"){
             return(
                 <img style={{}} src = {require("../images/gwangoo.png")}></img>

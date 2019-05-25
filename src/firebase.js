@@ -53,7 +53,7 @@ class Firebase{
     }
 
     signOut = () => {
-        this.fb.auth().signOut();
+        this.fb.auth().signOut().then(window.location.pathname=="TATABOX/");
     }
 
 }

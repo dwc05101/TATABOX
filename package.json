@@ -38,6 +38,7 @@
     "react-tabs": "^3.0.0",
     "react-textfit": "^1.1.0",
     "react-z-index": "^3.0.0",
+    "styled-components": "^4.2.0",
     "typeface-roboto": "0.0.54",
     "underscore": "^1.9.1",
     "xlsx": "^0.14.3"

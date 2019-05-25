@@ -586,7 +586,7 @@ class OutlinedTextFields extends React.Component {
                 <div style={{width: "100%", paddingTop: "3px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                   <MuiThemeProvider theme={theme}>
                     <Button variant="contained" color="primary" onClick={this.gotoCustom} style={{minHeight: '30px'}}>
-                        Customize Seat!
+                        Make Seat Layout!
                     </Button>
                   </MuiThemeProvider>
                 </div>

@@ -1,3 +1,9 @@
+#step2_container{
+    text-align: center;
+    font-size: 16px;
+    margin-top:2vh
+}
+
 #instuction_csv{
     margin-top:50vh;
 }

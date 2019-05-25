@@ -84,6 +84,10 @@ class Main extends Component{
             return;
         }
 
+        this.setState({
+            onProgress : true
+        })
+
         const file = that.state.selectedFile;
 
         const storage = that.firebaseO.fb.storage();

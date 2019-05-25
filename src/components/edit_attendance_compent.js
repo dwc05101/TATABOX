@@ -10,6 +10,8 @@ import Modal from 'react-awesome-modal';
 import alphabet from '../data/alphabet';
 
 import user from '../images/user_white.png';
+import default_user from "../images/user.png";
+
 import './make_class_component.css';
 import { isFlowBaseAnnotation } from '@babel/types';
 
@@ -48,7 +50,8 @@ class EditAttendance extends Component{
             ReporterEditable : false,
             seatEditable : false,
             rowParser : [],
-            seatNum : []
+            seatNum : [],
+            profile_img : "",
         }
 
         let that = this;
@@ -95,14 +98,14 @@ class EditAttendance extends Component{
         })
         .then(()=>{
             var rows = [];
-            for(var i = 0; i<classInfo.numRow; i++){
+            for(var i = 0; i<classInfo.layout.length; i++){
                 rows.push({
                     num : i,
                     label : alphabet[i]
                 });
             }
             var seats = [];
-            for(var i = 0; i<classInfo.numSeat; i++){
+            for(var i = 0; i<classInfo.layout[0].length; i++){
                 seats.push(i);
             }
             this.setState({
@@ -110,6 +113,7 @@ class EditAttendance extends Component{
                 rowParser : rows,
                 init : true
             })
+            this.setProfile();
         })
     }
 
@@ -123,20 +127,29 @@ class EditAttendance extends Component{
     }
 
     setProfile(){
-        if(target.imgpath==="gwangoo.png"){
-            return(
-                <img style={{width:"inherit",height:"inherit"}} src = {require("../images/gwangoo.png")}></img>
-            )
-        }
-        if(target.imgpath==="seokhyun.png"){
-            return(
-                <img style={{width:"inherit",height:"inherit"}} src = {require("../images/seokhyun.png")}></img>
-            )
-        }
-        else{
-            return(
-                <img style={{width:"inherit",height:"inherit"}} src = {require("../images/user.png")}></img>
-            )
+        const storage = this.state.firebase.storage();
+        const storageRef = storage.ref();
+        let that = this;
+        if(target.imgpath === ""){
+            this.setState({
+                profile_img : default_user,
+                init : true
+            });
+        }else{
+            var imgRef = storageRef.child('images/' + target.imgpath);
+            imgRef.getDownloadURL().then(url=>{
+                that.setState({
+                    profile_img : url,
+                    init : true
+                });
+                
+            }).catch(err=>{
+                console.log(err);
+                that.setState({
+                    profile_img : default_user,
+                    init : true
+                });
+            })
         }
     }
 
@@ -188,12 +201,12 @@ class EditAttendance extends Component{
 
     update(){
         for(var i = 0; i<classInfo.students.length; i++){
-            if(classInfo.students[i].sid === parseInt(this.state.sid)){
+            if(classInfo.students[i].sid === this.state.sid ){
                 for(var j = 0; j<classInfo.students[i].attendance.length; j++){
                     if(classInfo.students[i].attendance[j].date === this.state.editDate){
                         classInfo.students[i].attendance[j].attend = this.state.editAttend;
                         classInfo.students[i].attendance[j].row = this.state.editRow;
-                        classInfo.students[i].attendance[j].seat = this.parseRow(this.state.editSeat);
+                        classInfo.students[i].attendance[j].seat = this.state.editSeat;
                         classInfo.students[i].attendance[j].reporter = this.state.editReporter;
                         break;
                     }
@@ -214,7 +227,7 @@ class EditAttendance extends Component{
         if(target.attendance !== undefined){
         return(target.attendance.map(attendance=>{
             var seatNum = parseInt(attendance.seat) + 1;
-            var seat = (attendance.attend === "absent") ? "" : this.parseRow(attendance.row) + seatNum.toString();
+            var seat = (attendance.attend === "absent") ? "" : alphabet[parseInt(attendance.row)] + seatNum.toString();
             var reporter = (attendance.attend === "reported") ? attendance.reporter : "";
             var attend = (attendance.attend === "attend") ? "O": "X";
 
@@ -308,22 +321,22 @@ class EditAttendance extends Component{
             )
         }
         else{
-            return this.state.editSeat;
+            return parseInt(this.state.editSeat)+1;
         }
     }
 
     render(){
         if(this.state.init){
         let $profileImg = null;
-        if (this.state.synch) {
-            console.log(this.state.user_img);
+        if (this.state.synch) {;
             $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
+        var $profile = (<img style={{width:"15vw",height:"30vh"}} src={this.state.profile_img} id = 'user_img'/>);
         return(
             <div id = 'full'>
-                <div id = 'headbar'>
+                <div id = 'headbar3'>
                     <h1 id = 'logo'style={{marginTop:"5px", cursor:"pointer"}} onClick={this.gotoMade}>TATABOX</h1>
                     <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{this.state.classname}</h2>
                     <div id = 'menu'>
@@ -362,7 +375,7 @@ class EditAttendance extends Component{
                 <div id = 'body2' style={{backgroundColor:'#FFFFFF', overflowY:"auto"}}>
                     <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
                         <div key="profile">
-                            {this.setProfile()}
+                            {$profile}
                         </div>
                         <div key="name">
                             <h3>Name & Student ID</h3>

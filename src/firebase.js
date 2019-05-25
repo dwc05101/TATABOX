@@ -48,6 +48,7 @@ class Firebase{
             var errorCode = error.code;
             var errorMessage = error.message;
             alert("error Code : "+errorCode+", msg : "+errorMessage);
+            window.location.reload();
         });
     }
 

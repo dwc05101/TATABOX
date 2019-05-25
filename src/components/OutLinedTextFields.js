@@ -419,11 +419,11 @@ class OutlinedTextFields extends React.Component {
     if(this.state.step==0){
       let that = this;
       let bool;
+      //There is blank.
       if(that.state.code=='' || that.state.name=='' || that.state.prof=='' || that.state.bd=='' || that.state.room==''){
-        that.state.error=true;
-        that.state.message='You have to enter all information.'
-        that.state.test=true;
-      }else{
+        that.setState({error:true,message:'You have to enter all information.',test:true})
+      }
+      else{
         new Promise(function(resolve, reject){
           let code = that.state.code
           that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot){
@@ -437,15 +437,13 @@ class OutlinedTextFields extends React.Component {
           resolve();
         })
         .then(function(result) {
+          //Class code was alreay used.
           if(bool){
-            that.state.error=true;
-            that.state.message='This class already exists.'
-            
-            that.setState({step : 0});
+            that.setState({step : 0,error:true,message:'This class already exists.'});
           }
+          //Perfect
           else{
-            that.state.error=false;
-            that.setState({step : 1,});
+            that.setState({error:false, step : 1,});
           }
          })
       })
@@ -512,7 +510,7 @@ class OutlinedTextFields extends React.Component {
     if (this.state.step==0) {
       step =
         <div>
-          <img id="step" src = {require('../images/step1.png')} style={{width:'100%', border: "1px solid black"}}/>
+          <img id="step" src = {require('../images/step1.png')} style={{width:'100%',}}/>
           <div id = "fullbox" style={{height: `calc(100%-${this.state.height})`}}>
             <div id = "infobox">
               <form className={classes.container} noValidate autoComplete="off">

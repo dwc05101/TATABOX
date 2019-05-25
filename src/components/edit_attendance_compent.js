@@ -10,6 +10,8 @@ import Modal from 'react-awesome-modal';
 import alphabet from '../data/alphabet';
 
 import user from '../images/user_white.png';
+import default_user from "../images/user.png";
+
 import './make_class_component.css';
 import { isFlowBaseAnnotation } from '@babel/types';
 
@@ -48,7 +50,8 @@ class EditAttendance extends Component{
             ReporterEditable : false,
             seatEditable : false,
             rowParser : [],
-            seatNum : []
+            seatNum : [],
+            profile_img : "",
         }
 
         let that = this;
@@ -110,6 +113,7 @@ class EditAttendance extends Component{
                 rowParser : rows,
                 init : true
             })
+            this.setProfile();
         })
     }
 
@@ -123,20 +127,29 @@ class EditAttendance extends Component{
     }
 
     setProfile(){
-        if(target.imgpath==="gwangoo.png"){
-            return(
-                <img style={{width:"inherit",height:"inherit"}} src = {require("../images/gwangoo.png")}></img>
-            )
-        }
-        if(target.imgpath==="seokhyun.png"){
-            return(
-                <img style={{width:"inherit",height:"inherit"}} src = {require("../images/seokhyun.png")}></img>
-            )
-        }
-        else{
-            return(
-                <img style={{width:"inherit",height:"inherit"}} src = {require("../images/user.png")}></img>
-            )
+        const storage = this.state.firebase.storage();
+        const storageRef = storage.ref();
+        let that = this;
+        if(target.imgpath === ""){
+            this.setState({
+                profile_img : default_user,
+                init : true
+            });
+        }else{
+            var imgRef = storageRef.child('images/' + target.imgpath);
+            imgRef.getDownloadURL().then(url=>{
+                that.setState({
+                    profile_img : url,
+                    init : true
+                });
+                
+            }).catch(err=>{
+                console.log(err);
+                that.setState({
+                    profile_img : default_user,
+                    init : true
+                });
+            })
         }
     }
 
@@ -320,6 +333,7 @@ class EditAttendance extends Component{
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
+        var $profile = (<img style={{width:"15vw",height:"30vh"}} src={this.state.profile_img} id = 'user_img'/>);
         return(
             <div id = 'full'>
                 <div id = 'headbar3'>
@@ -361,7 +375,7 @@ class EditAttendance extends Component{
                 <div id = 'body2' style={{backgroundColor:'#FFFFFF', overflowY:"auto"}}>
                     <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
                         <div key="profile">
-                            {this.setProfile()}
+                            {$profile}
                         </div>
                         <div key="name">
                             <h3>Name & Student ID</h3>

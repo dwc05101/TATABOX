@@ -13,6 +13,7 @@ import firebase from '@firebase/app';
 import ExifOrientationImg from 'react-exif-orientation-img'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green, red } from '@material-ui/core/colors'
+import loading from "../images/loading.gif"
 
 const theme = createMuiTheme({
     palette: {
@@ -40,7 +41,8 @@ class Main extends Component{
         selectedFile: '',
         imgPreviewUrl: '',
         user_img_url: '',
-        synch:false
+        synch:false,
+        onProgress : false,
       }
       
       this.handleChange = this.handleChange.bind(this);
@@ -179,6 +181,9 @@ class Main extends Component{
     }
 
     onSubmit = e =>{
+        this.setState({
+            onProgress : true
+        })
         this.firebaseO.signIn(this.state.user_id,this.state.user_pw);
     }
 
@@ -231,7 +236,6 @@ class Main extends Component{
       } else {
         $imgPreview = (<img src={user} alt="user"/>);
       }
-  
       return (
         <body>
             <div className="App">
@@ -441,6 +445,11 @@ class Main extends Component{
                             style={{padding: "10"}}
                     >
                         This is Find modal.
+                    </Modal>
+                    <Modal visible={this.state.onProgress} width="400" height="400" effect="fadeInUp"
+                            style={{padding: "10"}}
+                    >
+                        <img src={loading} alt="loading..."/>
                     </Modal>
                 </div>
             </div>

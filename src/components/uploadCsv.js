@@ -87,13 +87,13 @@ class UploadCsv extends React.Component {
     render(){
         const { classes } = this.props;
         return(
-            <div style={{textAlign:"center",fontSize:"16px"}}>
+            <div id='step2_container'>
                 <div id='instruction_csv'>
                     Download the example, Fill out the list of students, and Upload it.
                 </div> 
                 <div id='about_csv'>
                     <div id='down_ex'>
-                        <Button variant="contained" className={classes.margin}><a href ='https://firebasestorage.googleapis.com/v0/b/tatabox-c2abe.appspot.com/o/students.zip?alt=media&token=3067cf63-d54c-4429-a08b-62ad62cad434' style={{textDecoration:'none', color:'black'}}>download example</a></Button>
+                        <Button variant="contained" className={classes.margin}><a href ='https://firebasestorage.googleapis.com/v0/b/tatabox-c2abe.appspot.com/o/students.zip?alt=media&token=3067cf63-d54c-4429-a08b-62ad62cad434' style={{textDecoration:'none', color:'black'}}>download format</a></Button>
                     </div>
                     <div id='csv_name'>
                         <acronym style={{color:'#5e5e5e'}}>{this.state.filename}</acronym>

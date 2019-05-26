@@ -52,6 +52,7 @@ class EditAttendance extends Component{
             rowParser : [],
             seatNum : [],
             profile_img : "",
+            width : 0,
         }
 
         let that = this;
@@ -76,7 +77,10 @@ class EditAttendance extends Component{
         this.makeAttendance = this.makeAttendance.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleback = this.handleback.bind(this);
         this.update = this.update.bind(this);
+
+        this.width = 0;
     }
 
     componentDidMount(){
@@ -111,15 +115,19 @@ class EditAttendance extends Component{
             this.setState({
                 seatNum : seats,
                 rowParser : rows,
-                init : true
+                init : true,
             })
             this.setProfile();
+            const width = document.getElementById('full').clientWidth;
+            this.setState({
+                width: width
+            })
         })
     }
 
     handleback(){
-        let classname_ = this.state.classname;
-        window.location.pathname="TATABOX/check/" + classname_;
+        // let classname_ = this.state.classname;
+        window.location.pathname="TATABOX/check/" + this.state.classname;
     }
 
     gotoMade() {
@@ -333,7 +341,9 @@ class EditAttendance extends Component{
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
-        var $profile = (<img style={{width:"15vw",height:"30vh"}} src={this.state.profile_img} id = 'user_img'/>);
+        var $profile = (<img style={{width:"220px",height:"220px", borderRadius: "50%"}} src={this.state.profile_img} id = 'user_img'/>);
+
+
         return(
             <div id = 'full'>
                 <div id = 'headbar3'>
@@ -373,7 +383,7 @@ class EditAttendance extends Component{
                     <Button variant="contained" color="secondary" onClick={()=>{window.location.pathname="/TATABOX/management/"+this.state.classname}} style={{marginLeft:"65vw"}}>DONE</Button>
                 </div>
                 <div id = 'body2' style={{backgroundColor:'#FFFFFF', overflowY:"auto"}}>
-                    <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
+                    <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={this.state.width*0.90}>
                         <div key="profile">
                             {$profile}
                         </div>
@@ -433,7 +443,7 @@ class EditAttendance extends Component{
                     <br/><br/>
                     Seat Row : {this.EditRow()}<br/><br/>
                     Seat Number : {this.EditSeat()}<br/><br/>
-                    Reporter : {this.EditReporter()}<br/><br/> <br/>      
+                    Reported by : {this.EditReporter()}<br/><br/> <br/>      
                     <Button variant="contained" color="primary" onClick={()=>{
                         if(window.confirm("Are you sure to edit the information?"))
                             this.update()

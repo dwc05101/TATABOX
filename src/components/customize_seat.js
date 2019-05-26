@@ -431,7 +431,7 @@ class Custom extends Component{
                     >
                         <div style={{width: "84vw", display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <div style={{width:"30vw", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
-                                <Button variant="contained" className={classes.customGuide} color="primary" onClick={this.openDialong}>Guide</Button>
+                                <Button variant="contained" className={classes.customGuide} color="primary" onClick={this.openDialong}>Help</Button>
                                 <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
                                     <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
                                     <DialogContent>
@@ -440,8 +440,7 @@ class Custom extends Component{
                                         <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
                                     </div>
                                     <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the GUIDE button at the lefttop side of this page</DialogContentText>
-                                    
+                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={this.closeDialog} color="primary">

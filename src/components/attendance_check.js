@@ -615,15 +615,17 @@ class AttendanceCheck extends Component{
 
                   child.val().students.forEach(function(student){
                     if(student.attendance !== undefined){
-                      if(student.attendance[DateIndex].attend === "reported"){
-                        sub_reportedlist.push(student);
-                        that.state.seatlist.push(student);
-                      }
-                      else if(student.attendance[DateIndex].attend === "attend"){
-                        that.state.seatlist.push(student);
-                      }
-                      else if(student.attendance[DateIndex].attend === "absent"){
-                        sub_absentlist.push(student);
+                      if(student.attendance.date === globalDate){
+                        if(student.attendance[DateIndex].attend === "reported"){
+                          sub_reportedlist.push(student);
+                          that.state.seatlist.push(student);
+                        }
+                        else if(student.attendance[DateIndex].attend === "attend"){
+                          that.state.seatlist.push(student);
+                        }
+                        else if(student.attendance[DateIndex].attend === "absent"){
+                          sub_absentlist.push(student);
+                        }
                       }
                     }
                   })

@@ -43,7 +43,8 @@ class Management extends Component{
             classname: props.match.params.classname,
             search_value: "",
             firebase : props.Firebase.fb,
-            init : false
+            init : false,
+            width : 0,
         }
 
         let {match} = this.props;
@@ -100,6 +101,10 @@ class Management extends Component{
                 init : true,
                 students : students
             });
+            const width = document.getElementById('full').clientWidth;
+            this.setState({
+                width: width
+            })
         });
     }
 
@@ -351,7 +356,7 @@ class Management extends Component{
                         </Grid>
                     </div>
                     <div id = 'body2' style={{backgroundColor:'#ffffff'}} onClick={this.checkBoxClick}>
-                        <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={1400}>
+                        <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={this.state.width*0.90}>
                             {this.makeStudentList()}
                         </ReactGridLayout>
                     </div>

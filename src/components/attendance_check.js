@@ -26,6 +26,8 @@ import Timer from './timer/index';
 import user from '../images/user_white.png';
 import { AvRepeat } from 'material-ui/svg-icons';
 
+const alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+
 const styles = theme => ({
   container: {
     display: 'flex',
@@ -97,6 +99,7 @@ const reportedStyle = {
   zIndex: "1400",
   fontWeight: "bold",
   fontSize: "24px",
+  cursor: "pointer",
   color: "#f50057",
 }
 
@@ -110,6 +113,7 @@ const absentStyle = {
   zIndex: "1400",
   fontWeight: "bold",
   fontSize: "24px",
+  cursor: "pointer",
   color: "black"
 }
 
@@ -192,13 +196,28 @@ class NavTabs extends React.Component {
     if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
       var reportedMap = {};
       var absentMap = [];
+
+      let seatList = nextProps.seatList;
+      console.log(seatList)
+
       /* set reported person*/
       nextProps.reportedList.forEach(function(student){
-        reportedMap[student.sid] = student.attendance[DateIndex].reporter;
+        let row =  student.attendance[DateIndex].row;
+        let seat = student.attendance[DateIndex].seat;
+        let reporterId = student.attendance[DateIndex].reporter;
+        let reporterName;
+
+        for (var i=0;i<seatList.length;i++) {
+          if (seatList[i].sid == reporterId) {
+            reporterName = seatList[i].name
+          }
+        }
+
+        reportedMap[`${student.sid} ${student.name}(${alphabet[row]}${seat})`] = `${reporterId} ${reporterName}`;
       });
       /* set absent person*/
       nextProps.absentList.forEach(function(student){
-        absentMap.push(student.sid);
+        absentMap.push(`${student.sid} ${student.name}`);
       });
   
       const reportedStudents = reportedMap;
@@ -213,15 +232,16 @@ class NavTabs extends React.Component {
       for (var i=0;i<Object.keys(reportedStudents).length;i++) {
         reportIndents.push(
           <div style = {reportedStyle} data-r-index={i} data-a-index={0} onClick={this.openreportedModal}>
-            <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
+            <Textfit style = {{pointerEvents: "none", textAlign: "center"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[i]}</text>
+              <br/>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; reported by &nbsp; </text>
               <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[i]}</text>
             </Textfit>
           </div>
         )
         reportIndents.push(<div style = {{height: "3%"}}></div>)
-        reportInfo.push([Object.keys(reportedStudents)[i] + " " + nextProps.reportedList[i].name, " reported by ", Object.values(reportedStudents)[i], nextProps.reportedList[i].email])
+        reportInfo.push([Object.keys(reportedStudents)[i], " reported by ", Object.values(reportedStudents)[i], nextProps.reportedList[i].email])
       }
       if(reportInfo.length === 0){
         reportIndents.push(
@@ -237,7 +257,9 @@ class NavTabs extends React.Component {
         reportInfo.push([0,0,0,0])
       }
       // list data form
+      console.log(absentStudents)
       for (var i=0;i<absentStudents.length;i++) {
+        
         absentIndents.push(<div style = {absentStyle} data-a-index={i} data-r-index={0}  onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push([nextProps.absentList[i].sid , nextProps.absentList[i].name, nextProps.absentList[i].email])
@@ -316,6 +338,10 @@ class NavTabs extends React.Component {
   render() {
     const {classes} = this.props;
     const {value} = this.state;
+    // console.log(this.reportInfo)
+    // console.log(this.absentInfo)
+    // console.log(this.reportList)
+    // console.log(this.absentList)
     return (
       <MuiThemeProvider theme={theme}>
         <NoSsr>
@@ -336,12 +362,12 @@ class NavTabs extends React.Component {
             </Typography>}
           </div>
             <Modal open={this.state.reportedmodalOn} onClose={this.closereportedModal}>
-              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "400px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div style={{width: "480px", height: "380px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closereportedModal} style = {{top: "0"}}>
                       <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
                   </div>
-                  <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                  <div style = {{width: "480px", height: "320px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
                     <br/>
                     <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][0]}</text>
@@ -353,12 +379,12 @@ class NavTabs extends React.Component {
               </div>
             </Modal>
             <Modal open={this.state.absentmodalOn} onClose={this.closeabsentModal}>
-              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#9e9e9e", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#9e9e9e", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closeabsentModal} style = {{top: "0"}}>
                       <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
                   </div>
-                  <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                  <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Absent</text>
@@ -487,7 +513,7 @@ class AttendanceCheck extends Component{
             
             if(child.val().done !== undefined){
               //This class is done
-              console.log("HEY:"+child.val().done)
+              // console.log("HEY:"+child.val().done)
               that.setState({
                 done : child.val().done
               });
@@ -526,7 +552,7 @@ class AttendanceCheck extends Component{
                 )
               }else if( i >= that.indentw && i < that.indentw+w ){
                 that.state.Seats.push(
-                  <div class = "number-seat" >{i}</div>
+                  <div class = "number-seat" >{i - that.indentw}</div>
                 )
               }else{
                 that.state.Seats.push(
@@ -570,7 +596,7 @@ class AttendanceCheck extends Component{
         /* get class students & mount listener to FB*/
         var classname = that.state.classname;
         that.state.firebase.database().ref("/classInfo").on("value", function(snapshot){
-            console.log("changed");
+            // console.log("changed");
             snapshot.forEach(function(child){
                 if(child.val().name === classname){
                   classInfo = child.val();
@@ -602,18 +628,31 @@ class AttendanceCheck extends Component{
                     }
                   })
 
+                  
                   that.state.seatlist.forEach(function(student){
                     var today = student.attendance[DateIndex];
                     var square = document.getElementById((today.row)+ "-"+(today.seat));
+                    var seatList = Object.values(that.state.seatlist);
+                    // var student = student;
                     if(square !== null){
                       if(today.attend === "attend"){
                         square.style.backgroundColor = "green";
                         square.onclick = that.openattendModal;
-                        that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,student.sid + " " + student.name,0,0,0,0];
+                        
+                        that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,`${student.sid} ${student.name}(${alphabet[today.row]}${today.seat})`,0,0,0,0];
                       }else if(today.attend === "reported"){
                         square.style.backgroundColor = "red";
                         square.onclick = that.openreportedModal;
-                        that.Info[(today.row)+ "-" +(today.seat)] = ["r", student.name +" "+ student.sid,student.email, "reported by", student.reporter];
+                        let reporterId = student.attendance[DateIndex].reporter;
+                        let reporterName;
+
+                        for (var i=0;i<seatList.length;i++) {
+                          if (seatList[i].sid == reporterId) {
+                            reporterName = seatList[i].name;
+                          }
+                        }
+
+                        that.Info[(today.row)+ "-" +(today.seat)] = ["r", `${student.sid} ${student.name}(${alphabet[today.row]}${today.seat})`,student.email, "reported by", reporterId + " " + reporterName];
                       }
                     }
                   })
@@ -804,7 +843,7 @@ class AttendanceCheck extends Component{
     if (!this.state.synch) return null;
     if (!this.state.init) return null;
 
-    console.log(this.Info);
+    // console.log(this.Info);
 
     return(
         <body id = 'full2'>
@@ -874,19 +913,19 @@ class AttendanceCheck extends Component{
                 </div>
                 <div id = "confirm" className="center" style={{height:"5vh",width:"100%"}}>
                   <Button variant="contained" color="secondary" style={{width:"200px"}} onClick={this.onConfirm}>
-                      confirm
+                      finish
                   </Button>
                 </div>
                 <div id = "done" className="center" style={{width:"100%", height:"5vh",visibility:"hidden"}}>
                   <h3>You've done today's attendance check!</h3>
                 </div>
                 <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
-                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                       <div onClick={this.closeattendModal} style = {{top: "0"}}>
                           <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
                       </div>
-                      <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                      <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                         <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')}></img>
                         <br/>
                         <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
@@ -895,25 +934,25 @@ class AttendanceCheck extends Component{
                   </div>
                 </Modal>
                 <Modal open={this.state.reportedmodalOn} onClose={this.closereportedModal}>
-                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "400px", height: "300px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <div style={{width: "380px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "400px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <div style={{width: "480px", height: "380px", backgroundColor: "white", borderRadius: "10px"}}>
                       <div onClick={this.closereportedModal} style = {{top: "0"}}>
                           <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
                       </div>
-                      <div style = {{width: "380px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                      <div style = {{width: "480px", height: "320px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                         <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
                         <br/>
                         <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
                         <text style = {{color: "gray", fontWeight: "light", marginBottom:"15px", fontSize: "15px"}}> {this.Info[(this.state.hindex) + "-" + (this.state.windex)][2]}</text>
                         <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][3]}</text>
-                        <text style = {{color: "red", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
+                        <text style = {{color: "blue", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
                       </div>
                     </div>
                   </div>
                 </Modal>
               </div>
               <div id = "report-tab">
-                <NavTabs styles = {{height: "100%"}} renderupdater = {this.state.renderupdater} timerstate = {this.state.timerstate} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist}  ></NavTabs>
+                <NavTabs styles = {{height: "100%"}} renderupdater = {this.state.renderupdater} timerstate = {this.state.timerstate} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist} seatList = {this.state.seatlist} ></NavTabs>
               </div>
             </div>
         </body>

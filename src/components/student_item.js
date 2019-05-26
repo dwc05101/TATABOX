@@ -184,9 +184,14 @@ class StudentItem extends Component{
         }
     }
 
-    render(){
+    handleClick = e => {
         var link = "/TATABOX/management/"+this.state.classname+"/"+this.state.student.sid;
-        var $profileImg = (<img style={{width:"7vw",height:"14vh"}} src={this.state.user_img} id = 'user_img'/>);
+        window.location.pathname = link;
+    }
+
+    render(){
+        
+        var $profileImg = (<img style={{width:"100px",height:"100px", borderRadius: "50%"}} src={this.state.user_img} id = 'user_img'/>);
 
         if(!this.state.init) return null;
         return(
@@ -200,9 +205,7 @@ class StudentItem extends Component{
                             checked={this.state.checked}
                             onChange={this.handleCheckbox}/>
                     </Grid>
-                    <Grid item xs={11} onClick ={()=>{
-                        window.location.pathname= link;
-                        }}>
+                    <Grid item xs={11} onClick ={this.handleClick}>
                         <Grid container className="center" spacing={24}>
                             <Grid item xs={1} style={{padding:"0px"}}>
                                 {$profileImg}

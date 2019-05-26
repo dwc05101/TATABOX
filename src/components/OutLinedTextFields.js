@@ -190,7 +190,7 @@ class OutlinedTextFields extends React.Component {
             )
           }else if( i >= that.indentw && i < that.indentw+w ){
             that.state.Seats.push(
-              <div class = "number-seat" >{i}</div>
+              <div class = "number-seat" >{i - that.indentw}</div>
             )
           }else{
             that.state.Seats.push(

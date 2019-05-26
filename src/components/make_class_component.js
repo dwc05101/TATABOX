@@ -440,12 +440,10 @@ class MakeClass extends Component {
                         </div>
                         <Modal visible={this.state.tryDelete} width="350" height="200" effect="fadeInUp" onClickAway={this.closeCaution} >
                             <div style={{textAlign:'center', marginTop:'20px'}}>
-                                
                                     <p>Are you sure to delete class?</p>
                                     <p>You Cannot restore deleted class.</p>
                                     <Button variant="contained" onClick={this.delete} color="secondary" className={classes.margin}>Delete</Button>
                                     <Button variant="contained" onClick={this.closeCaution} color="primary" className={classes.margin} > Cancel</Button>
-                                
                             </div>
                         </Modal>
                     </body>

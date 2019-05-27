@@ -608,14 +608,17 @@ class AttendanceCheck extends Component{
                       absentlist: [],
                     })
                   }else{
-                    if(DateIndex === -1)DateIndex = child.val().students[0].attendance.length-1;
+                  DateIndex = child.val().students[0].attendance.length-1;
 
                   var sub_reportedlist = [];
                   var sub_absentlist = [];
-
+ 
+                  var today = new Date();
+                  var current_date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    
                   child.val().students.forEach(function(student){
                     if(student.attendance !== undefined){
-                        if(student.attendance[DateIndex].date === globalDate){
+                        if(student.attendance[DateIndex].date === current_date){
                           if(student.attendance[DateIndex].attend === "reported"){
                             sub_reportedlist.push(student);
                             that.state.seatlist.push(student);

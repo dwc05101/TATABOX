@@ -839,6 +839,7 @@ class AttendanceCheck extends Component{
         document.getElementById("link").style.display = "none"; 
         document.getElementById("confirm").style.display = "none"; 
         document.getElementById("done").style.visibility = "visible"; 
+        
       }
     }
 

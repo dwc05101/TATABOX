@@ -11,6 +11,13 @@ import Modal from 'react-awesome-modal';
 import SearchBar from "material-ui-search-bar";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import user from '../images/user_white.png';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MSL_example from "../images/MSL_example.gif"
+import Zoom from '@material-ui/core/Zoom';
 
 import StudentItem from "./student_item";
 
@@ -19,6 +26,9 @@ import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 
 var ReactGridLayout = require('react-grid-layout');
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Zoom ref={ref} {...props} />;
+});
 
 var layout = [];
 var checkedList;
@@ -45,6 +55,7 @@ class Management extends Component{
             firebase : props.Firebase.fb,
             init : false,
             width : 0,
+            dialogOn: false,
         }
 
         let {match} = this.props;
@@ -73,8 +84,6 @@ class Management extends Component{
         this.handleGrade = this.handleGrade.bind(this)
         this.handleback = this.handleback.bind(this)
         this.handleDelete = this.handleDelete.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
         
@@ -131,15 +140,15 @@ class Management extends Component{
         );
     }
 
-    openModal(){
+    openDialog = e => {
         this.setState({
-            modal_visible : true
+            dialogOn: true
         })
     }
 
-    closeModal(){
+    closeDialog = e => {
         this.setState({
-            modal_visible : false
+            dialogOn: false,
         })
     }
 
@@ -280,36 +289,28 @@ class Management extends Component{
                                 className="center"
                                 id = 'menu_button'
                                 buttonRef={node => {
-                                this.anchorEl = node;
-                                }}
-                                aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                                aria-haspopup="true"
-                                onClick={this.handleToggle}
+                                    this.anchorEl = node;
+                                    }}
+                                onClick = {this.openDialog}
                             >
-                            <img
-                                id = "menu-img"
-                                src = {require('../images/menu.png')}
-                            >
-                            </img>
+                            <p style={{color:'white'}}>help</p>
                             </Button>
-                            <Popper style={{zIndex:10010}} open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                                {({ TransitionProps, placement }) => (
-                                <Grow
-                                    {...TransitionProps}
-                                    id="menu-list-grow"
-                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                >
-                                    <Paper>
-                                    <ClickAwayListener onClickAway={this.handleClose}>
-                                        <MenuList>
-                                        <MenuItem onClick={this.handleClose}>Export</MenuItem>
-                                        <MenuItem onClick={this.handleGrade}>Grade Report</MenuItem>
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                    </Paper>
-                                </Grow>
-                                )}
-                            </Popper>
+                            <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
+                                    <div style={{height: "250px", width: "400px"}}>
+                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    </div>
+                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.closeDialog} color="primary">
+                                            OK
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                         </div>
                             <h3 id = 'userid'>{this.state.user_name}</h3>
                         <div id = 'img_cropper'>
@@ -351,7 +352,7 @@ class Management extends Component{
                             >Delete</Button>
                             </Grid>
                             <Grid item style={{marginTop:"1%"}} xs={3}>
-                                <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.openModal}>Send Invitation</Button>
+                                <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.handleGrade}>Grade Report</Button>
                             </Grid>                
                         </Grid>
                     </div>
@@ -360,16 +361,6 @@ class Management extends Component{
                             {this.makeStudentList()}
                         </ReactGridLayout>
                     </div>
-                    <Modal
-                        visible={this.state.modal_visible} 
-                        width="600" 
-                        height="300" 
-                        effect="fadeInUp" 
-                        onClickAway={this.closeModal}>
-                        <p style={{marginTop:"10vh",fontSize:'25px'}}><b>Send Invitation Link to Students</b></p><br/>
-                        <p>Invitation link : <u style={{color:'#0040a8'}}>https://tatabox.com/happyta</u></p><br/>
-                        <Button variant="contained" color="primary" onClick={this.closeModal} >Copy</Button>
-                    </Modal>
                 </div>
             );
         }

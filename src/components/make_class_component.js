@@ -17,8 +17,19 @@ import OutLinedTextFields from './OutLinedTextFields';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { resolveCname } from 'dns';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Zoom from '@material-ui/core/Zoom';
 
+import ReactDOM from 'react-dom';
+import MSL_example from "../images/MSL_example.gif"
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Zoom ref={ref} {...props} />;
+});
 
 const styles = theme => ({
     container: {
@@ -72,6 +83,7 @@ class MakeClass extends Component {
             deleteindex:-1,
             classlst:[],
             Seat: null,
+            dialogOn: false,
         }
         this.handleClick = this.handleClick.bind(this);
         this.firebaseO = this.props.Firebase;
@@ -84,6 +96,8 @@ class MakeClass extends Component {
         this.closeCaution = this.closeCaution.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.openDialog = this.openDialog.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
 
         let that = this;
         let Seat;
@@ -175,6 +189,17 @@ class MakeClass extends Component {
         
     }
 
+    openDialog() {
+        this.setState({
+            dialogOn: true
+        })
+    }
+
+    closeDialog() {
+        this.setState({
+            dialogOn: false,
+        })
+    }
 
     handlelogin = user =>{
         this.setState({
@@ -328,33 +353,26 @@ class MakeClass extends Component {
                                 buttonRef={node => {
                                 this.anchorEl = node;
                                 }}
-                                aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                                aria-haspopup="true"
-                                onClick={this.handleToggle}
+                                onClick={this.openDialog}
                             >
-                            <img
-                                id = "menu-img"
-                                src = {require('../images/menu.png')}
-                                >
-                            </img>
+                                <p style={{color:'white'}}>help</p>
                             </Button>
-                            <Popper id= "menuitems" open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                                {({ TransitionProps, placement }) => (
-                                <Grow
-                                    {...TransitionProps}
-                                    id="menu-list-grow"
-                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                >
-                                    <Paper>
-                                    <ClickAwayListener onClickAway={this.handleClose}>
-                                        <MenuList>
-                                        <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                    </Paper>
-                                </Grow>
-                                )}
-                            </Popper>
+                            <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
+                                    <div style={{height: "250px", width: "400px"}}>
+                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    </div>
+                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.closeDialog} color="primary">
+                                            OK
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                         </div>
                         <h3 id = 'userid'>{this.state.user_name}</h3>
                         <div id = 'img_cropper'>
@@ -384,40 +402,31 @@ class MakeClass extends Component {
                         <div id = 'headbar3'>
                             <h1 id = 'logo'>TATABOX</h1>
                             <div id = 'menu'>
-                                <Button
-                                    id = 'menu_button'
-                                    buttonRef={node => {
-                                    this.anchorEl = node;
-                                    }}
-                                    aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={this.handleToggle}
-                                >
-                                <img
-                                id = "menu-img"
-                                src = {require('../images/menu.png')}
-                                >
-                                </img>
-                                </Button>
-                                <Popper open={this.state.open} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                                    {({ TransitionProps, placement }) => (
-                                    <Grow
-                                        {...TransitionProps}
-                                        id="menu-list-grow"
-                                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                    >
-                                        <Paper>
-                                        <ClickAwayListener onClickAway={this.handleClose}>
-                                            <MenuList>
-                                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                                            <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
-                                            </MenuList>
-                                        </ClickAwayListener>
-                                        </Paper>
-                                    </Grow>
-                                    )}
-                                </Popper>
+                            <Button
+                                id = 'menu_button'
+                                buttonRef={node => {
+                                this.anchorEl = node;
+                                }}
+                                onClick={this.openDialog}
+                            >
+                                <p style={{color:'white'}}>help</p>
+                            </Button>
+                            <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
+                                    <div style={{height: "250px", width: "400px"}}>
+                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    </div>
+                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.closeDialog} color="primary">
+                                            OK
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                             </div>
                             <h3 id = 'userid'>{this.state.user_name}</h3>
                             <div id = 'img_cropper'>

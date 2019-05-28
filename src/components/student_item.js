@@ -44,13 +44,12 @@ class StudentItem extends Component{
             firebase : props.firebase,
             user_img : "",
             init : false,
+            width : 0,
         }
         
         this.handleCheckbox = this.handleCheckbox.bind(this);
         this.setProfile = this.setProfile.bind(this);
-        console.log(student.name);
-        console.log(upper);
-        console.log(bottom);
+        // console.log(student.imgpath);
     }
 
     handleCheckbox(event) {
@@ -78,7 +77,10 @@ class StudentItem extends Component{
                     user_img : url,
                     init : true
                 });
-                
+                // console.log(document.getElementById('fullPaper').clientWidth)
+                that.setState({
+                    width : document.getElementById('fullPaper').clientWidth
+                })
             }).catch(err=>{
                 console.log(err);
                 that.setState({
@@ -190,12 +192,17 @@ class StudentItem extends Component{
     }
 
     render(){
-        
-        var $profileImg = (<img style={{width:"100px",height:"100px", borderRadius: "50%"}} src={this.state.user_img} id = 'user_img'/>);
+        var $profileImg;
 
+        if (this.state.width != 0) {
+            console.log("good")
+            var imgSize = this.state.width * 0.08;
+            $profileImg = (<img style={{width: imgSize,height: imgSize, borderRadius: "50%"}} src={this.state.user_img}/>);
+        }        
+         
         if(!this.state.init) return null;
         return(
-            <Paper className="center">
+            <Paper className="center" id="fullPaper" width="100%">
                 <Grid container className="center" spacing = {24}>
                     <Grid item xs={1}>
                         <input

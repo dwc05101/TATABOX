@@ -615,7 +615,6 @@ class AttendanceCheck extends Component{
 
                   child.val().students.forEach(function(student){
                     if(student.attendance !== undefined){
-                      if(student.attendance.date === globalDate){
                         if(student.attendance[DateIndex].attend === "reported"){
                           sub_reportedlist.push(student);
                           that.state.seatlist.push(student);
@@ -626,7 +625,7 @@ class AttendanceCheck extends Component{
                         else if(student.attendance[DateIndex].attend === "absent"){
                           sub_absentlist.push(student);
                         }
-                      }
+                      
                     }
                   })
 
@@ -904,7 +903,7 @@ class AttendanceCheck extends Component{
             <div id = "content" style={{backgroundColor:"#ffffff"}} onClick={this.handleClick}>
               <div id = "timer-layout">
                 <div id = "link">
-                      <h3>URL : </h3>
+                      <h3>URL :   </h3>
                       <u style={{color:'#0040a8'}}>{this.state.link}</u>
                 </div>
                 <div id = "timer" onClick={this.handleTimerClick}>

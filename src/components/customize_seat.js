@@ -100,7 +100,6 @@ class Custom extends Component{
         this.firebase = this.props.Firebase.fb;
 
         let that = this;
-
         
         new Promise(function(resolve, reject){
             that.firebase.auth().onAuthStateChanged(function(user) {
@@ -162,19 +161,27 @@ class Custom extends Component{
     }
 
     onMouseUp = e => {
-        var endPoint;
-        if (this.state.mouseDown) {
-            endPoint = {
-                x: e.pageX,
-                y: e.pageY
-            };
+        if (_.isNull(this.state.endPoint)) {
+            var endPoint;
+            if (this.state.mouseDown) {
+                endPoint = {
+                    x: e.pageX,
+                    y: e.pageY
+                };
+            }
+            this.setState({
+                endPoint: endPoint,
+                selectionBox: this.calculateSelectionBox(this.state.startPoint, endPoint),
+            })
         }
-        this.setState({
-            endPoint: endPoint,
-            selectionBox: this.calculateSelectionBox(this.state.startPoint, endPoint),
-        })
+
+        if(this.state.mouseDown && !_.isNull(this.state.selectionBox)) {
+            this.updateCollidingChildren(this.state.selectionBox);
+        }
+        
         window.document.removeEventListener('mousemove', this.onMouseMove);
         window.document.removeEventListener('mouseup', this.onMouseUp);
+
         this.setState({
             mouseDown: false,
             startPoint: null,
@@ -186,20 +193,29 @@ class Custom extends Component{
     onMouseMove = e => {
         e.preventDefault();
         e.stopPropagation();
-        this.forceUpdate();
+        
+        var endPoint;
+        if (this.state.mouseDown) {
+            endPoint = {
+                x: e.pageX,
+                y: e.pageY
+            };
+        }
+        this.setState({
+            endPoint: endPoint,
+            selectionBox: this.calculateSelectionBox(this.state.startPoint, endPoint),
+        })
     }
 
     calculateSelectionBox(startPoint, endPoint) {
         if(!this.state.mouseDown || _.isNull(endPoint) || _.isNull(startPoint)) {
             return null;
         }
-
         
         var left = Math.min(startPoint.x, endPoint.x);
         var top = Math.min(startPoint.y, endPoint.y);
         var width = Math.abs(startPoint.x - endPoint.x);
         var height = Math.abs(startPoint.y - endPoint.y);
-        console.log(left, top, width, height)
 
         return ({
             left: left,
@@ -207,8 +223,9 @@ class Custom extends Component{
             width: width,
             height: height,
             position: "absolute",
-            backgroundColor: "blue",
-            border: "1px dotted black"
+            backgroundColor: "#90caf9",
+            border: "2px solid #2196f3",
+            opacity: "0.7",
         })
     }
 
@@ -247,18 +264,12 @@ class Custom extends Component{
         })
     }
 
-    componentDidUpdate() {
-        if(this.state.mouseDown && !_.isNull(this.state.selectionBox)) {
-            this.updateCollidingChildren(this.state.selectionBox);
-        }
-    }
-
     renderSelectionBox() {
         if(!this.state.mouseDown || _.isNull(this.state.endPoint) || _.isNull(this.state.startPoint)) {
             return null;
         }
         return(
-            <div className='selection-border' style={this.selectionBox}></div>
+            <div className='selection-border' style={this.state.selectionBox}></div>
         );
     }
     

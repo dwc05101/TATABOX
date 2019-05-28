@@ -86,7 +86,6 @@ class Management extends Component{
         this.handleDelete = this.handleDelete.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
-        
     }
 
     componentDidMount(){
@@ -114,7 +113,13 @@ class Management extends Component{
             this.setState({
                 width: width
             })
-        });
+        }).then(() => {
+            if (this.state.width == 0) {
+                this.setState({
+                    init : false,
+                })
+            }
+        })
     }
 
     makeStudentList(){
@@ -134,7 +139,7 @@ class Management extends Component{
             pos_count += 4;
             return(
                 <div key={student.name}>
-                    <StudentItem student={student} firebase={this.state.firebase} classname={this.state.classname}/>
+                    <StudentItem student={student} width={this.state.width} firebase={this.state.firebase} classname={this.state.classname}/>
                 </div>
             )
         })
@@ -273,7 +278,6 @@ class Management extends Component{
 
         let $profileImg = null;
         if (this.state.synch) {
-            console.log(this.state.user_img);
             $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
         } else {
             $profileImg = (<img src={user} id = 'user_img'/>);

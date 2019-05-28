@@ -80,7 +80,6 @@ class EditAttendance extends Component{
         this.handleback = this.handleback.bind(this);
         this.update = this.update.bind(this);
 
-        this.width = 0;
     }
 
     componentDidMount(){
@@ -335,13 +334,20 @@ class EditAttendance extends Component{
 
     render(){
         if(this.state.init){
+        let $profile = null;
         let $profileImg = null;
+
         if (this.state.synch) {;
-            $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+            $profile = (<img style={{borderRadius: "50%"}} src={this.state.user_img} id = 'user_img' />);
         } else {
-            $profileImg = (<img src={user} id = 'user_img'/>);
+            $profile = (<img style={{borderRadius: "50%"}} src={user} id = 'user_img'/>);
         }
-        var $profile = (<img style={{width:"220px",height:"220px", borderRadius: "50%"}} src={this.state.profile_img} id = 'user_img'/>);
+        
+
+        if (this.state.width != 0) {
+            var imgSize = this.state.width * 0.12;
+            $profileImg = (<img style={{width: imgSize, height: imgSize, borderRadius: "50%"}} src={this.state.profile_img}/>);
+        }    
 
 
         return(
@@ -369,7 +375,7 @@ class EditAttendance extends Component{
                     </div>
                     <h3 id = 'userid'>{this.state.user_name}</h3>
                     <div id = 'img_cropper'>
-                        {$profileImg}
+                        {$profile}
                     </div>
                     <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
                         <h3>Back to Class</h3>
@@ -385,7 +391,7 @@ class EditAttendance extends Component{
                 <div id = 'body2' style={{backgroundColor:'#FFFFFF', overflowY:"auto"}}>
                     <ReactGridLayout className="layout" layout = {layout} cols = {12} rowHeight={30} width={this.state.width*0.90}>
                         <div key="profile">
-                            {$profile}
+                            {$profileImg}
                         </div>
                         <div key="name">
                             <h3>Name & Student ID</h3>

@@ -25,8 +25,21 @@ import { Textfit } from 'react-textfit';
 import Timer from './timer/index';
 import user from '../images/user_white.png';
 import { AvRepeat } from 'material-ui/svg-icons';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Zoom from '@material-ui/core/Zoom';
+
+import ReactDOM from 'react-dom';
+import MSL_example from "../images/MSL_example.gif"
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Zoom ref={ref} {...props} />;
+});
 
 const styles = theme => ({
   container: {
@@ -470,6 +483,7 @@ class AttendanceCheck extends Component{
         reportedmodalOn: false,
         done : "",
         //classname: match.params.classname,
+        dialogOn: false,
     }
 
     this.openreportedModal = this.openreportedModal.bind(this);
@@ -608,24 +622,28 @@ class AttendanceCheck extends Component{
                       absentlist: [],
                     })
                   }else{
-                    if(DateIndex === -1)DateIndex = child.val().students[0].attendance.length-1;
+                  DateIndex = child.val().students[0].attendance.length-1;
 
                   var sub_reportedlist = [];
                   var sub_absentlist = [];
-
+ 
+                  var today = new Date();
+                  var current_date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    
                   child.val().students.forEach(function(student){
                     if(student.attendance !== undefined){
-                        if(student.attendance[DateIndex].attend === "reported"){
-                          sub_reportedlist.push(student);
-                          that.state.seatlist.push(student);
+                        if(student.attendance[DateIndex].date === current_date){
+                          if(student.attendance[DateIndex].attend === "reported"){
+                            sub_reportedlist.push(student);
+                            that.state.seatlist.push(student);
+                          }
+                          else if(student.attendance[DateIndex].attend === "attend"){
+                            that.state.seatlist.push(student);
+                          }
+                          else if(student.attendance[DateIndex].attend === "absent"){
+                            sub_absentlist.push(student);
+                          }
                         }
-                        else if(student.attendance[DateIndex].attend === "attend"){
-                          that.state.seatlist.push(student);
-                        }
-                        else if(student.attendance[DateIndex].attend === "absent"){
-                          sub_absentlist.push(student);
-                        }
-                      
                     }
                   })
 
@@ -732,6 +750,17 @@ class AttendanceCheck extends Component{
     })
   }
 
+  openDialog = e => {
+    this.setState({
+        dialogOn: true
+    })
+  }
+
+  closeDialog = e => {
+      this.setState({
+          dialogOn: false,
+      })
+  }
   openreportedModal(e){
     this.setState({
       reportedmodalOn : true
@@ -837,7 +866,9 @@ class AttendanceCheck extends Component{
         document.getElementById("timer").style.display = "none";
         document.getElementById("link").style.display = "none"; 
         document.getElementById("confirm").style.display = "none"; 
+        document.getElementById("appear").style.display = "block"; 
         document.getElementById("done").style.visibility = "visible"; 
+        
       }
     }
 
@@ -864,33 +895,26 @@ class AttendanceCheck extends Component{
                     buttonRef={node => {
                     this.anchorEl = node;
                     }}
-                    aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleToggle}
+                    onClick={this.openDialog}
                 >
-                <img
-                  id = "menu-img2"
-                  src = {require('../images/menu.png')}
-                  >
-                </img>
+                <p style={{color:'white'}}>help</p>
                 </Button>
-                <Popper open={this.state.open} style = {{zIndex: "1500"}} anchorEl={this.anchorEl} placement="bottom-end" transition disablePortal>
-                    {({ TransitionProps, placement }) => (
-                    <Grow
-                        {...TransitionProps}
-                        id="menu-list-grow"
-                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                    >
-                        <Paper>
-                        <ClickAwayListener onClickAway={this.handleClose}>
-                            <MenuList>
-                            <MenuItem onClick={this.gotoManagement}>Management</MenuItem>
-                            </MenuList>
-                        </ClickAwayListener>
-                        </Paper>
-                    </Grow>
-                    )}
-                </Popper>
+                <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
+                                    <div style={{height: "250px", width: "400px"}}>
+                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    </div>
+                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
+                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.closeDialog} color="primary">
+                                            OK
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
               </div>
 
               <h3 id = 'user_id2'>{this.state.username}</h3>
@@ -919,6 +943,11 @@ class AttendanceCheck extends Component{
                 </div>
                 <div id = "done" className="center" style={{width:"100%", height:"5vh",visibility:"hidden"}}>
                   <h3>You've done today's attendance check!</h3>
+                </div>
+                <div id = "appear" className="center" style={{height:"5vh",width:"100%",display:'none',textAlign:'center'}}>
+                  <Button variant="contained" color="primary" style={{width:"200px"}} onClick={this.gotoManagement}>
+                      Management
+                  </Button>
                 </div>
                 <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
                   <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>

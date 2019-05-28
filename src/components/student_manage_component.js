@@ -117,7 +117,8 @@ class Management extends Component{
                 y: pos_count,
                 w: 12,
                 h: 4,
-                isResizable : false
+                isResizable : false,
+                static : true
             }
             var link = "/TATABOX/management/"+classname+"/"+student.sid;
             layout.push(layout_component);

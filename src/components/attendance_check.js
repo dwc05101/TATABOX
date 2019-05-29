@@ -88,6 +88,7 @@ function shuffleArray(target) {
 }
 
 var DateIndex = -1;
+var done = false;
 
 /*----------------------for tabs-----------------------*/
 
@@ -158,17 +159,23 @@ class NavTabs extends React.Component {
       loading: '',
       reportedmodalOn: false,
       absentmodalOn: false,
+      attendmodalOn: false,
       reportedmodalIndex: 0,
       absentmodalIndex: 0,
-      timerstate: this.props.timerstate,
+      attendmodalIndex: 0,
     };
     this.reportList = [];
     this.absentList = [];
+    this.attendList = [];
     this.reportInfo = [];
     this.absentInfo = [];
+    this.attendInfo = [];
 
+    this.handleChange = this.handleChange.bind(this);
     this.openreportedModal = this.openreportedModal.bind(this);
     this.closereportedModal = this.closereportedModal.bind(this);
+    this.openattendModal = this.openattendModal.bind(this);
+    this.closeattendModal = this.closeattendModal.bind(this);
     this.openabsentModal = this.openabsentModal.bind(this);
     this.closeabsentModal = this.closeabsentModal.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -185,6 +192,19 @@ class NavTabs extends React.Component {
   closereportedModal(){
     this.setState({
       reportedmodalOn : false
+    })
+  };
+
+  openattendModal(e){
+    this.setState({
+      attendmodalOn : true
+    })
+    this.handleClick(e)
+  };
+
+  closeattendModal(){
+    this.setState({
+      attendmodalOn : false
     })
   };
 
@@ -207,8 +227,10 @@ class NavTabs extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState){
     if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
+
       var reportedMap = {};
       var absentMap = [];
+      var attendMap = [];
 
       let seatList = nextProps.seatList;
       console.log(seatList)
@@ -232,19 +254,26 @@ class NavTabs extends React.Component {
       nextProps.absentList.forEach(function(student){
         absentMap.push(`${student.sid} ${student.name}`);
       });
-  
+
+      nextProps.attendList.forEach(function(student){
+        attendMap.push(`${student.sid} ${student.name}`);
+      });
+      
       const reportedStudents = reportedMap;
       const absentStudents = absentMap;
+      const attendStudents = attendMap;
   
       var reportIndents = [];
       var absentIndents = [];
+      var attendIndents = [];
       var reportInfo = [];
       var absentInfo = [];
+      var attendInfo = [];
 
       // dictionary data form
       for (var i=0;i<Object.keys(reportedStudents).length;i++) {
         reportIndents.push(
-          <div style = {reportedStyle} data-r-index={i} data-a-index={0} onClick={this.openreportedModal}>
+          <div style = {reportedStyle} data-r-index={i} data-a-index={0} data-att-index={0} onClick={this.openreportedModal}>
             <Textfit style = {{pointerEvents: "none", textAlign: "center"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[i]}</text>
               <br/>
@@ -258,7 +287,7 @@ class NavTabs extends React.Component {
       }
       if(reportInfo.length === 0){
         reportIndents.push(
-          <div style = {reportedStyle} data-r-index={0} data-a-index={0}>
+          <div style = {reportedStyle} data-r-index={0} data-a-index={0} data-att-index={0}>
             <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; No Reported Student &nbsp; </text>
@@ -273,105 +302,117 @@ class NavTabs extends React.Component {
       console.log(absentStudents)
       for (var i=0;i<absentStudents.length;i++) {
         
-        absentIndents.push(<div style = {absentStyle} data-a-index={i} data-r-index={0}  onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
+        absentIndents.push(<div style = {absentStyle} data-a-index={i} data-r-index={0} data-att-index={0} onClick = {this.openabsentModal}>{absentStudents[i]}</div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push([nextProps.absentList[i].sid , nextProps.absentList[i].name, nextProps.absentList[i].email])
       }
 
       if(absentIndents.length === 0){
-        absentIndents.push(<div style = {noabsentStyle} data-a-index={0} data-r-index={0}> No Absent Student </div>)
+        absentIndents.push(<div style = {noabsentStyle} data-a-index={0} data-r-index={0} data-att-index={0}> No Absent Student </div>)
         absentIndents.push(<div style = {{height: "3%"}}></div>)
         absentInfo.push([0,0,0])
       }
 
+      console.log(absentStudents)
+      for (var i=0;i<attendStudents.length;i++) {
+        
+        attendIndents.push(<div style = {absentStyle} data-a-index={0} data-r-index={0} data-att-index={i} onClick = {this.openattendModal}>{attendStudents[i]}</div>)
+        attendIndents.push(<div style = {{height: "3%"}}></div>)
+        attendInfo.push([nextProps.attendList[i].sid , nextProps.attendList[i].name, nextProps.attendList[i].email])
+      }
+
+      if(attendIndents.length === 0){
+        attendIndents.push(<div style = {noabsentStyle} data-a-index={0} data-r-index={0} data-att-index={0}> No Attend Student </div>)
+        attendIndents.push(<div style = {{height: "3%"}}></div>)
+        attendInfo.push([0,0,0])
+      }
+
       this.reportList = reportIndents;
       this.absentList = absentIndents;
+      this.attendList = attendIndents;
       this.reportInfo = reportInfo;
       this.absentInfo = absentInfo;
+      this.attendInfo = attendInfo;
       return true
     }
     return true
   }
 
   componentWillMount() {
-    var reportedMap = {};
-    var absentMap = [];
-
-    /* set reported person*/
-    this.props.reportedList.forEach(function(student){
-      reportedMap[student.sid] = student.attendance[DateIndex].reporter;
-    });
-    /* set absent person*/
-    this.props.absentList.forEach(function(student){
-      absentMap.push(student.sid);
-    });
-
-    const reportedStudents = reportedMap;
-    const absentStudents = absentMap;
+    if(done)this.setState({value:2});
 
     var reportIndents = [];
     var absentIndents = [];
+    var attendIndents = [];
     var reportInfo = [];
     var absentInfo = [];
+    var attendInfo = [];
     // dictionary data form
-    if(reportInfo.length === 0){
-      reportIndents.push(
-        <div style = {reportedStyle} data-a-index = {0} data-r-index={0}>
-          <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
-            <text style = {{pointerEvents: "none"}}></text>
-            <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
-            <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}></text>
-          </Textfit>
-        </div>
-      )
-      reportIndents.push(<div style = {{height: "3%"}}></div>)
-      reportInfo.push([0,0,0,0])
-    }
-    if(absentIndents.length === 0){
-      absentIndents.push(<div style = {noabsentStyle} data-r-index={0} data-a-index={0} > Not Yet Started </div>)
-      absentIndents.push(<div style = {{height: "3%"}}></div>)
-      absentInfo.push([0,0,0])
-    }
+    reportIndents.push(
+      <div style = {reportedStyle} data-a-index = {0} data-r-index={0} data-att-index={0}>
+        <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
+          <text style = {{pointerEvents: "none"}}></text>
+          <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
+          <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}></text>
+        </Textfit>
+      </div>
+    )
+    reportIndents.push(<div style = {{height: "3%"}}></div>)
+    reportInfo.push([0,0,0,0])
+
+    absentIndents.push(<div style = {noabsentStyle} data-r-index={0} data-a-index={0} data-att-index={0}> Not Yet Started </div>)
+    absentIndents.push(<div style = {{height: "3%"}}></div>)
+    absentInfo.push([0,0,0])
+
+    attendIndents.push(<div style = {noabsentStyle} data-r-index={0} data-a-index={0} data-att-index={0} > Not Yet Started </div>)
+    attendIndents.push(<div style = {{height: "3%"}}></div>)
+    attendInfo.push([0,0,0])
 
     this.reportList = reportIndents;
     this.absentList = absentIndents;
+    this.attendList = attendIndents;
     this.reportInfo = reportInfo;
     this.absentInfo = absentInfo;
+    this.attendInfo = attendInfo;
   }
 
   handleClick(e) {
     var rindex = e.target.getAttribute("data-r-index");
-    var aindex = e.target.getAttribute("data-a-index");   
+    var aindex = e.target.getAttribute("data-a-index");
+    var attindex = e.target.getAttribute("data-att-index");   
     this.setState({
       reportedmodalIndex: rindex,
-      absentmodalIndex: aindex
+      absentmodalIndex: aindex,
+      attendmodalIndex: attindex
     });
   }
   
   render() {
     const {classes} = this.props;
     const {value} = this.state;
-    // console.log(this.reportInfo)
-    // console.log(this.absentInfo)
-    // console.log(this.reportList)
-    // console.log(this.absentList)
+
     return (
       <MuiThemeProvider theme={theme}>
         <NoSsr>
           <div className = {classes.root}>
             <AppBar position = "static" style = {{color: "white"}}>
               <Tabs variant = "fullWidth" classes = {{indicator: classes.indicator}} value = {value} onChange = {this.handleChange}>
-                <LinkTab label={<span className ={classes.reportTab}>Reported</span>} style = {{backgroundColor: "#ef9a9a", /* borderRadius: "20px 20px 0px 0px" */}}/>
+                <LinkTab label={<span className ={classes.reportTab}>Attend</span>}  style = {{backgroundColor: "#c4ddac", /* borderRadius: "20px 20px 0px 0px" */}}/>
                 <LinkTab label={<span className ={classes.reportTab}>Absent</span>}  style = {{backgroundColor: "#9e9e9e", /* borderRadius: "20px 20px 0px 0px" */}}/>
+                <LinkTab label={<span className ={classes.reportTab}>Reported</span>} style = {{backgroundColor: "#ef9a9a", /* borderRadius: "20px 20px 0px 0px" */}}/>
               </Tabs>
             </AppBar>
             {value === 0 && 
-            <Typography component = "div" style = {{ padding: 8*3, backgroundColor: "#ef9a9a", height: "90%"}}>
-              {this.props.children}{this.reportList}
+            <Typography component = "div" style = {{ padding: 8*3, backgroundColor: "#c4ddac", height: "90%"}}>
+              {this.props.children}{this.attendList}
             </Typography>}
             {value === 1 && 
             <Typography component = "div" style = {{ padding: 8*3, backgroundColor: "#9e9e9e", height: "90%"}}>
               {this.props.children}{this.absentList}
+            </Typography>}
+            {value === 2 && 
+            <Typography component = "div" style = {{ padding: 8*3, backgroundColor: "#ef9a9a", height: "90%"}}>
+              {this.props.children}{this.reportList}
             </Typography>}
           </div>
             <Modal open={this.state.reportedmodalOn} onClose={this.closereportedModal}>
@@ -407,6 +448,22 @@ class NavTabs extends React.Component {
                 </div>
               </div>
             </Modal>
+            <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
+              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c4ddac", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
+                  <div onClick={this.closeattendModal} style = {{top: "0"}}>
+                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                  </div>
+                  <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                    <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
+                    <br/>
+                    <text style = {{fontSize: "30px"}}>Attend</text>
+                    <text style = {{color: "black", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>
+                    <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.attendInfo[this.state.attendmodalIndex][2]}</text>
+                  </div>
+                </div>
+              </div>
+            </Modal>
         </NoSsr>
       </MuiThemeProvider>
     )
@@ -428,7 +485,6 @@ var classKey;
 var backup;
 
 var studentInit = false;
-var done = false;
 
 var started = false;
 
@@ -438,6 +494,8 @@ window.onbeforeunload = function(){
     return;
   }
 };
+
+/* ---------------------------------------------------------aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa*/
 
 class AttendanceCheck extends Component{
   constructor(props) {
@@ -471,6 +529,7 @@ class AttendanceCheck extends Component{
         /*----- student attendance------*/
         dataindex: 0,
         seatlist :[],
+        attendlist :[],
         absentlist :[],
         reportedlist : [],
         timerstate: "begin",
@@ -620,12 +679,14 @@ class AttendanceCheck extends Component{
                     that.setState({
                       reportedlist: [],
                       absentlist: [],
+                      attendlist: [],
                     })
                   }else{
                   DateIndex = child.val().students[0].attendance.length-1;
 
                   var sub_reportedlist = [];
                   var sub_absentlist = [];
+                  var sub_attendlist = [];
  
                   var today = new Date();
                   var current_date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -638,6 +699,7 @@ class AttendanceCheck extends Component{
                             that.state.seatlist.push(student);
                           }
                           else if(student.attendance[DateIndex].attend === "attend"){
+                            sub_attendlist.push(student);
                             that.state.seatlist.push(student);
                           }
                           else if(student.attendance[DateIndex].attend === "absent"){
@@ -679,6 +741,7 @@ class AttendanceCheck extends Component{
                   that.setState({
                     reportedlist: sub_reportedlist,
                     absentlist: sub_absentlist,
+                    attendlist: sub_attendlist,
                   })
                   }
                 }
@@ -818,6 +881,7 @@ class AttendanceCheck extends Component{
     let that = this;
     if(window.confirm("You CANNOT CHECK ATTENDACNE after confirm. Are you sure to confirm today's attendance check?")){
       done = true;
+      this.setState({checkDone: "true"});
       classInfo.done = globalDate;
       var attendanceList = [];
       for(var i = 0; i<classInfo.students.length; i++){
@@ -841,6 +905,7 @@ class AttendanceCheck extends Component{
         window.location.reload();
       }) 
     }
+
   }
 
   render() {
@@ -982,7 +1047,7 @@ class AttendanceCheck extends Component{
                 </Modal>
               </div>
               <div id = "report-tab">
-                <NavTabs styles = {{height: "100%"}} renderupdater = {this.state.renderupdater} timerstate = {this.state.timerstate} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist} seatList = {this.state.seatlist} ></NavTabs>
+                <NavTabs styles = {{height: "100%"}} timerstate = {this.state.timerstate} donestate = {this.state.checkDone} attendList = {this.state.attendlist} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist} seatList = {this.state.seatlist} ></NavTabs>
               </div>
             </div>
         </body>

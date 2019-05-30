@@ -183,8 +183,7 @@ class Management extends Component{
         window.location.pathname = "TATABOX/grade/" + classname_;
     }
     handleback(){
-        let classname_ = this.state.classname;
-        window.location.pathname="TATABOX/check/" + classname_;
+        window.location.pathname="TATABOX/class/";
     }
 
     handleDelete(){

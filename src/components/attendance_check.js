@@ -965,9 +965,9 @@ class AttendanceCheck extends Component{
                 <p style={{color:'white'}}>help</p>
                 </Button>
                 <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogTitle>{"To make and manage your own CLASS"}</DialogTitle>
                                     <DialogContent>
-                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
+                                    <DialogContentText>1. MAKE new class by CLICKING the green + button </DialogContentText>
                                     <div style={{height: "250px", width: "400px"}}>
                                         <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
                                     </div>

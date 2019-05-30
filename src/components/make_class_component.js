@@ -26,6 +26,10 @@ import Zoom from '@material-ui/core/Zoom';
 
 import ReactDOM from 'react-dom';
 import MSL_example from "../images/MSL_example.gif"
+import greenplus from "../images/greenplus.png"
+import classex from "../images/classex.png"
+import redbutton from "../images/attendance.png"
+import bluebutton from "../images/manage.png"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Zoom ref={ref} {...props} />;
@@ -358,14 +362,12 @@ class MakeClass extends Component {
                                 <p style={{color:'white'}}>help</p>
                             </Button>
                             <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
+                                    <DialogTitle>{"To make your own CLASS"}</DialogTitle>
                                     <DialogContent>
-                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
-                                    <div style={{height: "250px", width: "400px"}}>
-                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    <DialogContentText>1. MAKE new class by CLICKING the green + button </DialogContentText>
+                                    <div style={{height: "100px", width: "100px"}}>
+                                        <img src={greenplus} style={{width: "100%", height: "inherit"}} alt=""/>
                                     </div>
-                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={this.closeDialog} color="primary">
@@ -412,14 +414,18 @@ class MakeClass extends Component {
                                 <p style={{color:'white'}}>help</p>
                             </Button>
                             <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
-                                    <div style={{height: "250px", width: "400px"}}>
-                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
+                                    <DialogTitle>{"To CHECK ATTENDANCE and MANAGE your classes"}</DialogTitle>
+                                    <DialogContent>                                    
+                                    <div style={{height: "55px", width: "400px"}}>
+                                        <img src={classex} style={{width: "100%", height: "inherit"}} alt=""/>
                                     </div>
-                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
+                                    <DialogContentText>1. HOVER your mouse on the class you want to access</DialogContentText>
+                                    <DialogContentText>2. To check ATTENDANCE, press  :
+                                        <img src={redbutton} style={{width: "100px", height: "30px"}} alt=""/>
+                                    </DialogContentText>
+                                    <DialogContentText>3. To manage students, press  :
+                                        <img src={bluebutton} style={{width: "80px", height: "30px"}} alt=""/>   
+                                    </DialogContentText>
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={this.closeDialog} color="primary">

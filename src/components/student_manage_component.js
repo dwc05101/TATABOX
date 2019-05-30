@@ -1,25 +1,20 @@
 import React, {Component} from 'react';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
-import Modal from 'react-awesome-modal';
 import SearchBar from "material-ui-search-bar";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import user from '../images/user_white.png';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MSL_example from "../images/MSL_example.gif"
 import Zoom from '@material-ui/core/Zoom';
+import Slider from 'react-slick';
 
 import StudentItem from "./student_item";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import './make_class_component.css';
 import '../../node_modules/react-grid-layout/css/styles.css';
@@ -31,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 var layout = [];
-var checkedList;
+var checkedList = [];
 var pos_count;
 var backup = [];
 
@@ -52,6 +47,7 @@ class Management extends Component{
             userID: '',
             classname: props.match.params.classname,
             search_value: "",
+            checked : false,
             firebase : props.Firebase.fb,
             init : false,
             width : 0,
@@ -86,6 +82,7 @@ class Management extends Component{
         this.handleDelete = this.handleDelete.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
+        this.checkBoxClick = this.checkBoxClick.bind(this);
     }
 
     componentDidMount(){
@@ -124,6 +121,11 @@ class Management extends Component{
 
     makeStudentList(){
         var classname = this.state.classname;
+        if(this.state.students===undefined)
+            return(
+                <div>
+                </div>
+            )
         return(this.state.students.map(student=>{
             var layout_component = {
                 i: student.name,
@@ -186,7 +188,8 @@ class Management extends Component{
     }
 
     handleDelete(){
-        var std_list = this.state.students;
+
+        var std_list = backup;
 
         for(var j = 0; j<checkedList.length; j++){
             for(var i = 0; i<std_list.length; i++){
@@ -197,7 +200,9 @@ class Management extends Component{
             }
         }
 
-        checkedList=[];
+        pos_count=0;
+        layout = [];
+        checkedList = [];
 
         classInfo.students = std_list;
 
@@ -205,7 +210,9 @@ class Management extends Component{
         .then(
             ()=>{
                 this.setState({
-                    students: std_list
+                    students: std_list,
+                    checked : false,
+                    search_value : ""
                 });
             }
         )
@@ -213,15 +220,22 @@ class Management extends Component{
 
     checkBoxClick(e){
         if(e.target.type==="checkbox"){
-            console.log(e.target.checked);
             if(e.target.checked){
                 checkedList.push(e.target.name);
+                this.setState({
+                    checked : true
+                })
             }else{
                 for(var i = 0; i<checkedList.length; i++){
                     if(checkedList[i]===e.target.name){
                         checkedList.splice(i,1);
                     }
                 } 
+                if(checkedList.length === 0){
+                    this.setState({
+                        checked : false
+                    })
+                }
             }
         }
     }
@@ -283,7 +297,20 @@ class Management extends Component{
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
 
+        var disabled = true
+
+        if(this.state.checked){
+            disabled = false;
+        }
+
+        
         if(this.state.init){
+            var settings = {
+                dots: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1
+              };
             return(
                 <div id = 'full'>
                     <div id = 'headbar3'>
@@ -301,21 +328,41 @@ class Management extends Component{
                             <p style={{color:'white'}}>help</p>
                             </Button>
                             <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
-                                    <div style={{height: "250px", width: "400px"}}>
-                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
-                                    </div>
-                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={this.closeDialog} color="primary">
-                                            OK
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
+                                <DialogTitle>{"HELP"}</DialogTitle>
+                                <DialogContent style={{overflowX:"hidden"}}>
+                                    <Slider {...settings}>
+                                        <div>
+                                            <img src={require("../images/std_step_0.gif")}></img>
+                                            <br/>
+                                            You can see students' overall attendance here.
+                                            <br/>
+                                        </div>
+                                        <div>
+                                            <img src={require("../images/std_step_1.gif")}></img>
+                                            <br/>
+                                            You can see detailed information when you click on each student.
+                                            <br/>
+                                        </div>
+                                        <div>
+                                            <img src={require("../images/std_step_2.gif")}></img>
+                                            <br/>
+                                            You can edit student's attendance.
+                                            <br/>
+                                        </div>
+                                        <div>
+                                            <img src={require("../images/std_step_3.gif")}></img>
+                                            <br/>
+                                            You can search & delete students.
+                                            <br/>
+                                        </div>
+                                    </Slider>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={this.closeDialog} color="primary">
+                                        OK
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
                             <h3 id = 'userid'>{this.state.user_name}</h3>
                         <div id = 'img_cropper'>
@@ -337,6 +384,7 @@ class Management extends Component{
                                         ref={(input)=>{
                                             this.SearchBar = input;
                                             }}
+                                        value = {this.state.search_value}
                                         onChange={this.onChangeSearch}
                                         onRequestSearch={this.onRequestSearch}
                                         style={{marginLeft:"10%",width:"auto"}}
@@ -348,7 +396,7 @@ class Management extends Component{
                                 <img style={{width:"auto", height:"40px",paddingTop:"2%",marginLeft:"10%"}} src = {require("../images/color_explanation.png")}/>
                             </Grid>
                             <Grid item style={{marginTop:"1%"}} xs={2}>
-                                <Button variant="contained" color="secondary" style={{marginLeft:"75%"}}
+                                <Button variant="contained" disabled={disabled} color="secondary" style={{marginLeft:"75%"}}
                                 onClick={()=>{
                                     if(window.confirm("Are you sure to delete checked students? This action is not reversible.")){
                                         this.handleDelete();

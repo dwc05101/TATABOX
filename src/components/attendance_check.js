@@ -550,6 +550,7 @@ class AttendanceCheck extends Component{
     this.openattendModal = this.openattendModal.bind(this);
     this.closeattendModal = this.closeattendModal.bind(this);
     this.handClick = this.handClick.bind(this);
+    this.onConfirm = this.onConfirm.bind(this);
     this.gotoManagement = this.gotoManagement.bind(this)
     let {match} = this.props;
 

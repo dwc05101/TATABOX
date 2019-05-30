@@ -58,22 +58,20 @@ class StudentSide extends Component{
         })
         .then(()=>{
             var rows = [];
+            var seats = [];
+
             for(var i = 0; i<classInfo.layout.length; i++){
                 rows.push({
                     num : i,
                     label : alphabet[i]
                 });
-            }
-
-            var numSeat = 0;
-            for(var i = 0; i<classInfo.layout[0].length; i++){
-                if(classInfo.layout[0][i]===1)
-                    numSeat++;
-            }
-
-            var seats = [];
-            for(var i = 0; i<numSeat; i++){
-                seats.push(i);
+                var temp = [];
+                for(var j = 0; j<classInfo.layout[i].length; j++){
+                    if(classInfo.layout[i][j]===1){
+                        temp.push(j);
+                    }
+                }
+                seats.push(temp);
             }
             this.setState({
                 seats : seats,
@@ -94,12 +92,13 @@ class StudentSide extends Component{
             </select>
         )
     }
-    MakeSeatOption(){
+    MakeSeatOption(row){
+        var target = this.state.seats[row];
         return(
             <select value={this.state.seat} onChange={this.handleChange("seat")}>
-                {this.state.seats.map(seat=>{
+                {target.map(seat=>{
                     return(
-                        <option value={seat}>{seat+1}</option>
+                        <option value={seat}>{seat}</option>
                     )
                 })}
             </select>
@@ -195,7 +194,7 @@ class StudentSide extends Component{
                         <br/>
                         <label>
                             Seat Number:
-                            {this.MakeSeatOption()}
+                            {this.MakeSeatOption(this.state.row)}
                         </label>
                         <br/>
                         <input type="submit" value="Submit" />

@@ -23,6 +23,7 @@ import Modal from '@material-ui/core/Modal';
 import { Textfit } from 'react-textfit';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
+import Slider from 'react-slick';
 import user from '../images/user_white.png';
 import { AvRepeat } from 'material-ui/svg-icons';
 import Dialog from '@material-ui/core/Dialog';
@@ -942,7 +943,12 @@ class AttendanceCheck extends Component{
     if (!this.state.init) return null;
 
     // console.log(this.Info);
-
+    var settings = {
+      dots: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
     return(
         <body id = 'full2'>
           <Prompt
@@ -965,22 +971,44 @@ class AttendanceCheck extends Component{
                 >
                 <p style={{color:'white'}}>help</p>
                 </Button>
-                <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"NOTICE for customizing SEAT LAYOUT"}</DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>1. DRAG to select the seat, UNSELECT the selected seats by DRAGGING or CLICKING each of them</DialogContentText>
-                                    <div style={{height: "250px", width: "400px"}}>
-                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
-                                    </div>
-                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={this.closeDialog} color="primary">
-                                            OK
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
+                  <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                      <DialogTitle>{"HELP"}</DialogTitle>
+                      <DialogContent style={{overflowX:"hidden"}}>
+                          <Slider {...settings}>
+                              <div>
+                                  <img src={require("../images/check_step_1.gif")}></img>
+                                  <br/>
+                                    You can start attendance check with start button.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_2.gif")}></img>
+                                  <br/>
+                                    You can see real-time attendance on the layout.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_3.gif")}></img>
+                                  <br/>
+                                    You have to finish attendance check when you are done with it.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_4.gif")}></img>
+                                  <br/>
+                                    Your students will check each other after finish.
+                                  <br/>
+                                    Students will report if there's no one on the attended seat.
+                                  <br/>
+                              </div>
+                          </Slider>
+                      </DialogContent>
+                      <DialogActions>
+                          <Button onClick={this.closeDialog} color="primary">
+                              OK
+                          </Button>
+                      </DialogActions>
+                  </Dialog>
               </div>
 
               <h3 id = 'user_id2'>{this.state.username}</h3>

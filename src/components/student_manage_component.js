@@ -380,7 +380,7 @@ class Management extends Component{
                         </div>
                     </div>
                     <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
-                        <h1 style={{marginLeft:"1.5%", marginTop:"0.5%",whiteSpace:"nowrap"}}>Student Management</h1>
+                        <h1 style={{marginLeft:"1.5%", marginTop:"0.5%",whiteSpace:"nowrap", color:"rgb(94, 94, 94)"}}>Student Management</h1>
                         <Grid container spacing={24}>
                             <Grid item xs={4} style={{marginTop:"1%"}}>
                                 <MuiThemeProvider>

@@ -22,7 +22,8 @@ class GradeReport extends Component{
             synch: false,
             firebase : props.Firebase.fb,
             classname: props.match.params.classname,
-            init : false
+            init : false,
+            width : 0
         };
 
         let {match} = this.props;
@@ -64,6 +65,10 @@ class GradeReport extends Component{
             this.setState({
                 students : students,
                 init : true
+            })
+            const width = document.getElementById('full').clientWidth;
+            this.setState({
+                width: width
             })
         })
     }
@@ -145,20 +150,20 @@ class GradeReport extends Component{
                     <div id = 'img_cropper'>
                         <ProfilePop profileImg = {$profileImg} user_name = {this.state.user_name} logout={this.handleLogout}></ProfilePop>
                     </div>
-                    <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
-                        <h3>Back to Class</h3>
+                    <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px", cursor: "pointer"}} onClick={this.handleback}>
+                        <h3>Back to Check</h3>
                     </div>
                     <div id = 'backtoclass' onClick={this.handleback}>
                         <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')} alt=""></img>
                     </div>
                 </div>
-                <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
+                <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%",color: "rgb(94, 94, 94)"}}>
                     <h1 style={{marginLeft:"1.5%",whiteSpace:"nowrap"}}>Grade Report</h1>
                 </div>
-                <div id = 'body2' style={{backgroundColor:"#FFFFFF"}}>
+                <div id = 'body2' style={{backgroundColor:"#FFFFFF", width:this.state.width*0.95, marginLeft: this.state.width*0.025}}>
                     <Table>
                         <TableHead>
-                            <TableRow style={{backgroundColor:"#7eab54"}}>
+                            <TableRow style={{backgroundColor:"#9dd36a"}}>
                                 <TableCell style={{color:"white",fontWeight:"bold",fontSize:"20px"}}>Student ID</TableCell>
                                 <TableCell style={{color:"white",fontWeight:"bold",fontSize:"20px"}}>Name</TableCell>
                                 <TableCell style={{color:"white",fontWeight:"bold",fontSize:"20px"}}>Attendance</TableCell>

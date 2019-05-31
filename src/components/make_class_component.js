@@ -16,6 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
 import ProfilePop from './profilePop.js'
+import Typography from '@material-ui/core/Typography';
 
 import greenplus from "../images/greenplus.png"
 import classex from "../images/classex.png"
@@ -27,6 +28,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const styles = theme => ({
+    typography: {
+        padding: theme.spacing.unit * 2,
+    },
     container: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -93,6 +97,7 @@ class MakeClass extends Component {
         this.handleLogout = this.handleLogout.bind(this);
         this.openDialog = this.openDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
+        this.refresh = this.refresh.bind(this);
 
         let that = this;
         let Seat;
@@ -181,6 +186,10 @@ class MakeClass extends Component {
                 that.setState({user_img: userimgs, synch: true});
             });
         }).then(() => this.setState({ loading: false }));
+    }
+
+    refresh(){
+        window.location.pathname = "TATABOX/class";
     }
     openDialog() {
         this.setState({
@@ -333,7 +342,7 @@ class MakeClass extends Component {
             return (
                 <body id = 'full'>
                     <div id = 'headbar3'>
-                        <h1 id = 'logo'>TATABOX</h1>
+                        <h1 id = 'logo' style={{marginTop:"5px", cursor: "pointer"}} onClick={this.refresh}>TATABOX</h1>
                         <div id = 'menu'>
                             <Button
                                 id = 'menu_button'
@@ -384,7 +393,7 @@ class MakeClass extends Component {
                 <section>
                     <body id = 'full'>
                         <div id = 'headbar3'>
-                            <h1 id = 'logo'>TATABOX</h1>
+                        <h1 id = 'logo' style={{marginTop:"5px", cursor: "pointer"}} onClick={this.refresh}>TATABOX</h1>
                             <div id = 'menu'>
                             <Button
                                 id = 'menu_button'
@@ -435,10 +444,11 @@ class MakeClass extends Component {
                             </Modal>
                             
                         </div>
-                        <Modal visible={this.state.tryDelete} width="350" height="200" effect="fadeInUp" onClickAway={this.closeCaution} >
+                        <Modal visible={this.state.tryDelete} width="350" height="230" effect="fadeInUp" onClickAway={this.closeCaution} >
                             <div style={{textAlign:'center', marginTop:'20px'}}>
-                                    <p>Are you sure to delete class?</p>
-                                    <p>You Cannot restore deleted class.</p>
+                                    <img src={require('../images/garbage.png')} style={{width:'30px',heigth:'auto'}}/>
+                                    <Typography className={classes.typography}>Are you sure to delete class?</Typography>
+                                    <Typography className={classes.typography}>You cannot restore deleted class.</Typography>
                                     <Button variant="contained" onClick={this.delete} color="secondary" className={classes.margin}>Delete</Button>
                                     <Button variant="contained" onClick={this.closeCaution} color="primary" className={classes.margin} > Cancel</Button>
                             </div>

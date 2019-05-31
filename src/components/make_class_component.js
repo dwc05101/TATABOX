@@ -253,20 +253,14 @@ class MakeClass extends Component {
         //TODO
         let lst = this.state.classlst;
         let index = this.state.deleteindex;
-        console.log(`delete index`,index);
-        console.log(`before delete`,lst);
         lst.splice(index,1);
-        console.log(`after delete`,lst);
-
         let newstring = JSON.stringify(lst);
-        console.log(`newstring`,newstring);
         //user info update
         
         var updates = {};
         updates['/AUTH/' + this.state.userID+'/clas'] = newstring;
         this.firebase.database().ref().update(updates);
         let selected = this.state.datas[index];
-        console.log(`classuid`, selected.key);
         this.firebase.database().ref('/classInfo/'+selected.key).remove();
         window.location.pathname = "TATABOX/class";
         

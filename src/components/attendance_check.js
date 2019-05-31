@@ -31,6 +31,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
+import ProfilePop from './profilePop.js'
 
 import ReactDOM from 'react-dom';
 import MSL_example from "../images/MSL_example.gif"
@@ -73,6 +74,9 @@ const styles = theme => ({
   absentTab: {
     fontSize: "24px",
     fontWeight: "bold"
+  },
+  margin: {
+    margin: theme.spacing.unit,
   },
 });
 
@@ -428,6 +432,7 @@ class NavTabs extends React.Component {
                     <text style = {{color: "gray", fontWeight: "light", marginBottom:"20px", fontSize: "15px"}}> {this.reportInfo[this.state.reportedmodalIndex][3]}</text>
                     <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][1]}</text>
                     <text style = {{color: "blue", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][2]}</text>
+                    <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.reportInfo[this.state.reportedmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
               </div>
@@ -444,6 +449,7 @@ class NavTabs extends React.Component {
                     <text style = {{fontSize: "30px"}}>Absent</text>
                     <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.absentInfo[this.state.absentmodalIndex][0]} {this.absentInfo[this.state.absentmodalIndex][1]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.absentInfo[this.state.absentmodalIndex][2]}</text>
+                    <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.absentInfo[this.state.absentmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
               </div>
@@ -460,6 +466,7 @@ class NavTabs extends React.Component {
                     <text style = {{fontSize: "30px"}}>Attend</text>
                     <text style = {{color: "black", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.attendInfo[this.state.attendmodalIndex][2]}</text>
+                    <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.attendInfo[this.state.attendmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
               </div>
@@ -550,8 +557,11 @@ class AttendanceCheck extends Component{
     this.openattendModal = this.openattendModal.bind(this);
     this.closeattendModal = this.closeattendModal.bind(this);
     this.handClick = this.handClick.bind(this);
+    this.gotoManagement = this.gotoManagement.bind(this);
+    this.gotoEdit = this.gotoEdit.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
-    this.gotoManagement = this.gotoManagement.bind(this)
+    this.handleLogout = this.handleLogout.bind(this);
+
     let {match} = this.props;
 
     this.firebaseO = this.props.Firebase;
@@ -756,6 +766,10 @@ class AttendanceCheck extends Component{
     });
   }
 
+  handleLogout() {
+    this.firebase.auth().signOut();
+  }
+
   handleTimerClick(e){
     if(e.target.innerText === "RESET"){
       if(!started){
@@ -868,6 +882,15 @@ class AttendanceCheck extends Component{
     window.location.pathname="TATABOX/class"
   }
 
+  gotoEdit(str){
+    let classname_ = this.state.classname;
+    let lst = str.split(' ');
+    let sid = lst[0];
+    //window.location.pathname="TATABOX/management/" + classname_ + "/" + sid
+    window.open(window.location.origin + "/TATABOX/management/" + classname_ + "/" + sid, '_blank', 'toolbar=0,location=0,menubar=0');
+    //window.open('newPageUrl', "_blank")
+  }
+
   componentDidUpdate(){
     if(!done){
       window.onbeforeunload = () => {
@@ -910,7 +933,7 @@ class AttendanceCheck extends Component{
   }
 
   render() {
-
+    const { classes } = this.props;
 
     let {match} = this.props;
 
@@ -983,10 +1006,8 @@ class AttendanceCheck extends Component{
                                 </Dialog>
               </div>
 
-              <h3 id = 'user_id2'>{this.state.username}</h3>
-
-              <div id = 'img-container'>
-                {$profileImg}
+              <div id = 'img_cropper'>
+                <ProfilePop profileImg = {$profileImg} user_name = {this.state.username} logout={this.handleLogout}></ProfilePop>
               </div>
               
             </div>
@@ -1025,6 +1046,7 @@ class AttendanceCheck extends Component{
                         <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')}></img>
                         <br/>
                         <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
+                        <Button variant="contained" onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
                       </div>
                     </div>
                   </div>
@@ -1042,13 +1064,14 @@ class AttendanceCheck extends Component{
                         <text style = {{color: "gray", fontWeight: "light", marginBottom:"15px", fontSize: "15px"}}> {this.Info[(this.state.hindex) + "-" + (this.state.windex)][2]}</text>
                         <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][3]}</text>
                         <text style = {{color: "blue", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
+                        <Button variant="contained" onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
                       </div>
                     </div>
                   </div>
                 </Modal>
               </div>
               <div id = "report-tab">
-                <NavTabs styles = {{height: "100%"}} timerstate = {this.state.timerstate} donestate = {this.state.checkDone} attendList = {this.state.attendlist} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist} seatList = {this.state.seatlist} ></NavTabs>
+                <NavTabs styles = {{height: "100%"}} timerstate = {this.state.timerstate} donestate = {this.state.checkDone} attendList = {this.state.attendlist} reportedList = {this.state.reportedlist} absentList = {this.state.absentlist} seatList = {this.state.seatlist} gotoEdit ={this.gotoEdit} ></NavTabs>
               </div>
             </div>
         </body>

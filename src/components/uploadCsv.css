@@ -51,6 +51,7 @@
 }
 #csv_name{
     width:200px;
+    text-align: center;
     display: inline-block;
 }
 #about_img{

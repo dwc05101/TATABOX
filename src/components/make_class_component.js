@@ -23,6 +23,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
+import Popover from '@material-ui/core/Popover';
+import ProfilePop from './profilePop.js'
 
 import ReactDOM from 'react-dom';
 import MSL_example from "../images/MSL_example.gif"
@@ -190,9 +192,7 @@ class MakeClass extends Component {
                 that.setState({user_img: userimgs, synch: true});
             });
         }).then(() => this.setState({ loading: false }));
-        
     }
-
     openDialog() {
         this.setState({
             dialogOn: true
@@ -376,10 +376,9 @@ class MakeClass extends Component {
                                     </DialogActions>
                                 </Dialog>
                         </div>
-                        <h3 id = 'userid'>{this.state.user_name}</h3>
                         <div id = 'img_cropper'>
-                            {$profileImg}
-                        </div>
+                                <ProfilePop profileImg = {$profileImg} user_name = {this.state.user_name} logout={this.handleLogout}></ProfilePop>
+                            </div>
                     </div>
                     <div id = 'makeclass' style={{backgroundColor:"#e5e5e5"}}>
                         <p id = 'clicktext1'>
@@ -434,10 +433,10 @@ class MakeClass extends Component {
                                     </DialogActions>
                                 </Dialog>
                             </div>
-                            <h3 id = 'userid'>{this.state.user_name}</h3>
                             <div id = 'img_cropper'>
-                            {$profileImg}
+                                <ProfilePop profileImg = {$profileImg} user_name = {this.state.user_name} logout={this.handleLogout}></ProfilePop>
                             </div>
+                            
                         </div>
                         
                         <div id = 'makeclass2'style={{backgroundColor:"#e5e5e5",height:"88vh"}}>

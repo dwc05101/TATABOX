@@ -420,7 +420,7 @@ class OutlinedTextFields extends React.Component {
       let that = this;
       let bool;
       //There is blank.
-      if(that.state.code=='' || that.state.name=='' || that.state.prof=='' || that.state.bd=='' || that.state.room==''){
+      if(that.state.code=='' || that.state.name=='' || that.state.prof=='' || that.state.bd=='' || that.state.room=='' || that.state.Seats.length==0){
         that.setState({error:true,message:'You have to enter all information.',test:true})
       }
       else{
@@ -578,11 +578,10 @@ class OutlinedTextFields extends React.Component {
                   margin="normal"
                   variant="outlined"
                 />
+                </div>
                 { this.state.error ? (
                   <p style={{color:'red', fontSize:'20px'}}>{this.state.message}</p>
                 ) : null }
-                </div>
-                
               </form>
             </div>
             <div id = "seatbox" >

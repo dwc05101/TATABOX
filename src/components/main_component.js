@@ -8,8 +8,6 @@ import firebase from '@firebase/app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { green, red } from '@material-ui/core/colors'
 import loading from "../images/loading.gif"
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 
 const theme = createMuiTheme({
     palette: {
@@ -56,23 +54,23 @@ class Main extends Component{
     handleSignup = e =>{
         let that = this;
 
-        if(that.state.sign_up_id == ""){
+        if(that.state.sign_up_id === ""){
             alert("invaild id!");
             return;
         }
-        if(that.state.sign_up_pw == ""){
+        if(that.state.sign_up_pw === ""){
             alert("invaild pw!");
             return;
         }
-        if(that.state.sign_up_name == ""){
+        if(that.state.sign_up_name === ""){
             alert("invaild name!");
             return;
         }
-        if(that.state.sign_up_school == ""){
+        if(that.state.sign_up_school === ""){
             alert("invaild school!");
             return;
         }
-        if(that.state.sign_up_dept == ""){
+        if(that.state.sign_up_dept === ""){
             alert("invaild dept!");
             return;
         }
@@ -82,7 +80,7 @@ class Main extends Component{
         })
 
         if(that.state.selectedFile === ""){
-            var user = that.firebaseO.createUser(that.state.sign_up_id,
+            that.firebaseO.createUser(that.state.sign_up_id,
                 that.state.sign_up_pw,
                 that.state.sign_up_name,
                 that.state.sign_up_school,
@@ -114,6 +112,7 @@ class Main extends Component{
                         case firebase.storage.TaskState.RUNNING:
                             console.log('Upload is running');
                             break;
+                        default:
                     }
                 }, function(error) {
                     switch (error.code) {
@@ -123,6 +122,7 @@ class Main extends Component{
                             break;
                         case 'storage/unknown':
                             break;
+                        default:
                     }
                 }, function() {
                     uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
@@ -136,7 +136,7 @@ class Main extends Component{
                         }).then(function() {
                             console.log('last');
                             if (that.state.synch) {
-                                var user = that.firebaseO.createUser(that.state.sign_up_id,
+                                that.firebaseO.createUser(that.state.sign_up_id,
                                     that.state.sign_up_pw,
                                     that.state.sign_up_name,
                                     that.state.sign_up_school,
@@ -146,11 +146,11 @@ class Main extends Component{
                         })
                     })
                 })
-            if (that.state.sign_up_id == "" ||
-                that.state.sign_up_dept == "" ||
-                that.state.sign_up_pw == "" ||
-                that.state.sign_up_name == "" ||
-                that.state.sign_up_school == ""){
+            if (that.state.sign_up_id === "" ||
+                that.state.sign_up_dept === "" ||
+                that.state.sign_up_pw === "" ||
+                that.state.sign_up_name === "" ||
+                that.state.sign_up_school === ""){
                 uploadTask.cancel();
             }
             resolve()
@@ -183,14 +183,14 @@ class Main extends Component{
 
     signUpKeyPress(event) {
         var code = event.keyCode || event.which;
-        if (code == 13) {
+        if (code === 13) {
             this.handleSignup()
         }
     }
 
     signInKeyPress(event) {
         var code = event.keyCode || event.which;
-        if (code == 13) {
+        if (code === 13) {
             this.onSubmit()
         }
     }
@@ -226,7 +226,7 @@ class Main extends Component{
       let {imgPreviewUrl} = this.state;
       let $imgPreview = null;
       if (imgPreviewUrl) {
-        $imgPreview = (<img src={imgPreviewUrl} style={{borderRadius: "50%"}}/>);
+        $imgPreview = (<img src={imgPreviewUrl} style={{borderRadius: "50%"}} alt=""/>);
       } else {
         $imgPreview = (<img src={user} alt="user"/>);
       }

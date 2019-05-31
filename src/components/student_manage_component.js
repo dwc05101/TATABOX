@@ -113,7 +113,7 @@ class Management extends Component{
                 width: width
             })
         }).then(() => {
-            if (this.state.width == 0) {
+            if (this.state.width === 0) {
                 this.setState({
                     init : false,
                 })
@@ -297,9 +297,9 @@ class Management extends Component{
 
         let $profileImg = null;
         if (this.state.synch) {
-            $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+            $profileImg = (<img src={this.state.user_img} id = 'user_img' alt=""/>);
         } else {
-            $profileImg = (<img src={user} id = 'user_img'/>);
+            $profileImg = (<img src={user} id = 'user_img' alt=""/>);
         }
 
         var disabled = true
@@ -337,25 +337,25 @@ class Management extends Component{
                                 <DialogContent style={{overflowX:"hidden"}}>
                                     <Slider {...settings}>
                                         <div>
-                                            <img src={require("../images/std_step_0.gif")}></img>
+                                            <img src={require("../images/std_step_0.gif")} alt=""></img>
                                             <br/>
                                             You can see students' overall attendance here.
                                             <br/>
                                         </div>
                                         <div>
-                                            <img src={require("../images/std_step_1.gif")}></img>
+                                            <img src={require("../images/std_step_1.gif")} alt=""></img>
                                             <br/>
                                             You can see detailed information when you click on each student.
                                             <br/>
                                         </div>
                                         <div>
-                                            <img src={require("../images/std_step_2.gif")}></img>
+                                            <img src={require("../images/std_step_2.gif")} alt=""></img>
                                             <br/>
                                             You can edit student's attendance.
                                             <br/>
                                         </div>
                                         <div>
-                                            <img src={require("../images/std_step_3.gif")}></img>
+                                            <img src={require("../images/std_step_3.gif")} alt=""></img>
                                             <br/>
                                             You can search & delete students.
                                             <br/>
@@ -376,7 +376,7 @@ class Management extends Component{
                             <h3>Back to Class</h3>
                         </div>
                         <div id = 'backtoclass' onClick={this.handleback}>
-                            <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>
+                            <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')} alt=""></img>
                         </div>
                     </div>
                     <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>
@@ -397,7 +397,7 @@ class Management extends Component{
                                 </MuiThemeProvider>
                             </Grid>
                             <Grid item style={{marginTop:"1%"}} xs={3}>
-                                <img style={{width:"auto", height:"40px",paddingTop:"2%",marginLeft:"10%"}} src = {require("../images/color_explanation.png")}/>
+                                <img style={{width:"auto", height:"40px",paddingTop:"2%",marginLeft:"10%"}} src = {require("../images/color_explanation.png")} alt=""/>
                             </Grid>
                             <Grid item style={{marginTop:"1%"}} xs={2}>
                                 <Button variant="contained" disabled={disabled} color="secondary" style={{marginLeft:"75%"}}

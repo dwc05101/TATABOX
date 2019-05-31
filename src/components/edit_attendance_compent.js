@@ -13,7 +13,6 @@ import user from '../images/user_white.png';
 import default_user from "../images/user.png";
 
 import './make_class_component.css';
-import { isFlowBaseAnnotation } from '@babel/types';
 
 var ReactGridLayout = require('react-grid-layout');
 
@@ -338,15 +337,15 @@ class EditAttendance extends Component{
         let $profileImg = null;
 
         if (this.state.synch) {;
-            $profile = (<img style={{borderRadius: "50%"}} src={this.state.user_img} id = 'user_img' />);
+            $profile = (<img style={{borderRadius: "50%"}} src={this.state.user_img} id = 'user_img' alt="" />);
         } else {
-            $profile = (<img style={{borderRadius: "50%"}} src={user} id = 'user_img'/>);
+            $profile = (<img style={{borderRadius: "50%"}} src={user} id = 'user_img' alt=""/>);
         }
         
 
-        if (this.state.width != 0) {
+        if (this.state.width !== 0) {
             var imgSize = this.state.width * 0.12;
-            $profileImg = (<img style={{width: imgSize, height: imgSize, borderRadius: "50%"}} src={this.state.profile_img}/>);
+            $profileImg = (<img style={{width: imgSize, height: imgSize, borderRadius: "50%"}} src={this.state.profile_img} alt=""/>);
         }    
 
 
@@ -369,6 +368,7 @@ class EditAttendance extends Component{
                         <img
                             id = "menu-img"
                             src = {require('../images/menu.png')}
+                            alt=""
                         >
                         </img>
                         </Button>
@@ -381,7 +381,7 @@ class EditAttendance extends Component{
                         <h3>Back to Class</h3>
                     </div>
                     <div id = 'backtoclass' onClick={this.handleback}>
-                        <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>
+                        <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')} alt=""></img>
                     </div>
                 </div>
                 <div id = 'body' style={{position:"relative",display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>

@@ -16,6 +16,7 @@ import Modal from '@material-ui/core/Modal';
 import { Textfit } from 'react-textfit';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
+import Slider from 'react-slick';
 import user from '../images/user_white.png';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -271,7 +272,7 @@ class NavTabs extends React.Component {
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[i]}</text>
               <br/>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; reported by &nbsp; </text>
-              <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[i]}</text>
+              <text style = {{pointerEvents: "none", color: "black", fontSize: "20px"}}>{Object.values(reportedStudents)[i]}</text>
             </Textfit>
           </div>
         )
@@ -284,7 +285,7 @@ class NavTabs extends React.Component {
             <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; No Reported Student &nbsp; </text>
-              <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
+              <text style = {{pointerEvents: "none", color: "black", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
             </Textfit>
           </div>
         )
@@ -346,7 +347,7 @@ class NavTabs extends React.Component {
         <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
           <text style = {{pointerEvents: "none"}}></text>
           <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
-          <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}></text>
+          <text style = {{pointerEvents: "none", color: "black", fontSize: "20px"}}></text>
         </Textfit>
       </div>
     )
@@ -420,7 +421,8 @@ class NavTabs extends React.Component {
                     <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][0]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginBottom:"20px", fontSize: "15px"}}> {this.reportInfo[this.state.reportedmodalIndex][3]}</text>
                     <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][1]}</text>
-                    <text style = {{color: "blue", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][2]}</text>
+                    <text style = {{color: "black", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][2]}</text>
+                    <br/>
                     <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.reportInfo[this.state.reportedmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
@@ -438,13 +440,14 @@ class NavTabs extends React.Component {
                     <text style = {{fontSize: "30px"}}>Absent</text>
                     <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.absentInfo[this.state.absentmodalIndex][0]} {this.absentInfo[this.state.absentmodalIndex][1]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.absentInfo[this.state.absentmodalIndex][2]}</text>
+                    <br/>
                     <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.absentInfo[this.state.absentmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
               </div>
             </Modal>
             <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
-              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c4ddac", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c5e1a5", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closeattendModal} style = {{top: "0"}}>
                       <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
@@ -453,8 +456,9 @@ class NavTabs extends React.Component {
                     <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')} alt=""></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Attend</text>
-                    <text style = {{color: "black", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>
+                    <text style = {{color: "#7cb342", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.attendInfo[this.state.attendmodalIndex][2]}</text>
+                    <br/>
                     <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.attendInfo[this.state.attendmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
@@ -709,7 +713,7 @@ class AttendanceCheck extends Component{
                     // var student = student;
                     if(square !== null){
                       if(today.attend === "attend"){
-                        square.style.backgroundColor = "green";
+                        square.style.backgroundColor = "#c4ddac";
                         square.onclick = that.openattendModal;
                         
                         that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,`${student.sid} ${student.name}(${alphabet[today.row]}${today.seat})`,0,0,0,0];
@@ -943,7 +947,12 @@ class AttendanceCheck extends Component{
     if (!this.state.init) return null;
 
     // console.log(this.Info);
-
+    var settings = {
+      dots: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
     return(
         <body id = 'full2'>
           <Prompt
@@ -966,22 +975,44 @@ class AttendanceCheck extends Component{
                 >
                 <p style={{color:'white'}}>help</p>
                 </Button>
-                <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"To make and manage your own CLASS"}</DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>1. MAKE new class by CLICKING the green + button </DialogContentText>
-                                    <div style={{height: "250px", width: "400px"}}>
-                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
-                                    </div>
-                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={this.closeDialog} color="primary">
-                                            OK
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
+                  <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                      <DialogTitle>{"HELP"}</DialogTitle>
+                      <DialogContent style={{overflowX:"hidden"}}>
+                          <Slider {...settings}>
+                              <div>
+                                  <img src={require("../images/check_step_1.gif")}></img>
+                                  <br/>
+                                    You can start attendance check with start button.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_2.gif")}></img>
+                                  <br/>
+                                    You can see real-time attendance on the layout.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_3.gif")}></img>
+                                  <br/>
+                                    You have to finish attendance check when you are done with it.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_4.gif")}></img>
+                                  <br/>
+                                    Your students will check each other after finish.
+                                  <br/>
+                                    Students will report if there's no one on the attended seat.
+                                  <br/>
+                              </div>
+                          </Slider>
+                      </DialogContent>
+                      <DialogActions>
+                          <Button onClick={this.closeDialog} color="primary">
+                              OK
+                          </Button>
+                      </DialogActions>
+                  </Dialog>
               </div>
 
               <div id = 'img_cropper'>
@@ -1015,7 +1046,7 @@ class AttendanceCheck extends Component{
                   </Button>
                 </div>
                 <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
-                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c4ddac", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                       <div onClick={this.closeattendModal} style = {{top: "0"}}>
                           <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
@@ -1023,8 +1054,9 @@ class AttendanceCheck extends Component{
                       <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                         <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')} alt=""></img>
                         <br/>
-                        <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
-                        <Button variant="contained" onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
+                        <text style = {{color: "#7cb342", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
+                        <br/>
+                        <Button variant="contained" style={{backgroundColor: "white"}} onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
                       </div>
                     </div>
                   </div>
@@ -1041,8 +1073,9 @@ class AttendanceCheck extends Component{
                         <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
                         <text style = {{color: "gray", fontWeight: "light", marginBottom:"15px", fontSize: "15px"}}> {this.Info[(this.state.hindex) + "-" + (this.state.windex)][2]}</text>
                         <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][3]}</text>
-                        <text style = {{color: "blue", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
-                        <Button variant="contained" onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
+                        <text style = {{color: "black", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
+                        <br/>
+                        <Button variant="contained" style={{backgroundColor: "white"}} onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
                       </div>
                     </div>
                   </div>

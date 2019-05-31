@@ -565,11 +565,10 @@ class OutlinedTextFields extends React.Component {
                   margin="normal"
                   variant="outlined"
                 />
+                </div>
                 { this.state.error ? (
                   <p style={{color:'red', fontSize:'20px'}}>{this.state.message}</p>
                 ) : null }
-                </div>
-                
               </form>
             </div>
             <div id = "seatbox" >

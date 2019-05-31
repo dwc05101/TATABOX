@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import {Prompt} from 'react-router-dom';
 import './attendance_check.css';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
 /*----------------------for tabs-----------------------*/
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
@@ -23,8 +16,8 @@ import Modal from '@material-ui/core/Modal';
 import { Textfit } from 'react-textfit';
 /*----------------------for tabs-----------------------*/
 import Timer from './timer/index';
+import Slider from 'react-slick';
 import user from '../images/user_white.png';
-import { AvRepeat } from 'material-ui/svg-icons';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -33,7 +26,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
 import ProfilePop from './profilePop.js'
 
-import ReactDOM from 'react-dom';
 import MSL_example from "../images/MSL_example.gif"
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
@@ -157,9 +149,7 @@ class NavTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
-      reported: '',
-      absent: '',
+      value:0,
       loading: '',
       reportedmodalOn: false,
       absentmodalOn: false,
@@ -230,7 +220,7 @@ class NavTabs extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState){
-    if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
+    if(JSON.stringify(nextProps) !== JSON.stringify(this.props)){
 
       var reportedMap = {};
       var absentMap = [];
@@ -247,7 +237,7 @@ class NavTabs extends React.Component {
         let reporterName;
 
         for (var i=0;i<seatList.length;i++) {
-          if (seatList[i].sid == reporterId) {
+          if (seatList[i].sid === reporterId) {
             reporterName = seatList[i].name
           }
         }
@@ -282,7 +272,7 @@ class NavTabs extends React.Component {
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[i]}</text>
               <br/>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; reported by &nbsp; </text>
-              <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[i]}</text>
+              <text style = {{pointerEvents: "none", color: "black", fontSize: "20px"}}>{Object.values(reportedStudents)[i]}</text>
             </Textfit>
           </div>
         )
@@ -295,7 +285,7 @@ class NavTabs extends React.Component {
             <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
               <text style = {{pointerEvents: "none"}}>{Object.keys(reportedStudents)[0]}</text>
               <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; No Reported Student &nbsp; </text>
-              <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
+              <text style = {{pointerEvents: "none", color: "black", fontSize: "20px"}}>{Object.values(reportedStudents)[0]}</text>
             </Textfit>
           </div>
         )
@@ -357,7 +347,7 @@ class NavTabs extends React.Component {
         <Textfit style = {{pointerEvents: "none"}} mode="single" forceSingleModeWidth={false}>
           <text style = {{pointerEvents: "none"}}></text>
           <text style = {{pointerEvents: "none", color: "gray", fontWeight: "lighter", fontSize: "16px"}}>&nbsp; Not Yet Started &nbsp; </text>
-          <text style = {{pointerEvents: "none", color: "blue", fontSize: "20px"}}></text>
+          <text style = {{pointerEvents: "none", color: "black", fontSize: "20px"}}></text>
         </Textfit>
       </div>
     )
@@ -423,15 +413,16 @@ class NavTabs extends React.Component {
               <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "400px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "480px", height: "380px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closereportedModal} style = {{top: "0"}}>
-                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
                   </div>
                   <div style = {{width: "480px", height: "320px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
+                    <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')} alt=""></img>
                     <br/>
                     <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][0]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginBottom:"20px", fontSize: "15px"}}> {this.reportInfo[this.state.reportedmodalIndex][3]}</text>
                     <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][1]}</text>
-                    <text style = {{color: "blue", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][2]}</text>
+                    <text style = {{color: "black", fontSize: "30px"}}>{this.reportInfo[this.state.reportedmodalIndex][2]}</text>
+                    <br/>
                     <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.reportInfo[this.state.reportedmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
@@ -441,31 +432,33 @@ class NavTabs extends React.Component {
               <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#9e9e9e", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closeabsentModal} style = {{top: "0"}}>
-                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
                   </div>
                   <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
+                    <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')} alt=""></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Absent</text>
                     <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.absentInfo[this.state.absentmodalIndex][0]} {this.absentInfo[this.state.absentmodalIndex][1]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.absentInfo[this.state.absentmodalIndex][2]}</text>
+                    <br/>
                     <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.absentInfo[this.state.absentmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
               </div>
             </Modal>
             <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
-              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c4ddac", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+              <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c5e1a5", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                   <div onClick={this.closeattendModal} style = {{top: "0"}}>
-                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                      <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
                   </div>
                   <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')}></img>
+                    <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')} alt=""></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Attend</text>
-                    <text style = {{color: "black", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>
+                    <text style = {{color: "#7cb342", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>
                     <text style = {{color: "gray", fontWeight: "light", marginTop:"10px", fontSize: "15px"}}>{this.attendInfo[this.state.attendmodalIndex][2]}</text>
+                    <br/>
                     <Button variant="contained" color="primary" onClick={()=>this.props.gotoEdit(this.attendInfo[this.state.attendmodalIndex][0])}>edit</Button>
                   </div>
                 </div>
@@ -514,21 +507,13 @@ class AttendanceCheck extends Component{
     globalDate = date;
     var link = "https://dwc05101.github.io/TATABOX/student/"+props.match.params.classname+"/"+date;
     this.state = {
-        visible : false,
         init : false,
         synch: false,
         checkDone : false,
         open: false,
-        code: '',
-        name: '',
-        prof: '',
-        bd: '',
-        room: '',
         username: '...',
         userID: '',
         user_img: user,
-        absent: '',
-        reported: '',
         classname: props.match.params.classname,
         date : date,
         link : link,
@@ -728,7 +713,7 @@ class AttendanceCheck extends Component{
                     // var student = student;
                     if(square !== null){
                       if(today.attend === "attend"){
-                        square.style.backgroundColor = "green";
+                        square.style.backgroundColor = "#c4ddac";
                         square.onclick = that.openattendModal;
                         
                         that.Info[(today.row)+ "-" +(today.seat)] = ["a" ,`${student.sid} ${student.name}(${alphabet[today.row]}${today.seat})`,0,0,0,0];
@@ -739,7 +724,7 @@ class AttendanceCheck extends Component{
                         let reporterName;
 
                         for (var i=0;i<seatList.length;i++) {
-                          if (seatList[i].sid == reporterId) {
+                          if (seatList[i].sid === reporterId) {
                             reporterName = seatList[i].name;
                           }
                         }
@@ -902,7 +887,6 @@ class AttendanceCheck extends Component{
   }
 
   onConfirm(){
-    let that = this;
     if(window.confirm("You CANNOT CHECK ATTENDACNE after confirm. Are you sure to confirm today's attendance check?")){
       done = true;
       this.setState({checkDone: "true"});
@@ -933,18 +917,16 @@ class AttendanceCheck extends Component{
   }
 
   render() {
-    const { classes } = this.props;
 
     let {match} = this.props;
 
     let $profileImg = null;
     if (this.state.synch) {
-        $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+        $profileImg = (<img src={this.state.user_img} id = 'user_img' alt=""/>);
     } else {
-        $profileImg = (<img src={user} id = 'user_img'/>);
+        $profileImg = (<img src={user} id = 'user_img' alt=""/>);
     }
 
-    let that = this;
 
     document.documentElement.style.setProperty('--seat-size', this.state.seat_size);
 
@@ -965,7 +947,12 @@ class AttendanceCheck extends Component{
     if (!this.state.init) return null;
 
     // console.log(this.Info);
-
+    var settings = {
+      dots: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
     return(
         <body id = 'full2'>
           <Prompt
@@ -988,22 +975,44 @@ class AttendanceCheck extends Component{
                 >
                 <p style={{color:'white'}}>help</p>
                 </Button>
-                <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
-                                    <DialogTitle>{"To make and manage your own CLASS"}</DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>1. MAKE new class by CLICKING the green + button </DialogContentText>
-                                    <div style={{height: "250px", width: "400px"}}>
-                                        <img src={MSL_example} style={{width: "100%", height: "inherit"}} alt=""/>
-                                    </div>
-                                    <DialogContentText>2. After finished customizing, press SAVE button to save. You can get TRIMMED version of your SEAT LAYOUT</DialogContentText>
-                                    <DialogContentText>3. You can see this window again if you click the HELP button at the lefttop side of this page</DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={this.closeDialog} color="primary">
-                                            OK
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
+                  <Dialog TransitionComponent={Transition} open={this.state.dialogOn} onClose={this.closeDialog}>
+                      <DialogTitle>{"HELP"}</DialogTitle>
+                      <DialogContent style={{overflowX:"hidden"}}>
+                          <Slider {...settings}>
+                              <div>
+                                  <img src={require("../images/check_step_1.gif")}></img>
+                                  <br/>
+                                    You can start attendance check with start button.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_2.gif")}></img>
+                                  <br/>
+                                    You can see real-time attendance on the layout.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_3.gif")}></img>
+                                  <br/>
+                                    You have to finish attendance check when you are done with it.
+                                  <br/>
+                              </div>
+                              <div>
+                                  <img src={require("../images/check_step_4.gif")}></img>
+                                  <br/>
+                                    Your students will check each other after finish.
+                                  <br/>
+                                    Students will report if there's no one on the attended seat.
+                                  <br/>
+                              </div>
+                          </Slider>
+                      </DialogContent>
+                      <DialogActions>
+                          <Button onClick={this.closeDialog} color="primary">
+                              OK
+                          </Button>
+                      </DialogActions>
+                  </Dialog>
               </div>
 
               <div id = 'img_cropper'>
@@ -1037,16 +1046,17 @@ class AttendanceCheck extends Component{
                   </Button>
                 </div>
                 <Modal open={this.state.attendmodalOn} onClose={this.closeattendModal}>
-                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "green", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                  <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "300px", backgroundColor: "#c4ddac", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <div style={{width: "480px", height: "280px", backgroundColor: "white", borderRadius: "10px"}}>
                       <div onClick={this.closeattendModal} style = {{top: "0"}}>
-                          <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                          <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
                       </div>
                       <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                        <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')}></img>
+                        <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')} alt=""></img>
                         <br/>
-                        <text style = {{color: "blue", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
-                        <Button variant="contained" onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
+                        <text style = {{color: "#7cb342", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
+                        <br/>
+                        <Button variant="contained" style={{backgroundColor: "white"}} onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
                       </div>
                     </div>
                   </div>
@@ -1055,16 +1065,17 @@ class AttendanceCheck extends Component{
                   <div style={{position: "absolute", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", width: "500px", height: "400px", backgroundColor: "#ef9a9a", outline: "none", borderRadius: "10px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <div style={{width: "480px", height: "380px", backgroundColor: "white", borderRadius: "10px"}}>
                       <div onClick={this.closereportedModal} style = {{top: "0"}}>
-                          <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')}></img>
+                          <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
                       </div>
                       <div style = {{width: "480px", height: "320px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                        <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')}></img>
+                        <img style={{width:"40px", height:"40px"}} src = {require('../images/reported.png')} alt=""></img>
                         <br/>
                         <text style = {{color: "red", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][1]}</text>
                         <text style = {{color: "gray", fontWeight: "light", marginBottom:"15px", fontSize: "15px"}}> {this.Info[(this.state.hindex) + "-" + (this.state.windex)][2]}</text>
                         <text style = {{color: "gray", fontWeight: "lighter", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][3]}</text>
-                        <text style = {{color: "blue", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
-                        <Button variant="contained" onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
+                        <text style = {{color: "black", fontWeight: "bold", fontSize: "30px"}}>{this.Info[(this.state.hindex) + "-" + (this.state.windex)][4]}</text>
+                        <br/>
+                        <Button variant="contained" style={{backgroundColor: "white"}} onClick={()=>this.gotoEdit(this.Info[(this.state.hindex) + "-" + (this.state.windex)][1])}>edit</Button>
                       </div>
                     </div>
                   </div>

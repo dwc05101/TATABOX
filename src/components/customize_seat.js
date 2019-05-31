@@ -47,7 +47,7 @@ function trimData(array) {
 
     for (var i=0;i<rowNumber;i++) {
         for (var j=0;j<colNumber;j++) {
-            if (array[i][j] == 1) {
+            if (array[i][j] === 1) {
                 fullrowList.push(i)
                 fullcolList.push(j)
             }
@@ -62,9 +62,9 @@ function trimData(array) {
     let width = right - left;
 
     let fullArray = [];
-    for (var i=0;i<height+1;i++) {
+    for ( i=0;i<height+1;i++) {
         let subArray = [];
-        for (var j=0;j<width+1;j++) {
+        for ( j=0;j<width+1;j++) {
             subArray.push(array[top+i][left+j])
         }
         fullArray.push(subArray)
@@ -114,12 +114,12 @@ class Custom extends Component{
             });
         }).then(function() {
             that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim/').once('value').then(function(snapshot) {
-                if (snapshot.val() != null) {
+                if (snapshot.val() !== null) {
                     let seatWOtrim = snapshot.val().seatWOtrim
                 
                     for (var i=0;i<20;i++) {
                         for (var j=0;j<30;j++) {
-                            if (seatWOtrim[i][j] == 1) {
+                            if (seatWOtrim[i][j] === 1) {
                                 that.selectedChildren[30*i+j] = 1;
                             }
                         }
@@ -129,13 +129,12 @@ class Custom extends Component{
                 that.startPoint = {};
                 that.endPoint = {};
                 that.selectionBox = {};
-                if (that.selectedChildren != {}) {
+                if (that.selectedChildren !== {}) {
                     that.setState({ loading: "true"})
                     setTimeout(
                         function() {
                             that.setState({dialogOn: false});
-                        }
-                        .bind(that),
+                        },
                         7000
                     );
                 }
@@ -254,7 +253,7 @@ class Custom extends Component{
                     height: tmpNode.clientHeight
                 };
                 if (that.boxIntersects(selectionBox, tmpBox)) {
-                    if (that.selectedChildren[key] == 1){
+                    if (that.selectedChildren[key] === 1){
                         delete that.selectedChildren[key]
                     } else {
                         that.selectedChildren[key] = 1;

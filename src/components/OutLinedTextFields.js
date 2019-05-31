@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import Select from 'react-select';
-import Typography from '@material-ui/core/Typography';
 import './step_component.css';
 import user from '../images/user_white.png';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import {purple} from '@material-ui/core/colors'
-import students from '../data/student_pairs';
 import UploadCsv from './uploadCsv.js'
 import firebase from '@firebase/app';
 
@@ -73,9 +69,6 @@ const buildings = [
   },
 ];
 
-const values = ({
-  bd: 'E11'
-})
 
 const initialState = {
   code: '',
@@ -199,7 +192,7 @@ class OutlinedTextFields extends React.Component {
           }
         }
 
-        for(var i = 1; i< seat_size; i++){
+        for( i = 1; i< seat_size; i++){
           if(i >= that.indenth && i<that.indenth+h){
             that.state.Seats.push(
               <div class = "alphabet-seat" >{String.fromCharCode(64+i-that.indenth+1)}</div>
@@ -279,13 +272,13 @@ class OutlinedTextFields extends React.Component {
   };
 
   roomchange = event => {
-    if (this.state.bd=='E11' && event.target.value=='311') {
+    if (this.state.bd === 'E11' && event.target.value === '311') {
       this.setState({
         room: event.target.value,
         isVisible : true,
         preview : 1,
       })
-    }else if(this.state.selectedOption!=null && event.target.value!=''){
+    }else if(this.state.selectedOption !== null && event.target.value !== ''){
       this.setState({
         room: event.target.value,
         isVisible : true,
@@ -302,9 +295,9 @@ class OutlinedTextFields extends React.Component {
   }
 
   buildingchange = (selectedOption) => {
-    if (this.state.room =='311' && selectedOption.value=='E11'){
+    if (this.state.room === '311' && selectedOption.value === 'E11'){
       this.setState({ selectedOption , bd: selectedOption.value, preview : 1 , isVisible : true,});
-    }else if(this.state.room!=''){
+    }else if(this.state.room !== ''){
       this.setState({ selectedOption, bd: selectedOption.value, preview : 2 , isVisible : true,})
     }else{
       this.setState({ selectedOption , bd: selectedOption.value, preview : 0 });
@@ -359,6 +352,7 @@ class OutlinedTextFields extends React.Component {
             case firebase.storage.TaskState.RUNNING: // or 'running'
               console.log('Upload is running');
               break;
+            default:
           }
         }, function(error) {
           // Handle unsuccessful uploads
@@ -382,7 +376,7 @@ class OutlinedTextFields extends React.Component {
   }
 
   isFull(){
-    if(this.state.code!='' && this.state.name!='' && this.state.prof!='' && this.state.bd!='' && this.state.room!=''){
+    if(this.state.code !== '' && this.state.name !== '' && this.state.prof !== '' && this.state.bd !== '' && this.state.room !== ''){
       this.setState({error : false});
     }
   }
@@ -391,17 +385,17 @@ class OutlinedTextFields extends React.Component {
     let that = this;
     new Promise(function(resolve, reject) {
       that.firebase.database().ref('/AUTH/'+that.state.userID+'/seatWOtrim/').once('value').then(function(snapshot) {
-        if (snapshot.val() != null) {
+        if (snapshot.val() !== null) {
           snapshot.ref.remove();
         }
       }).then(function() {
         that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
-          if (snapshot.val() != null) {
+          if (snapshot.val() !== null) {
             snapshot.ref.remove();
           }
         }).then(function() {
           that.firebase.database().ref('/AUTH/'+that.state.userID+'/tmpData').once('value').then(function(snapshot) {
-            if (snapshot.val() != null) {
+            if (snapshot.val() !== null) {
               snapshot.ref.remove();
             }
           })
@@ -416,11 +410,11 @@ class OutlinedTextFields extends React.Component {
   }
 
   moveStep(){
-    if(this.state.step==0){
+    if(this.state.step === 0){
       let that = this;
       let bool;
       //There is blank.
-      if(that.state.code=='' || that.state.name=='' || that.state.prof=='' || that.state.bd=='' || that.state.room==''){
+      if(that.state.code === '' || that.state.name === '' || that.state.prof === '' || that.state.bd === '' || that.state.room === ''){
         that.setState({error:true,message:'You have to enter all information.',test:true})
       }
       else{
@@ -429,7 +423,7 @@ class OutlinedTextFields extends React.Component {
           that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot){
             snapshot.forEach(function(childSnapshot){
               let curr = childSnapshot.val().code
-              if(code==curr){
+              if(code === curr){
                 bool=true;
                 resolve();
               }
@@ -465,7 +459,7 @@ class OutlinedTextFields extends React.Component {
     }
     new Promise(function(resolve, reject) {
       that.firebase.database().ref('/AUTH/'+that.state.userID+'/seat').once('value').then(function(snapshot) {
-        if (snapshot.val() == null) {
+        if (snapshot.val() === null) {
           that.setState({ init: true })
           return false
         } else {
@@ -498,13 +492,6 @@ class OutlinedTextFields extends React.Component {
     if (!this.state.synch) return null;
 
     const { classes } = this.props;
-    const { selectedOption } = this.state;
-    let prev;
-    if (this.state.preview==2){
-      prev = require('../images/ready.png');
-    }else{
-      prev = require('../images/seat.png');
-    }
 
     var visible = (this.state.Seats.length === 0) ? "hidden" : "visible";
     var button_label = (this.state.Seats.length === 0) ? "Make Seat Layout" : "Modify Seat Layout";
@@ -514,10 +501,10 @@ class OutlinedTextFields extends React.Component {
 
     let step;
     //STEP1
-    if (this.state.step==0) {
+    if (this.state.step === 0) {
       step =
         <div>
-          <img id="step" src = {require('../images/step1.png')} style={{width:'100%',}}/>
+          <img id="step" src = {require('../images/step1.png')} style={{width:'100%',}} alt=""/>
           <div id = "fullbox" style={{height: `calc(100%-${this.state.height})`}}>
             <div id = "infobox">
               <form className={classes.container} noValidate autoComplete="off">
@@ -578,11 +565,10 @@ class OutlinedTextFields extends React.Component {
                   margin="normal"
                   variant="outlined"
                 />
+                </div>
                 { this.state.error ? (
                   <p style={{color:'red', fontSize:'20px'}}>{this.state.message}</p>
                 ) : null }
-                </div>
-                
               </form>
             </div>
             <div id = "seatbox" >
@@ -615,7 +601,7 @@ class OutlinedTextFields extends React.Component {
     }else{ //STEP2
       step = 
       <div>
-        <img id="step" src = {require('../images/step2.png')} style={{width:'100%'}}/>
+        <img id="step" src = {require('../images/step2.png')} style={{width:'100%'}} alt=""/>
         <UploadCsv onSubmit={this.onSubmit} moveStep={this.moveStep}/>
       </div>
     }

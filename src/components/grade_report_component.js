@@ -130,9 +130,9 @@ class GradeReport extends Component{
         let $profileImg = null;
         if (this.state.synch) {
             console.log(this.state.user_img);
-            $profileImg = (<img src={this.state.user_img} id = 'user_img'/>);
+            $profileImg = (<img src={this.state.user_img} id = 'user_img' alt=""/>);
         } else {
-            $profileImg = (<img src={user} id = 'user_img'/>);
+            $profileImg = (<img src={user} id = 'user_img' alt=""/>);
         }
 
         if(this.state.init){
@@ -149,7 +149,7 @@ class GradeReport extends Component{
                         <h3>Back to Class</h3>
                     </div>
                     <div id = 'backtoclass' onClick={this.handleback}>
-                        <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>
+                        <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')} alt=""></img>
                     </div>
                 </div>
                 <div id = 'body' style={{display:"flex", alignItems:"center",paddingTop:"1%",paddingBottom:"1%"}}>

@@ -3,31 +3,20 @@ import './make_class_component.css';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import user from '../images/user_white.png';
 import Classblock from '../components/classes/index.js'
 import OutLinedTextFields from './OutLinedTextFields';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import { resolveCname } from 'dns';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
-import Popover from '@material-ui/core/Popover';
 import ProfilePop from './profilePop.js'
 
-import ReactDOM from 'react-dom';
-import MSL_example from "../images/MSL_example.gif"
 import greenplus from "../images/greenplus.png"
 import classex from "../images/classex.png"
 import redbutton from "../images/attendance.png"
@@ -157,11 +146,11 @@ class MakeClass extends Component {
                         //classes = userclass.split(',');
                     })
 
-                    if(classes != []){
+                    if(classes !== []){
                         that.firebase.database().ref('/classInfo/').once('value').then(function(snapshot){
                             snapshot.forEach(function(childSnapshot){
                                 classes.forEach(function(classname){
-                                    if(classname == childSnapshot.val().code){
+                                    if(classname === childSnapshot.val().code){
 
                                     that.state.datas.push(
                                         {
@@ -254,6 +243,7 @@ class MakeClass extends Component {
         let lst = this.state.classlst;
         let index = this.state.deleteindex;
         lst.splice(index,1);
+
         let newstring = JSON.stringify(lst);
         //user info update
         
@@ -324,7 +314,6 @@ class MakeClass extends Component {
     render() {
         if (!this.state.synch) return null;
         if(this.state.loading) {
-          console.log("loading..");
           return null;
         }
 
@@ -340,7 +329,7 @@ class MakeClass extends Component {
             $profileImg = (<img src={user} id = 'user_img'/>);
         }
 
-        if(datas.length == 0){
+        if(datas.length === 0){
             return (
                 <body id = 'full'>
                     <div id = 'headbar3'>

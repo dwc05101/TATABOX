@@ -91,18 +91,26 @@ class UploadCsv extends React.Component {
                 <div id='instruction_csv'>
                     Download the template, Fill out the students_list.csv, and upload it.
                 </div> 
+                <div id='instruction_img'>
+                    Upload images of students, Each image's name must be student ID.
+                    <acronym style={{color:'#5e5e5e'}}> ex) 20190123.jpg</acronym>
+                </div>
                 <div id='about_csv'>
                     <div id='down_ex'>
                         <Button variant="contained" className={classes.margin}><a href ='https://firebasestorage.googleapis.com/v0/b/tatabox-c2abe.appspot.com/o/students.zip?alt=media&token=3067cf63-d54c-4429-a08b-62ad62cad434' style={{textDecoration:'none', color:'black', whiteSpace:"nowrap"}}>download template</a></Button>
-                    </div>
-                    <div id='csv_name'>
-                        <acronym style={{color:'#5e5e5e'}}>{this.state.filename}</acronym>
                     </div>
                     <div id = 'up_csv'>
                         <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
                         <MuiThemeProvider theme={theme}>    
                             <Button variant="contained" color='primary' className={classes.margin}>Upload List</Button>
                         </MuiThemeProvider> 
+                        </ReactFileReader>
+                    </div>
+                    <div id='csv_name'>
+                        <ReactFileReader handleFiles={this.handleImages} fileTypes={'image/*'} multipleFiles={true}>
+                            <MuiThemeProvider theme={theme}>  
+                                <Button variant="contained" color="primary" className={classes.margin}>Upload Images</Button>
+                            </MuiThemeProvider>  
                         </ReactFileReader>
                     </div>
                 </div>
@@ -119,23 +127,6 @@ class UploadCsv extends React.Component {
                     </div> 
                     <div id='csv_table'>
                     {this.state.preview}
-                    </div>
-                </div>
-                <div id='instruction_img'>
-                    Upload images of students, Each image's name must be student ID.
-                    <acronym style={{color:'#5e5e5e'}}> ex) 20190123.jpg</acronym>
-                </div>
-                <div id='about_img'>
-                    <div id='mt_img'></div>
-                    <div id='up_img'>
-                        <ReactFileReader handleFiles={this.handleImages} fileTypes={'image/*'} multipleFiles={true}>
-                            <MuiThemeProvider theme={theme}>  
-                                <Button variant="contained" color="primary" className={classes.margin}>Upload Images</Button>
-                            </MuiThemeProvider>  
-                        </ReactFileReader>
-                    </div>
-                    <div id='status_img'>
-                        <p>{this.state.uploaded}</p>
                     </div>
                 </div>
                 <div id='final_button'>

@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import user from '../images/user_white.png';
+import ProfilePop from './profilePop.js'
 
 import "./make_class_component.css";
 
@@ -27,7 +28,7 @@ class GradeReport extends Component{
         let {match} = this.props;
 
         let that = this;
-
+        this.handleLogout = this.handleLogout.bind(this);
         this.handleback = this.handleback.bind(this);
 
         new Promise(function(resolve, reject){
@@ -66,6 +67,10 @@ class GradeReport extends Component{
             })
         })
     }
+
+    handleLogout() {
+        this.firebase.auth().signOut();
+      }
 
     makeTable(){
         return(this.state.students.map(student=>{
@@ -137,9 +142,8 @@ class GradeReport extends Component{
                 <div id = 'headbar3'>
                     <h1 id = 'logo'style={{marginTop:"5px", cursor: "pointer"}} onClick={this.gotoMade}>TATABOX</h1>
                     <h2 style={{color: "white",float:"left", marginLeft: "15px",marginTop:"29px"}}>{match.params.classname}</h2>
-                    <h3 id = 'userid'>{this.state.user_name}</h3>
                     <div id = 'img_cropper'>
-                        {$profileImg}
+                        <ProfilePop profileImg = {$profileImg} user_name = {this.state.user_name} logout={this.handleLogout}></ProfilePop>
                     </div>
                     <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
                         <h3>Back to Class</h3>

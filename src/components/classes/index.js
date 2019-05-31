@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from 'react-awesome-modal';
 
-
-
 const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),

@@ -373,7 +373,7 @@ class Management extends Component{
                             <ProfilePop profileImg = {$profileImg} user_name = {this.state.user_name} logout={this.handleLogout}></ProfilePop>
                         </div>
                         <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
-                            <h3>Back to Class</h3>
+                            <h3>Back to Check</h3>
                         </div>
                         <div id = 'backtoclass' onClick={this.handleback}>
                             <img style={{width:"30px", height:"30px"}} src = {require('../images/back.png')}></img>

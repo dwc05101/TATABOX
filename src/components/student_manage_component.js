@@ -18,6 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MSL_example from "../images/MSL_example.gif"
 import Zoom from '@material-ui/core/Zoom';
+import ProfilePop from './profilePop.js'
 
 import StudentItem from "./student_item";
 
@@ -59,7 +60,7 @@ class Management extends Component{
         }
 
         let {match} = this.props;
-
+        this.firebase = this.props.Firebase.fb;
         let that = this;
         new Promise(function(resolve, reject){
             that.state.firebase.auth().onAuthStateChanged(function(user) {
@@ -86,6 +87,7 @@ class Management extends Component{
         this.handleDelete = this.handleDelete.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onRequestSearch = this.onRequestSearch.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
     componentDidMount(){
@@ -121,6 +123,10 @@ class Management extends Component{
             }
         })
     }
+
+    handleLogout() {
+        this.firebase.auth().signOut();
+      }
 
     makeStudentList(){
         var classname = this.state.classname;
@@ -317,9 +323,8 @@ class Management extends Component{
                                     </DialogActions>
                                 </Dialog>
                         </div>
-                            <h3 id = 'userid'>{this.state.user_name}</h3>
                         <div id = 'img_cropper'>
-                            {$profileImg}
+                            <ProfilePop profileImg = {$profileImg} user_name = {this.state.user_name} logout={this.handleLogout}></ProfilePop>
                         </div>
                         <div id = 'backtoclass' style={{marginRight:"2vh",marginTop:"3vh",paddingLeft:"0px"}} onClick={this.handleback}>
                             <h3>Back to Class</h3>

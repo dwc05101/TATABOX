@@ -275,23 +275,25 @@ class Main extends Component{
                         />
                         <br/>
                         <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
-                            <Button variant="contained" color="primary" onClick={this.onSubmit} style={{
-                                marginTop:"10%",width:"28%",borderRadius: 10,
-                                border: "2px solid #4C9900",
-                                backgroundColor: "#4C9900",
-                                padding: "18px 18px",
-                                fontSize: "20px"}}>
-                                Sign In
-                            </Button>
-
                             <Button variant="contained" onClick={this.openUp} style={{
                                 marginTop:"10%",width:"28%", borderRadius: 10,
                                 border: "2px solid #4C9900",
                                 background: 'none',
                                 padding: "18px 18px",
                                 fontSize: "20px",
+                                fontWeight: "bold",
                                 color: "#4C9900"}}>
                                 Sign Up
+                            </Button>
+
+                            <Button variant="contained" color="primary" onClick={this.onSubmit} style={{
+                                marginTop:"10%",width:"28%",borderRadius: 10,
+                                border: "2px solid #4C9900",
+                                backgroundColor: "#4C9900",
+                                padding: "18px 18px",
+                                fontWeight: "bold",
+                                fontSize: "20px"}}>
+                                Log In
                             </Button>
                         </div>
                     </form>

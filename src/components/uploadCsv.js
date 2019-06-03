@@ -57,7 +57,34 @@ class UploadCsv extends React.Component {
               else{
               var jsonData = {};
               let row = element.split(',');
-              jsonData['sid']=row[0];
+              if(row[0]!=null && row[0].length>0) {
+                jsonData['sid']=row[0];
+                jsonData['name']=row[1];
+                jsonData['email']=row[2];
+                jsonData['dept']=row[3];
+                let e =<Paper id = 'row_student'>
+                          <div class='wrap'>
+                              <div class = "cell_sid">{row[0]}</div>
+                              <div class = "cell_name">{row[1]}</div>
+                              <div class = "cell_dept">{row[3]}</div>
+                              <div class = "cell_email">{row[2]}</div>
+                          </div>
+                        </Paper>
+                if(row[4] == null){
+                  jsonData['imgpath']='';
+                }
+                else {
+                  if(row[4].length>0) jsonData['imgpath']=row[0]+'.'+row[4];
+                  else jsonData['imgpath']='';
+                }
+                console.log(`jsonData`,jsonData);
+                array.push(jsonData);
+                preview.push(e);
+              }
+            else{
+
+            }
+              /*jsonData['sid']=row[0];
               jsonData['name']=row[1];
               jsonData['email']=row[2];
               jsonData['dept']=row[3];
@@ -69,11 +96,16 @@ class UploadCsv extends React.Component {
                             <div class = "cell_email">{row[2]}</div>
                         </div>
                       </Paper>
-              if(row[4].length>0) jsonData['imgpath']=row[0]+'.'+row[4];
-              else jsonData['imgpath']='';
+                if(row[4] == null){
+                    jsonData['imgpath']='';
+                }
+                else {
+                    if(row[4].length>0) jsonData['imgpath']=row[0]+'.'+row[4];
+                    else jsonData['imgpath']='';
+                }
               console.log(`jsonData`,jsonData);
               array.push(jsonData);
-              preview.push(e);
+              preview.push(e); */
               }
           });
           that.setState({students:array, preview:preview})

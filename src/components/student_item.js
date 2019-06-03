@@ -7,6 +7,7 @@ import user from "../images/user.png";
 import './make_class_component.css';
 
 var dateCount;
+var width;
 
 class StudentItem extends Component{
 
@@ -44,7 +45,7 @@ class StudentItem extends Component{
             firebase : props.firebase,
             user_img : "",
             init : false,
-            width : 0,
+            width : width,
         }
         
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -68,7 +69,7 @@ class StudentItem extends Component{
         if(this.state.student.imgpath === ""){
             this.setState({
                 user_img : user,
-                init : true
+                init : true,
             });
         }else{
             var imgRef = storageRef.child('images/' + this.state.student.imgpath);
@@ -77,10 +78,10 @@ class StudentItem extends Component{
                     user_img : url,
                     init : true
                 });
-                // console.log(document.getElementById('fullPaper').clientWidth)
                 that.setState({
                     width : document.getElementById('fullPaper').clientWidth
                 })
+                width = document.getElementById('fullPaper').clientWidth;
             }).catch(err=>{
                 console.log(err);
                 that.setState({
@@ -195,11 +196,11 @@ class StudentItem extends Component{
         var $profileImg;
 
         if (this.state.width != 0) {
-            console.log("good")
             var imgSize = this.state.width * 0.08;
             $profileImg = (<img style={{width: imgSize,height: imgSize, borderRadius: "50%"}} src={this.state.user_img}/>);
         }        
-         
+
+
         if(!this.state.init) return null;
         return(
             <Paper className="center" id="fullPaper" width="100%">

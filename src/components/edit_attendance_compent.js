@@ -336,7 +336,7 @@ class EditAttendance extends Component{
         let $profile = null;
         let $profileImg = null;
 
-        if (this.state.synch) {;
+        if (this.state.synch) {
             $profile = (<img style={{borderRadius: "50%"}} src={this.state.user_img} id = 'user_img' alt="" />);
         } else {
             $profile = (<img style={{borderRadius: "50%"}} src={user} id = 'user_img' alt=""/>);
@@ -345,6 +345,7 @@ class EditAttendance extends Component{
 
         if (this.state.width !== 0) {
             var imgSize = this.state.width * 0.12;
+            console.log(this.state.profile_img);
             $profileImg = (<img style={{width: imgSize, height: imgSize, borderRadius: "50%"}} src={this.state.profile_img} alt=""/>);
         }    
 

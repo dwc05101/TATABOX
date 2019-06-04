@@ -335,36 +335,41 @@ class OutlinedTextFields extends React.Component {
     new Promise(function(resolve, reject){
       //upload students images
       for(var i =0; i<imgfiles.length; i++){
-        let file = imgfiles[i];
-        const storage = that.firebase.storage();
-        const storageRef = storage.ref();
-        var uploadTask = storageRef.child('images/' + file.name).put(file);
+          var index = i
+          let file = imgfiles[i];
+          const storage = that.firebase.storage();
+          const storageRef = storage.ref();
+          var uploadTask = storageRef.child('images/' + file.name).put(file);
 
-        uploadTask.on('state_changed', function(snapshot){
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case firebase.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused');
-              break;
-            case firebase.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running');
-              break;
-            default:
-          }
-        }, function(error) {
-          // Handle unsuccessful uploads
-        }, function() {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            console.log('File available at', downloadURL);
+          uploadTask.on('state_changed', function(snapshot){
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+              default:
+            }
+          }, function(error) {
+            // Handle unsuccessful uploads
+          }, function() {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              console.log('File available at', downloadURL);
+            });
+            if(index==imgfiles.length-1) {
+              console.log('resolve!')
+              resolve()
+            };
           });
-        });
     }
-      resolve();
+      //resolve();
     })
     .then(function(result) {
       that.moveStep();

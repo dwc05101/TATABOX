@@ -34,6 +34,10 @@
     display: block;
     flex:1; 
 }
+#newprocess{
+    margin-top:10px;
+    color : gray;
+}
 #about_csv{
     width:600px;
     height: auto;

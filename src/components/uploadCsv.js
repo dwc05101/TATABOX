@@ -84,30 +84,8 @@ class UploadCsv extends React.Component {
             else{
 
             }
-              /*jsonData['sid']=row[0];
-              jsonData['name']=row[1];
-              jsonData['email']=row[2];
-              jsonData['dept']=row[3];
-              let e =<Paper id = 'row_student'>
-                        <div class='wrap'>
-                            <div class = "cell_sid">{row[0]}</div>
-                            <div class = "cell_name">{row[1]}</div>
-                            <div class = "cell_dept">{row[3]}</div>
-                            <div class = "cell_email">{row[2]}</div>
-                        </div>
-                      </Paper>
-                if(row[4] == null){
-                    jsonData['imgpath']='';
-                }
-                else {
-                    if(row[4].length>0) jsonData['imgpath']=row[0]+'.'+row[4];
-                    else jsonData['imgpath']='';
-                }
-              console.log(`jsonData`,jsonData);
-              array.push(jsonData);
-              preview.push(e); */
-              }
-          });
+        }
+        });
           that.setState({students:array, preview:preview})
           console.log(`array`,array);
         }
@@ -161,6 +139,7 @@ class UploadCsv extends React.Component {
                     {this.state.preview}
                     </div>
                 </div>
+                <p id="newprocess">{this.state.uploaded}</p>
                 <div id='final_button'>
                     <Button variant="contained" color="secondary" className={classes.margin} onClick={this.props.moveStep}>
                         Back

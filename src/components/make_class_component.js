@@ -98,7 +98,6 @@ class MakeClass extends Component {
         this.openDialog = this.openDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
         this.refresh = this.refresh.bind(this);
-
         let that = this;
         let Seat;
         let seatWOtrim;
@@ -208,7 +207,6 @@ class MakeClass extends Component {
             user_name : user.displayName,
         })
     }
- 
     openModal() {
         this.setState({
             visible : true,

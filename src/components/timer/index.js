@@ -40,10 +40,6 @@ class Timer extends React.Component {
         /* this.setState({
             timingEvents: this.state.timingEvents.filter((_, i) => i !== index)
         }); */
-        delete this.state.timingEvents;
-        this.setState({
-            timingEvents: [],
-        })
     }
 
     render() {

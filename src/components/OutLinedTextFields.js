@@ -226,7 +226,6 @@ class OutlinedTextFields extends React.Component {
           return false
         }
         that.setState(snapshot.val().tmpData)
-        console.log(that.state.bd)
       })
     })
   }
@@ -313,6 +312,8 @@ class OutlinedTextFields extends React.Component {
     var stringJson = JSON.stringify(newcode);
 
     //class Info sending..
+    console.log(stringJson)
+    console.log(studentslst)
     this.firebase.database().ref('/classInfo/').push({
       code : this.state.code,
       name : this.state.name,
@@ -381,7 +382,7 @@ class OutlinedTextFields extends React.Component {
   }
 
   isFull(){
-    if(this.state.code !== '' && this.state.name !== '' && this.state.prof !== '' && this.state.bd !== '' && this.state.room !== ''){
+    if(this.state.code !== '' && this.state.name !== '' && this.state.prof !== '' && this.state.bd !== '' && this.state.room !== '' && this.state.Seats.length == 1){
       this.setState({error : false});
     }
   }
@@ -419,7 +420,8 @@ class OutlinedTextFields extends React.Component {
       let that = this;
       let bool;
       //There is blank.
-      if(that.state.code === '' || that.state.name === '' || that.state.prof === '' || that.state.bd === '' || that.state.room === ''){
+      console.log(this.state.Seats)
+      if(that.state.code === '' || that.state.name === '' || that.state.prof === '' || that.state.bd === '' || that.state.room === '' || that.state.Seats.length == 0){
         that.setState({error:true,message:'You have to enter all information.',test:true})
       }
       else{

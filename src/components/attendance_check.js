@@ -453,7 +453,7 @@ class NavTabs extends React.Component {
                       <img style={{width:"30px", height:"30px", float: "right"}} src = {require('../images/closeModal.png')} alt=""></img>
                   </div>
                   <div style = {{width: "480px", height: "210px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <img style={{width:"40px", height:"40px"}} src = {require('../images/absent.png')} alt=""></img>
+                    <img style={{width:"40px", height:"40px"}} src = {require('../images/attended.png')} alt=""></img>
                     <br/>
                     <text style = {{fontSize: "30px"}}>Attend</text>
                     <text style = {{color: "#7cb342", fontWeight: "bold", fontSize: "30px"}}>{this.attendInfo[this.state.attendmodalIndex][0]} {this.attendInfo[this.state.attendmodalIndex][1]}</text>

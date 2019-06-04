@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
 
 importScripts(
-  "/TATABOX/precache-manifest.852c764c0263782dfc540e7ee1ae2006.js"
+  "/TATABOX/precache-manifest.a2f4b5abe5c7a639d3aff91098171756.js"
 );
 
 self.addEventListener('message', (event) => {

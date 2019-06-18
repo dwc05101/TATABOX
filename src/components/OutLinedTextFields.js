@@ -335,7 +335,10 @@ class OutlinedTextFields extends React.Component {
     
     new Promise(function(resolve, reject){
       //upload students images
+      if(imgfiles==null) resolve();
+      else if (imgfiles.length==0) resolve();
       for(var i =0; i<imgfiles.length; i++){
+          console.log('touch this');
           var index = i
           let file = imgfiles[i];
           const storage = that.firebase.storage();
